@@ -31,6 +31,7 @@ const PaintingList = (props) => {
           <Link to={`/paintings/${painting.id}`}>
             <img src={painting.img} className="rounded-top" alt="" />
             <h2>{painting.title}</h2>
+          <h4>${painting.price}</h4>
             <p>{painting.about}</p>
             <span>Artist : {painting.artist}</span>
             <h5>{painting.date}</h5>

@@ -25,6 +25,7 @@ const Adminpaintinglist = (props) => {
           <img src={painting.img} alt=""/>
           {/* <img src={painting.imageUrl} alt={painting.title} /> */}
          <h2>{ painting.title}</h2>
+         <h4>${painting.price}</h4>
          <p> { painting.about } </p>
          <span>By { painting.artist }</span>
          <h5>{ painting.date }</h5>

@@ -58,6 +58,7 @@ import './paintingdetails.css'
            <img src={painting.img} alt="painting" />
            <div className="product-description">
           <h2>{painting.title}</h2>
+          <h4>${painting.price}</h4>
           <span>Artist:{painting.artist}</span>
             <h5>{painting.date}</h5>
    
