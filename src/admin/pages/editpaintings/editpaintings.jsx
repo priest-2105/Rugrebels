@@ -10,6 +10,7 @@ const Editpaintings = () => {
   const [about, setAbout] = useState("");
   const [artist, setArtist] = useState("");
   const [date, setDate] = useState("");
+  const [price, setPrice] = useState("");
   const [img, setImg] = useState("");
   const [saving, setSaving] = useState(false);
   const history = useHistory();
@@ -20,6 +21,7 @@ const Editpaintings = () => {
       setAbout(painting.about);
       setArtist(painting.artist);
       setDate(painting.date);
+      setPrice(painting.price);
       setImg(painting.img);
     }
   }, [painting]);
@@ -98,6 +100,13 @@ const Editpaintings = () => {
           required
           value={artist}
           onChange={(e) => setArtist(e.target.value)}
+        />
+
+      <label>Price : </label>
+        <input
+          required
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
         />
 
         <label>Date : </label>
