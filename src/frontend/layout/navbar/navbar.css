@@ -1,0 +1,119 @@
+.nav-container{
+    padding-top: 5%;
+}
+
+.mobile-navbar{
+    display: none !important;
+}
+
+
+
+.navbar{
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px 10px 10px 10px;
+    height: 100px;
+    display: flex;
+}
+
+
+.navbar-nav{
+    margin-left: auto;
+    margin-right: auto;
+    width:40%;
+    font-weight: 800;
+    display: flex;
+    text-align: center; 
+    align-items: center;
+    margin-right: auto;
+    margin-top: -1px;
+    justify-content: space-around;
+   }
+
+
+.navbar-nav li{
+    text-align: center;
+    padding-right: 20px;
+     border-right: 2px solid silver;
+    list-style-type: none;
+}
+ 
+
+
+   .navbar-nav a{
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+ 
+
+.navbar-nav a:hover{
+    text-decoration: none;
+    color: rgb(233, 222, 155);
+}
+
+.profile-tab i{
+    color: rgb(233, 222, 155);
+    font-size: 25px;
+
+}
+
+.socials a{
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    margin-left: 15px;
+}
+
+
+
+ 
+
+.socials a:hover{
+    text-decoration: none;
+    color: rgb(233, 222, 155);
+}
+
+.profile-tab a{
+    margin-top: 10px;
+    color: rgb(233, 222, 155);
+}
+
+.offcanvas-body{
+    background-color: rgba(0, 0, 0, 0.5); 
+
+}
+.offcanvas-header{
+    background-color: rgba(0, 0, 0, 0.5); 
+
+}
+
+@media only screen and (max-width:991px) {
+
+
+    .desktop-navbar{
+        display: none !important;
+}
+
+    .mobile-navbar{
+     display: block !important;
+     background-color: rgba(0, 0, 0, 0.5); 
+   }
+
+  .navbar-nav li{
+    text-align: center;
+     border: none !important;
+}
+ 
+.profile-tab a{
+    color: rgb(233, 222, 155) !important;
+}
+    
+}
+
+
+

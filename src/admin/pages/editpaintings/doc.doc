@@ -1,0 +1,54 @@
+import React from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import useFetch from '../../../assets/hooks/usefetch';
+import './editpaintings.css'
+ 
+
+
+const Editpaintings = () => {
+ 
+
+    const { id } = useParams();
+
+    const { data:painting, preloader, error } = useFetch('http://localhost:8000/paintings/' + id); 
+ 
+    const history = useHistory();
+
+    const handleClick = () => {
+      fetch('http://localhost:8000/paintings/' + painting.id, {
+        method: 'DELETE'
+      }).then(() => {
+      history.push('/admindashboard');
+      })  
+     
+    }
+
+    return (
+       <div className='edit-painting'>
+  
+    <h2> Edit paintings</h2>
+     { error && <div>{ error }</div>}
+
+    {/* preloader  */}
+     { preloader && <div  className='preloader'>...Loading </div> }                                                                     
+
+ 
+      { painting && (
+              <div>
+            <h2>{painting.title}</h2>
+            <img src={painting.img} alt="painting" />
+            <p>{painting.about}</p>
+            <span>{painting.artist}</span>
+            <h5>{painting.artist}</h5>
+            <button onClick={handleClick}>Delete</button>
+            
+           </div>
+      )}
+
+  
+
+    </div>
+  );
+}
+
+export default Editpaintings;

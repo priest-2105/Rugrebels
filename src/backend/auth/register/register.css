@@ -1,0 +1,40 @@
+.register-form{
+    background-color: rgba(0, 0, 0, 0.5); 
+    margin-left:auto;
+    margin-right:auto;
+    padding:30px 60px 40px 0px ;
+    width:60%;
+    color:silver;
+    margin-top:5%;
+}
+ 
+
+.ant-form-item-label > label {
+    color: silver;
+  }
+  .ant-input {
+    background-color: transparent;
+  }
+
+.card-header{
+    text-align:center;
+    font-size:40px; 
+}
+
+
+
+.register-form p{
+    font-weight:600;
+    color:silver;
+    text-align:center
+}
+
+
+@media only screen and (max-width:991px) {
+
+    .register-form{
+        width:85%;
+    }
+    
+
+}

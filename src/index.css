@@ -1,0 +1,56 @@
+ 
+html, body {
+  margin: 0px;
+  padding: 0px;
+}
+
+.App{
+  background-image: url('/images/insideperryartbackground.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+
+.contents{
+  min-height: 100vh;
+}
+
+
+.chatbox-container {
+  font-size: 20px;
+  padding:20px 30px 20px 30px ; 
+ color: grey;
+  background-color: rgb(233, 222, 155);
+  position: fixed;
+  bottom: 50px;
+  right:50px
+  
+}
+
+.chatbox-container:hover{
+  color: rgb(233, 222, 155); 
+  background-color: grey;
+}
+
+
+.chatbox{
+  font-weight: 600;
+ text-decoration: none;
+}
+
+
+
+@media only screen and (max-width:991px) {
+  .chatbox-container {
+    font-size: 15px;
+    padding:10px 20px 10px 20px ; 
+    position: fixed;
+    bottom: 20px;
+    right:20px
+    
+  }
+  
+}

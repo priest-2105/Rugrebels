@@ -1,0 +1,143 @@
+h2{
+    font-size:50px;
+}
+
+.about{
+    margin-top:50px;
+    display:flex;
+    align-items:center;
+}
+
+
+
+.about img{
+    height:100%;
+    margin-left:auto;
+    width:48%;
+}
+
+
+.about p{
+    margin-top:30px;
+   width:44%;
+}
+
+
+main{
+    background-color: rgba(192, 192, 192,0.8);
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 20px 20px 20px;
+    border-radius: 10px;
+    width: 90%;
+}
+
+.inspiration {
+    margin-top:100px;
+    } 
+
+.inspiration h2{
+padding-top:20px;
+padding-bottom:20px;
+border-top:2px solid grey;
+margin-left:auto;
+margin-right:auto;
+width:60%;
+} 
+
+.inspiration img{
+    height:800px;
+     width:100%;
+    }
+
+
+.inspiration p{
+    padding-top:20px;
+    padding-bottom:20px;
+    border-top:2px solid grey;
+   } 
+
+
+.team-header{
+    margin-top:40px;
+    padding-top:50px;
+    padding-bottom:40px;
+    border-top:2px solid grey;
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+}
+
+ .team {
+    display: flex;
+    text-align: center;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+.team-member { 
+    margin-left: auto;
+    margin-right: auto;   
+    text-align: center;
+}
+    .team-member img {
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+
+.team{
+    width:70%;
+}
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width:991px) {
+   
+.about{
+    display:flex;
+    flex-direction:column-reverse;
+}
+
+    .about img{
+       width:100%;
+       height:300px;
+   }
+
+
+.about p{
+    margin-left:auto;
+    margin-right:auto;
+   margin-top:30px;
+  width:95%;
+}
+
+.inspiration img{
+   height:350px;
+    width:100%;
+   }
+
+   h2{
+    width:100%;
+   }
+
+   .team{
+    width:100%;
+}
+.team-header{ 
+    width:100%;
+}
+
+main{
+    width: 99%;
+}
+}

@@ -1,0 +1,81 @@
+.contact{
+    display: block;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+   position: relative;
+}
+
+
+.map{
+    background-color: rgba(0, 0, 0, 0.1); 
+    height:500px; 
+    box-shadow: 5px 5px 0px 0px rgba(0, 0,0,0.5);
+
+}
+
+.quickletter label{
+    color: silver;
+}
+
+
+.quickletter{
+    position: absolute;
+   
+    top:26%;
+    right: 0%;
+    height: fit-content;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.6); 
+    width:fit-content;
+    padding: 20px 0px 20px 20px;
+}
+
+.quickletter input{ 
+    background-color: rgba(0, 0, 0, 0.6); 
+}
+.card-header{
+    color: silver;
+    font-size: 20px;
+    font-weight: 700;
+}
+.quickletter textarea{
+    background-color: rgba(0, 0, 0, 0.6); 
+    max-height: 80px;
+}
+
+
+.quickletter input::placeholder{
+   color: snow;
+}
+    
+
+
+
+.enquiries{
+    height: 200px;
+    background-color: snow;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+
+
+
+@media only screen and (max-width:767px) {
+
+    .contact{ 
+        width: 98%;
+     
+    }
+
+    .quickletter{
+        margin-top:50px;
+        position:relative;
+        height: fit-content;
+        display: block;
+        background-color: rgba(0, 0, 0, 0.6); 
+        width:100%;
+        padding: 20px 0px 20px 20px;
+    }
+}
