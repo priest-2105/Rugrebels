@@ -69,6 +69,10 @@
 
   }
 
+  .painting-preview h4{
+   margin-left: 15px;
+  }
+
 
   .cart-button{
     position: absolute;
@@ -119,11 +123,16 @@
     }
 
 
-    .popup{
-      position: fixed;
-      height: 100px;
-      width: 250px;
-    }
+    .popupp{
+      position:fixed;
+      top: 5%;
+      right:5%;
+      color: grey;
+      background-color:rgb(233, 222, 155); 
+      padding: 20px 50px 20px 50px; 
+      animation-name: notification;
+      animation-duration: 2s;
+  }
 
   @media only screen and (max-width:991px) {
     

@@ -4,10 +4,16 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import useFetch from '../../../assets/hooks/usefetch';
 import './paintingdetails.css'
+      import { useHistory } from 'react-router-dom';
 
 
     const Paintingdetails = () => {
     
+
+
+
+
+    const history = useHistory("/shop"); // add this line to use useHistory hook
     
     const { id } = useParams();
 
@@ -16,31 +22,36 @@ import './paintingdetails.css'
     
     const [isAdded, setIsAdded] = useState(false);
 
-    const handleAddToCart = () => {
-      console.log(JSON.stringify(painting));
-      fetch('http://localhost:8000/cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(painting)
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setIsAdded(true);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    };
+ 
+  const handleAddToCart = (painting) => {
+  fetch('http://localhost:8000/cart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(painting)
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      setIsAdded(true);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+};
+
   
+
+    const prevbutton = () => { 
+          history.push("/shop"); 
+    };
   
       
 
     return (
        
        <div className='painting-details'>
-    <h2> Painting Detail</h2>
+        <button className='prevbutton' onClick={prevbutton}><i className="bi bi-arrow-left-square-fill"></i></button> 
      { error && <div>{ error }</div>}
 
     {/* preloader  */}
@@ -56,7 +67,7 @@ import './paintingdetails.css'
                 </div>
               <div className='painting-detail'>
            <img src={painting.img} alt="painting" />
-           <div className="product-description">
+           <div className="product-description ms-4">
           <h2>{painting.title}</h2>
           <h4>${painting.price}</h4>
           <span>Artist:{painting.artist}</span>
@@ -77,27 +88,27 @@ import './paintingdetails.css'
             <button>Buy Now</button>
             </div> 
 
-          <div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+          <div className="accordion" id="accordionPanelsStayOpenExample">
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="panelsStayOpen-headingOne">
+      <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
        Description
       </button>
     </h2>
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-      <div class="accordion-body about-product">
+    <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+      <div className="accordion-body about-product">
       <p>{painting.about}</p>
           </div>
     </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
+      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
        Return Policy
       </button>
     </h2>
-    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
-      <div class="accordion-body"> 
+    <div id="panelsStayOpen-collapseTwo" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
+      <div className="accordion-body"> 
     I’m a Return and Refund policy. I’m a great place to let your customers know what to do in case they are
     dissatisfied with their purchase. Having a straightforward refund or exchange policy 
     is a great way to build trust and reassure your customers that they can buy with confidence.

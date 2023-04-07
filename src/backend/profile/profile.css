@@ -1,5 +1,15 @@
-img{
+.logout-button{
+    border: none;
+    margin-top: 20px;
+    background-color: rgb(233, 222, 155);
+    padding: 10px 20px 10px 20px;
+    font-weight: 700;
+    font-size: larger;
+}
 
-    height: 80px;
-    width:80px;
+
+
+.logout-button:hover{
+    background-color: rgba(233, 222, 155,0.4);
+    color: silver;
 }

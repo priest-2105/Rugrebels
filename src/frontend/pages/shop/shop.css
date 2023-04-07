@@ -15,14 +15,17 @@
     to{background-color: rgba(233, 222, 155,0);}
 }
 
-.preloader h3{
-
-    background-color: silver;
-color: rgb(22, 7, 7);
-margin-top: 20%;
-width: fit-content;
-padding:  40px 20px 40px ;
-border-radius: 10px;
-margin-left: auto;
-margin-right: auto;
-}
+.container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  #canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  

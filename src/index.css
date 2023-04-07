@@ -1,4 +1,6 @@
- 
+@import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,900&display=swap');
+
 html, body {
   margin: 0px;
   padding: 0px;
@@ -9,8 +11,25 @@ html, body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
+  font-family: 'Alkatra', cursive;
   background-size: cover;
   min-height: 100vh;
+}
+
+.errorpagemessage{
+  font-size: 20px;
+  padding:30px 45px 30px 45px ; 
+ color: grey;
+  background-color: rgb(233, 222, 155);
+  position: absolute;
+  top:45%;
+  left: 45%;
+}
+.errorpagemessagecontainer{
+  position:fixed;
+  background-color: rgba(233, 222, 155,0.5);
+  height: 100%;
+  width: 100%;
 }
 
 
@@ -41,6 +60,29 @@ html, body {
  text-decoration: none;
 }
 
+.notification{
+    position:fixed;
+    top: 5%;
+    right:5%;
+    color: grey;
+    background-color:rgb(233, 222, 155); 
+    padding: 20px 50px 20px 50px; 
+    animation-name: notification;
+    animation-duration: 2s;
+}
+
+.painting-list-notification{
+  position:fixed;
+  top: 5%;
+  left:5%;
+  margin-left: auto;
+  width:min-content;
+  color: grey;
+  background-color:rgb(233, 222, 155); 
+  padding: 20px 50px 20px 50px; 
+  animation-name: notification;
+  animation-duration: 2s;
+}
 
 
 @media only screen and (max-width:991px) {

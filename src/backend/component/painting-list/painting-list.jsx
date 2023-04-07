@@ -1,29 +1,61 @@
 import './painting-list.css';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../../config/fire';
+
+
+
+
+
+
 
 const PaintingList = (props) => {
   const paintings = props.paintinglistprop;
+  // const { data: paintings, preloader, error } = useFetch('http://localhost:8000/paintings'); 
 
-  const [isAdded, setIsAdded] = useState(false);
+  const [paintingsfirebase, SetPaintingsfirebase] = useState({}); 
 
-  const handleAddToCart = () => {
-    fetch('http://localhost:8000/cart', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(paintings)
+  useEffect(() => {
+    
+  
+  }, [ ] );
+
+
+  function getpaintingsfirebase() {
+
+    const paintingscollectinRef = collection(db, 'paintingsfirebase');
+    getDocs(paintingscollectinRef)
+    .then(response => { 
+      console.log(response);
+     })
+    .catch(error => console.log(errormessage))
+
+  }
+ 
+  const [addedpaintinglist, setAddedpaintinglist] = useState(false); // new state for tracking if the painting is being addedpaintinglist
+ 
+    const handlePaintingAddToCart = (painting) => {
+  fetch('http://localhost:8000/cart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(painting)
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      setAddedpaintinglist(true);
+      setTimeout(() => {
+        setAddedpaintinglist(false);
+      }, 3000);  
     })
-      .then((response) => response.json())
-      .then((data) => {
-        setIsAdded(true);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+};
 
+  
   return (
     <div className="painting-preview-container">
       {paintings.map((painting) => (
@@ -36,13 +68,10 @@ const PaintingList = (props) => {
             <span>Artist : {painting.artist}</span>
             <h5>{painting.date}</h5>
           </Link>
-          <button className="cart-button" onClick={() => handleAddToCart(painting)}><i className="bi fs-1 bi-cart-fill"></i>Add to Cart</button>
-          {isAdded && (
-            <div className="popup">
-              Item added to cart!
-              <button onClick={() => setIsAdded(false)}>Close</button>
-            </div>
-          )}
+          
+          <button className="cart-button" onClick={() => handlePaintingAddToCart(painting)}><i className="bi fs-1 bi-cart-fill"></i>Add to Cart</button>
+          {addedpaintinglist && <p className="painting-list-notification" >Added To Cart </p>} 
+          
          <Link to={`/paintings/${painting.id}`} className="view-button"> Quick View</Link>
         </div>
       ))}

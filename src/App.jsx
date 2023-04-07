@@ -25,16 +25,19 @@ import Contact from './frontend/pages/contact/contact';
 function App() { 
 
 
+
   
   return (
    
    <div className="App">
     <BrowserRouter> 
+   
     <div className="contents">
 
   
 
- 
+  <Route path="*" component={Pagenotfound}/> 
+
     <Navbar/>
 
     {/* <Switch> */}
@@ -48,7 +51,6 @@ function App() {
 
 
       {/* error page  */}
-      <Route path="*" component={Pagenotfound} /> 
     
       <Route exact path="/" component={Home} />
 
@@ -71,8 +73,8 @@ function App() {
       <Privateroute path="/editpaintings/:id" component={Editpaintings} />
       <Privateroute path="/adminpaintingpreview/:id" component={Adminpaintingpreview} />
       <Privateroute path="/profile" component={Profile} />
-      <Privateroute path="/cart" component={Cart} />
-  
+      <Privateroute path="/cart" component={Cart} /> 
+      
   
 
       <a  className="chatbox" href="https://wa.link/fxm4ew">

@@ -84,8 +84,11 @@ width:60%;
     text-align: center;
 }
     .team-member img {
-    max-width: 100%;
+    width: 550px;
+    margin-bottom: 50px;
+    height: 500px;
     border-radius: 50%;
+    
 }
 
 

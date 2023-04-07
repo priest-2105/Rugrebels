@@ -1,8 +1,49 @@
 import React from 'react'; 
-import './contact.css'
+import './contact.css';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useFetch from '../../../assets/hooks/usefetch';
 
-const Contact = () => {
-    return (
+const Contact = () => { 
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");   
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [sent, setSent] = useState(false); // new state for tracking if the painting is being added
+
+  const smile = ":)"
+  
+
+  const history = useHistory(); // add this line to use useHistory hook
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    const newMessage = { name, email, subject, message, date };
+    setSent(false); // set sent to false before sending the request
+    fetch("http://localhost:8000/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newMessage),
+    })
+      .then(() => {
+        console.log("Message Sent");
+        setSent(true);
+        setTimeout(() => {
+          setSent(false);
+        }, 3000); 
+        history.push("/contact");
+      })
+      .catch((error) => {
+        setSent(false); // set sent to false if there was an error
+        console.error(error);
+      });
+  };
+    
+  
+  return (
         <div>
             
  
@@ -23,32 +64,62 @@ const Contact = () => {
 </div>
 
 
-<div className="quickletter">
+<div>
+  
+{/* {preloader && <div className="preloader">...Loading </div>} */}
+  
+  
 
-<div className="card-header mb-3">Say HI To Us :&#41;</div>
-<div className="mb-3">
-  <label htmlFor="exampleFormControlInput1" className="form-label">Name</label>
-  <input type="email" className="form-control" id="exampleFormControlInput1" placeholder=""/>
-</div>
+  <form className="quickletter" onSubmit={handleSubmit}>
+  <h2>Say Hi To Us {smile}</h2>
+   <input
+    placeholder='Full Name'
+    type="text"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+    required
+  />
+
+ 
+  <input 
+    required
+    placeholder='Email'
+    type="Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+
+ 
+  <input
+   placeholder='Subject'
+    required
+    value={subject}
+    onChange={(e) => setSubject(e.target.value)}
+  />
+
+ 
+  <textarea
+   placeholder='Message'
+    type="message"
+    required
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+  />
+
+   <input
+    className='d-none'
+    type="date"
+    required
+    value={date}
+    onChange={(e) => setDate(e.target.value)}
+  />
+
+  <button disabled={sent} type="submit"> Send message <i className="bi bi-send-fill"></i></button>
+     {sent && <p className="notification" >Message Sent <i className="bi bi-send-check-fill"></i></p>} {/* display a message while the painting is being added */}
+     
+</form>
 
 
-
-<div className="mb-3 pt-5">
-  <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-  <input type="email" className="form-control" id="exampleFormControlInput1" placeholder=""/>
-</div>
-
-
-<div className="mb-3">
-  <label htmlFor="exampleFormControlInput1" className="form-label">Subject</label>
-  <input type="email" className="form-control" id="exampleFormControlInput1" placeholder=""/>
-</div>
-
-
-<div className="mb-3">
-  <label htmlFor="exampleFormControlTextarea1" className="form-label">Message</label>
-  <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-</div>
 
 </div>
 

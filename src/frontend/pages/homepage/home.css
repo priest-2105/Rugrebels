@@ -28,6 +28,7 @@
 }
 
 .header h1{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 100px;
     text-transform: uppercase;
        background-image: linear-gradient(

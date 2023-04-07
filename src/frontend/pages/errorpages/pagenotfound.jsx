@@ -7,11 +7,15 @@ const Pagenotfound = () => {
 
 
     return (
-        <div>
-            page not found
-          
+        <div className='errorpagemessagecontainer'>
+
+            <div className="errorpagemessage">
+              page not found
+          <br/>
                 <Link to="/">go back </Link>
-        </div>
+             
+            </div>
+         </div>
     );
 }
 

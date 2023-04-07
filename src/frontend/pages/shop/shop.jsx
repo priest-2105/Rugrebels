@@ -34,7 +34,11 @@ const Shop = () => {
     { error && <div>{ error }</div>}
 
    {/* preloader  */}
-    { preloader && <div  className='preloader'><h3>...Loading</h3> </div> }                                                                    
+    { preloader && <div  className='preloader'>
+      <div className="container">
+  <canvas id="canvas"></canvas>
+</div>
+ </div> }                                                                    
 
 
     {/* painting list prop      */}

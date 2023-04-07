@@ -97,7 +97,7 @@ const AddPainting = () => {
         />
 
         <button disabled={adding}> Add painting</button> {/* disable the button while the painting is being added */}
-        {adding && <p>Adding {title}...</p>} {/* display a message while the painting is being added */}
+        {adding && <p className="notification" >Adding {title}...</p>} {/* display a message while the painting is being added */}
       </form>
 
       <p> {title}</p>

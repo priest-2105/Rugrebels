@@ -1,0 +1,73 @@
+.dashboard-header{
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 50px;
+    font-size:50px;
+    font-weight: 700;
+    font-family: 'Alkatra', cursive;
+    color: rgb(245, 225, 200);
+}
+
+.cards{
+    margin-left: auto;
+    margin-right: auto;
+    
+    width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+}
+
+.card-header{
+    color: rgb(187, 94, 94) !important;
+}
+
+
+.progress-cards {
+    margin-top: 50px;
+    border:none;
+    height: 250px;
+    width: 350px;
+    margin-left: 50px;
+    flex-wrap:wrap-reverse;
+    background-color: rgba(232, 223, 164,0.8);
+    border-color: gray;
+    color: grey;
+}
+
+.statistics-text{
+    margin-top: 30px;
+    font-size: 100px;
+}
+
+.admin-messages{
+    /* background-color: rgba(255, 255, 255,0.6); */
+ 
+}
+
+
+.painting-section{
+    background-color: rgba(255, 255, 255,0.6);
+}
+
+.new-painting-link{
+    list-style-type: none;
+    
+  }
+
+
+.new-painting-link a{
+    padding:20px 30px 20px 30px ; 
+    background-color: rgb(233, 222, 155); 
+    list-style-type: none;
+     font-size: 20px; 
+    color: grey;
+    font-weight: 500;
+  }
+ 
+
+  .new-painting-link a:hover{
+    color: rgb(104, 102, 102);
+    background-color: rgb(232, 223, 164); 
+ }
+

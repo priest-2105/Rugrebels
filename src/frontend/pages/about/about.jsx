@@ -9,13 +9,13 @@ const About = () => {
 
 <div>
              
-    <main>
+    <main className='mt-5'>
          <h2>About Us</h2>
           <section className="about">
-            <p>Welcome to Art Gallery Name, where art and creativity meet. Our team is made up of passionate individuals who share a love for all things artistic. We believe in the power of art to inspire, provoke, and move us, and we are dedicated to bringing that power to our community.
+            <p>Welcome to Inside PerryACe, where art and creativity meet. Our team is made up of passionate individuals who share a love for all things artistic. We believe in the power of art to inspire, provoke, and move us, and we are dedicated to bringing that power to our community.
         Our team consists of number individuals with diverse backgrounds and experiences, all united by a shared passion for art. We are adjectives that describe your team, such as creative, knowledgeable, passionate, and friendly, and we are committed to providing our visitors with an unforgettable art experience.
         Our team is passionate about describe what your team is passionate about in regards to art, such as supporting emerging artists, promoting diversity in the arts, or preserving traditional art forms. We are dedicated to creating a welcoming and inclusive environment where everyone can appreciate and engage with art.
-        We invite you to visit us at Art Gallery Name and explore our collections. Our team is always here to answer any questions and share our knowledge and love of art with you.</p>
+        We invite you to visit us at Inside PerryACe and explore our collections. Our team is always here to answer any questions and share our knowledge and love of art with you.</p>
      <img src="images/ben-mater-qzEfkgSTIAc-unsplash.jpg" alt="About-sceneic-image"/>
         </section>
       
@@ -38,8 +38,8 @@ const About = () => {
            <section className='team'>
    
         <div className="team-member">
-          <img src="images/mike-c-valdivia-ZufC1l0WSNU-unsplash.jpg" alt="Team Member 1"/>
-          <h3>Oluwapelumi Obadina</h3>
+          <img src="images/IMG-20230315-WA0046(1).jpg" alt="TeamMember"/>
+          <h3>Oluwapelumi Adekoya</h3>
           <p>CEO InsidePerryAce</p>
           <p>lorem ipsium dorothy iya alamala lorem ipsium dorothy iya alamala lor
             em ipsium do

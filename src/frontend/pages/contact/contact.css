@@ -14,40 +14,92 @@
 
 }
 
-.quickletter label{
-    color: silver;
+
+.quickletter h2{
+    color: aliceblue;
+    margin-bottom: 50px;
 }
+
 
 
 .quickletter{
-    position: absolute;
-   
-    top:26%;
-    right: 0%;
+    margin-top:50px;
+    color: aliceblue;
     height: fit-content;
     display: block;
+    padding: 20px 0px 20px 20px; height: fit-content;
     background-color: rgba(0, 0, 0, 0.6); 
-    width:fit-content;
+    max-width:800px;
     padding: 20px 0px 20px 20px;
 }
 
-.quickletter input{ 
-    background-color: rgba(0, 0, 0, 0.6); 
-}
+
 .card-header{
     color: silver;
     font-size: 20px;
     font-weight: 700;
 }
+
+.quickletter input{ 
+    display: block;
+    color: aliceblue;
+    padding-left: 5px;
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.6); 
+    height: 40px;
+}
+
+
 .quickletter textarea{
     background-color: rgba(0, 0, 0, 0.6); 
     max-height: 80px;
+    padding-left: 5px;
+    margin-top: 20px;
+    display:block;
+    color: aliceblue;
+
 }
 
 
 .quickletter input::placeholder{
-   color: snow;
+   color:rgba(250, 250, 3, 0.5);
 }
+
+.quickletter textarea::placeholder{
+    color:rgba(250, 250, 3, 0.5);
+ }
+
+.quickletter button{
+    padding:  20px 20px 20px 20px;
+    font-size: 20px;
+    background-color:rgb(233, 222, 155); 
+    border:none;
+    margin-top: 30px;
+ }
+    
+ .quickletter button:hover{
+    padding:  20px 20px 20px 20px;
+    font-size: 20px;
+    color: silver;
+    background-color:rgba(233, 222, 155,0.5); 
+ }
+
+.quickletter p{
+    position:fixed;
+    top: 5%;
+    right:5%;
+    color: grey;
+    background-color:rgb(233, 222, 155); 
+    padding: 20px 50px 20px 50px; 
+    animation-name: notification;
+    animation-duration: 2s;
+}
+
+@keyframes notification {
+    from{display:block;}
+    to{display: none;}
+}
+
     
 
 
@@ -70,8 +122,7 @@
     }
 
     .quickletter{
-        margin-top:50px;
-        position:relative;
+        margin-top:50px; 
         height: fit-content;
         display: block;
         background-color: rgba(0, 0, 0, 0.6); 

@@ -20,10 +20,10 @@ const Profile   = () => {
   };
 
   return (
-    <div>
+    <div className='text-center justify-content-center d-block'>
       {user ? (
         <>
-          <img src="images/passport.jpg" alt="" />
+                <i className="bi bi-person-circle fs-1"></i> 
 {/* 
           <Space direction="vertical" size={16}>
     <Space wrap size={16}>
@@ -42,8 +42,8 @@ const Profile   = () => {
 
 
           <p>{user.email}</p>
-
-          <button onClick={logOut}>Logout</button>
+          {/* <button >Change Password</button> */}
+          <button type='button' className='logout-button' onClick={logOut}>Logout</button>
         </>
       ) : (
         <p>You are not logged in</p>
