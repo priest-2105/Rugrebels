@@ -77,7 +77,7 @@ const Navbar = () => {
       
             {user ? (
         <> 
-            <Link className="" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileCanvas" aria-controls="profileCanvas">
+            <Link to="#" className="" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileCanvas" aria-controls="profileCanvas">
        <i className="bi bi-person-circle"></i> 
          <p>{user.email}</p> </Link>
         </>
@@ -149,7 +149,7 @@ const Navbar = () => {
    <div className="profile-section d-block">
              {user ? (
         <> 
-          <Link className="navbar-toggler text-center ms-auto me-4 text-light border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileCanvas" aria-controls="profileCanvas">
+          <Link to="#" className="navbar-toggler text-center ms-auto me-4 text-light border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileCanvas" aria-controls="profileCanvas">
        <i className="bi bi-person-circle"></i> 
         <p>{user.email}</p> </Link>
         </>

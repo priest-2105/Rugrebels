@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore'
 import "firebase/database"; 
 
 const firebaseConfig = { 
-    apiKey: "AIzaSyD76z5TYA7KDkamAJGQNn1BeHjEa9WySfQ",
+  apiKey: "AIzaSyD76z5TYA7KDkamAJGQNn1BeHjEa9WySfQ",
   authDomain: "inside-perry-ace-art.firebaseapp.com",
   projectId: "inside-perry-ace-art",
   storageBucket: "inside-perry-ace-art.appspot.com",
@@ -15,9 +15,9 @@ const firebaseConfig = {
       
   };
 
-
+// inistiilaize firebase 
 const app = initializeApp(firebaseConfig);
 
-// inistiilaize firestrre 
+// inistiilaize firestore 
 export const db = getFirestore(app); 
 export const auth = getAuth(app); 

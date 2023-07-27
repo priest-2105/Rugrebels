@@ -19,10 +19,9 @@ import Footer from './frontend/layout/footer/footer';
 import About from './frontend/pages/about/about';
 import Contact from './frontend/pages/contact/contact';
 
-
-
-
+ 
 function App() { 
+
 
 
 
@@ -36,7 +35,7 @@ function App() {
 
   
 
-  <Route path="*" component={Pagenotfound}/> 
+  {/* <Route path="*" component={Pagenotfound}/>  */}
 
     <Navbar/>
 
