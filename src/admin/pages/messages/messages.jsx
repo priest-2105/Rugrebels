@@ -10,7 +10,7 @@ const Messages = (props) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
 //   const handlemessageAddToCart = (message) => {
-//     fetch('http://localhost:8000/messages', {
+//     fetch('https://rugrebelsdb.onrender.com/messages', {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json'
@@ -30,13 +30,13 @@ const Messages = (props) => {
 //   };
 
 const handleDeletemessage = (id) => {
-    fetch(`http://localhost:8000/messages/${id}`, {
+    fetch(`https://rugrebelsdb.onrender.com/messages/${id}`, {
       method: "DELETE",
     })
       .then(() => {
         console.log("Message Deleted");
         // Reload the messages after removing the message
-        fetch('http://localhost:8000/messages')
+        fetch('https://rugrebelsdb.onrender.com/messages')
           .then(response => response.json())
           .then(data => {
             setMessages(data);

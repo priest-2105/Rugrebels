@@ -23,7 +23,7 @@ const Contact = () => {
   
     const newMessage = { name, email, subject, message, date };
     setSent(false); // set sent to false before sending the request
-    fetch("http://localhost:8000/messages", {
+    fetch("https://rugrebelsdb.onrender.com/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newMessage),

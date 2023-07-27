@@ -13,10 +13,10 @@ const Shop = () => {
   const location = useLocation();
   const userEmail = location.state?.userEmail;
 
-    const { data: paintings, preloader, error } = useFetch('http://localhost:8000/paintings'); 
+    const { data: paintings, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings'); 
 
-    // http://localhost:8000/paintings
-    // http://localhost:8000/paintings
+    // https://rugrebelsdb.onrender.com/paintings
+    // https://rugrebelsdb.onrender.com/paintings
   
 
     // Scene

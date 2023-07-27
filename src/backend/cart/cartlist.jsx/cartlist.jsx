@@ -7,7 +7,7 @@ const Cartlist = () => {
     
 
     
-    const { data: Cart } = useFetch('http://localhost:8000/cart');
+    const { data: Cart } = useFetch('https://rugrebelsdb.onrender.com/cart');
 
     return (
         <div>

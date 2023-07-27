@@ -7,7 +7,7 @@ const Adminpaintinglist = (props) => {
   const paintings = props.paintinglistprop;
 
   const handleDelete = () => {
-    fetch(`http://localhost:8000/paintings/${id}`, {
+    fetch(`https://rugrebelsdb.onrender.com/paintings/${id}`, {
       method: "DELETE",
     })
       .then(() => {

@@ -8,7 +8,7 @@ const PaintingList = (props) => {
   const [isAdded, setIsAdded] = useState(false);
 
   const handleAddToCart = () => {
-    fetch('http://localhost:8000/cart', {
+    fetch('https://rugrebelsdb.onrender.com/cart', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

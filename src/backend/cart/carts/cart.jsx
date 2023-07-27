@@ -7,7 +7,7 @@ const Cart = () => {
 
 
   useEffect(() => {
-    fetch('http://localhost:8000/cart')
+    fetch('https://rugrebelsdb.onrender.com/cart')
       .then(response => response.json())
       .then(data => {
         setCartItems(data);
@@ -25,13 +25,13 @@ const Cart = () => {
 
   
   const handleRemove = (id) => {
-    fetch(`http://localhost:8000/cart/${id}`, {
+    fetch(`https://rugrebelsdb.onrender.com/cart/${id}`, {
       method: "DELETE",
     })
       .then(() => {
         console.log("Painting Removed");
         // Reload the cart items after removing the item
-        fetch('http://localhost:8000/cart')
+        fetch('https://rugrebelsdb.onrender.com/cart')
           .then(response => response.json())
           .then(data => {
             setCartItems(data);

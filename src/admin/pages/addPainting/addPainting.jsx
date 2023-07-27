@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import useFetch from '../../../assets/hooks/usefetch';
 
 const AddPainting = () => {
-  const { preloader } = useFetch("http://localhost:8000/paintings");
+  const { preloader } = useFetch("https://rugrebelsdb.onrender.com/paintings");
 
   const [title, setTitle] = useState("");
   const [about, setAbout] = useState("");
@@ -20,7 +20,7 @@ const AddPainting = () => {
     e.preventDefault();
     const painting = { title, about, artist, date, img, price };
     setAdding(true); // set adding to true before sending the request
-    fetch("http://localhost:8000/paintings", {
+    fetch("https://rugrebelsdb.onrender.com/paintings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(painting),

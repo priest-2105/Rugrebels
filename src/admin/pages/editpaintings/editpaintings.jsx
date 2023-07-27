@@ -5,7 +5,7 @@ import useFetch from '../../../assets/hooks/useFetch';
 
 const Editpaintings = () => {
   const { id } = useParams();
-  const { data: painting, error, preloader } = useFetch(`http://localhost:8000/paintings/${id}`);
+  const { data: painting, error, preloader } = useFetch(`https://rugrebelsdb.onrender.com/paintings/${id}`);
   const [title, setTitle] = useState("");
   const [about, setAbout] = useState("");
   const [artist, setArtist] = useState("");
@@ -30,7 +30,7 @@ const Editpaintings = () => {
     e.preventDefault();
     const updatedPainting = { title, about, artist, date, img };
     setSaving(true);
-    fetch(`http://localhost:8000/paintings/${id}`, {
+    fetch(`https://rugrebelsdb.onrender.com/paintings/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedPainting),
@@ -55,7 +55,7 @@ const Editpaintings = () => {
   };
 
   const handleDelete = () => {
-    fetch(`http://localhost:8000/paintings/${id}`, {
+    fetch(`https://rugrebelsdb.onrender.com/paintings/${id}`, {
       method: "DELETE",
     })
       .then(() => {

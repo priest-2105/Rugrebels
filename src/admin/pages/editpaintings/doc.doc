@@ -10,12 +10,12 @@ const Editpaintings = () => {
 
     const { id } = useParams();
 
-    const { data:painting, preloader, error } = useFetch('http://localhost:8000/paintings/' + id); 
+    const { data:painting, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings/' + id); 
  
     const history = useHistory();
 
     const handleClick = () => {
-      fetch('http://localhost:8000/paintings/' + painting.id, {
+      fetch('https://rugrebelsdb.onrender.com/paintings/' + painting.id, {
         method: 'DELETE'
       }).then(() => {
       history.push('/admindashboard');

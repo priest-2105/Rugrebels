@@ -12,7 +12,7 @@ const Adminpaintingpreview = () => {
     
       const { id } = useParams();
 
-    const { data:painting, preloader, error } = useFetch('http://localhost:8000/paintings/' + id); 
+    const { data:painting, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings/' + id); 
  
  
     return (

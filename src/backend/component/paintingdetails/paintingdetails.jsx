@@ -17,14 +17,14 @@ import './paintingdetails.css'
     
     const { id } = useParams();
 
-    const { data:painting, preloader, error } = useFetch('http://localhost:8000/paintings/' + id); 
+    const { data:painting, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings/' + id); 
 
     
     const [isAdded, setIsAdded] = useState(false);
 
  
   const handleAddToCart = (painting) => {
-  fetch('http://localhost:8000/cart', {
+  fetch('https://rugrebelsdb.onrender.com/cart', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

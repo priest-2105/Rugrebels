@@ -12,7 +12,7 @@ import Messages from '../messages/messages';
 const Admindashboard = () => {
 
 
- const { data: paintings, preloader, error } = useFetch('http://localhost:8000/paintings'); 
+ const { data: paintings, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings'); 
    
   
 //  const [userCount, setUserCount] = useState(0);
@@ -28,7 +28,7 @@ const Admindashboard = () => {
 // }, []);
 
 
-  const { data: messages} = useFetch('http://localhost:8000/messages'); 
+  const { data: messages} = useFetch('https://rugrebelsdb.onrender.com/messages'); 
     
 
     return (
