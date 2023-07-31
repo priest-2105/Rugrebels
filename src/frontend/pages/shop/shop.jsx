@@ -15,12 +15,7 @@ const Shop = () => {
 
     const { data: paintings, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings'); 
 
-    // https://rugrebelsdb.onrender.com/paintings
-    // https://rugrebelsdb.onrender.com/paintings
-  
-
-    // Scene
-
+   
 
 
 

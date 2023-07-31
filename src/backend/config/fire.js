@@ -5,14 +5,14 @@ import { getFirestore } from 'firebase/firestore'
 import "firebase/database"; 
 
 const firebaseConfig = { 
-  apiKey: "AIzaSyD76z5TYA7KDkamAJGQNn1BeHjEa9WySfQ",
-  authDomain: "inside-perry-ace-art.firebaseapp.com",
-  projectId: "inside-perry-ace-art",
-  storageBucket: "inside-perry-ace-art.appspot.com",
-  messagingSenderId: "612836468451",
-  appId: "1:612836468451:web:3e0288e3c25cf9832247d6",
-  measurementId: "G-S15PR4X5Q0"
-      
+  apiKey: "AIzaSyDdeMtKKTxEjxP0ybuwwKNp2t_pj_J4cKM",
+  authDomain: "rugrebelsstore.firebaseapp.com",
+  projectId: "rugrebelsstore",
+  storageBucket: "rugrebelsstore.appspot.com",
+  messagingSenderId: "720688673274",
+  appId: "1:720688673274:web:454b24d1d43001726d7443",
+  measurementId: "G-EG9E14MDJW"
+    
   };
 
 // inistiilaize firebase 

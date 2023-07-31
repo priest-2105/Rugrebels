@@ -11,7 +11,7 @@ const AddPainting = () => {
   const [about, setAbout] = useState("");
   const [artist, setArtist] = useState("");
   const [date, setDate] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState();
   const [img, setImg] = useState("");
   const [adding, setAdding] = useState(false); // new state for tracking if the painting is being added
   const history = useHistory();
@@ -69,6 +69,7 @@ const AddPainting = () => {
         <label>Artist : </label>
         <input
           required
+          type="text"
           value={artist}
           onChange={(e) => setArtist(e.target.value)}
         />

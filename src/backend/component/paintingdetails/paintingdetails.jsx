@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import useFetch from '../../../assets/hooks/usefetch';
 import './paintingdetails.css'
-      import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
     const Paintingdetails = () => {

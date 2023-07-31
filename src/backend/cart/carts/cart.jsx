@@ -18,9 +18,11 @@ const Cart = () => {
   }, []);
 
   const totalPrice = cartItems.reduce((acc, curr) => {
-    return acc + curr.price;
+    // If 'price' is a string, convert it to a number using parseFloat or parseInt
+    const itemPrice = typeof curr.price === 'string' ? parseFloat(curr.price) : curr.price;
+    return acc + itemPrice;
   }, 0);
-
+  
 
 
   

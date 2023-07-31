@@ -59,6 +59,8 @@ function App() {
 
       <Route exact path="/contact" component={Contact} />
 
+      <Route path="/paintings/:id" component={Paintingdetails} />
+       
 
 
 
@@ -66,7 +68,7 @@ function App() {
 
     
       <Privateroute path="/addPainting" component={AddPainting} />
-      <Privateroute path="/paintings/:id" component={Paintingdetails} />
+      {/* <Privateroute path="/paintings/:id" component={Paintingdetails} /> */}
       <Privateroute path="/admindashboard" component={Admindashboard} />
       <Privateroute path="/adminpaintinglist" component={Adminpaintinglist} />
       <Privateroute path="/editpaintings/:id" component={Editpaintings} />
