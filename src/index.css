@@ -1,5 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap'); 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,900&display=swap');
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 
 html, body {
   margin: 0px;
@@ -7,7 +15,8 @@ html, body {
 }
 
 .App{
-  background-image: url('/images/insideperryartbackground.png');
+  background-color: rgb(18, 18, 18);
+  /* background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/1400/1ea9cb174272965.649f070e5cf0d.jpg'); */
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;

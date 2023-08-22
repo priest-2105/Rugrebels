@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
-import {getAuth} from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'
-// import { db } from './firebaseConfig';
-import "firebase/database"; 
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import "firebase/database";
+
 
 const firebaseConfig = { 
   apiKey: "AIzaSyDdeMtKKTxEjxP0ybuwwKNp2t_pj_J4cKM",
@@ -13,11 +13,13 @@ const firebaseConfig = {
   appId: "1:720688673274:web:454b24d1d43001726d7443",
   measurementId: "G-EG9E14MDJW"
     
-  };
+};
 
-// inistiilaize firebase 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// inistiilaize firestore 
-export const db = getFirestore(app); 
-export const auth = getAuth(app); 
+// Initialize Firestore and Auth
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+
+// You don't need to log db here, it won't provide meaningful information

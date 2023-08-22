@@ -1,7 +1,7 @@
 import useFetch from '../../../assets/hooks/usefetch';
-// import Register from '../../../backend/auth/register/register';
+import Register from '../../../backend/auth/register/register';
 import PaintingList from '../../../backend/component/painting-list/painting-list';
-// import { auth } from '../../../backend/config/fire';
+import { auth } from '../../../backend/config/fire';
 import './home.css'; 
 import { Link, useLocation } from 'react-router-dom'; 
 
@@ -29,7 +29,6 @@ const Home = () => {
 
   return (
         <div>
-     
   
      {/* { error && <div>{ error }</div>} */}
 

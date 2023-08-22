@@ -1,4 +1,4 @@
-.header-container{
+/* .header-container{
     margin-top: 6%;
     margin-left: auto;
     margin-right: auto;
@@ -97,4 +97,166 @@
     background-color: rgb(233, 222, 155); 
     color: rgba(0, 0, 0, 0.5); 
 }
+ */
 
+ .home-top{
+    height: 100vh;
+    width: 100%;
+ }
+
+.home-top-nav-pills{
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
+    z-index: 10;
+}
+
+.home-top-tab-content{
+    height: 100%;
+    width: 100%;
+}
+
+
+.tab-content.home-top-tab-content {
+    display: flex; 
+    transition: transform 0.5s ease-in-out;  
+    overflow: hidden;  
+    height: 100%; 
+  }
+  
+  .tab-pane.home-top-tab-pane {
+    flex-shrink: 0;
+    width: 100%;
+  }
+  
+
+.home-top-tab-pane{
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    animation-name: background-slideshow ;
+    animation-duration: 50s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+.home-top-nav-link{
+color: black;
+}
+
+@keyframes background-slideshow {
+        0%{ background-position: top;  }
+        20% { background-position: left; }
+        40% { background-position: bottom; }
+        60% { background-position: right; }
+        80% { background-position: top; }
+        100% { background-position: center; }
+}
+
+
+.home-top-painting-details{
+    position: absolute;
+    bottom: 30%;
+    left: 10%;
+    color: aliceblue;
+    height: fit-content;
+}
+
+.home-top-painting-details h5{
+    margin-bottom: 10px;
+}
+
+
+.home-top-painting-details a{
+    padding: 6px 6px 6px 6px ;
+    border-radius: 8px;
+    font-size: 15px;
+    border: 2px solid aliceblue;
+    color: aliceblue;
+    text-decoration: none;
+}
+
+
+.home-top-painting-details a:hover{
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    color: aliceblue;
+    background-color: rgb(240, 248, 255,0.4);
+    border: none;
+
+}
+
+
+
+
+
+@media only screen and (max-width:768px) {
+
+    
+
+.home-top-painting-details{
+    bottom: 20%;
+    left: 5%;
+}
+
+.home-top-painting-details h2{
+    font-size: 20px;
+}
+
+
+.home-top-painting-details h5{
+    margin-bottom: 10px;
+}
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width:580px) {
+
+    .home-top-nav-pills{
+        bottom: 4%;
+        right: 1%;
+    }
+   
+    .home-top-nav-pills button{
+        font-size: 12px;
+        font-weight: 900;
+    }
+
+    .home-top-painting-details{
+        bottom: 30%;
+        left: 5%;
+    }
+    
+    .home-top-painting-details h2{
+        font-size: 18px;
+    }
+
+    .home-top-painting-details h5{
+        font-size: 15px;
+    }
+    
+    
+    .home-top-painting-details h5{
+        margin-bottom: 10px;
+    }
+    
+     
+    .home-top-painting-details a{
+      font-size: 14px;
+      font-weight: 900;
+    }
+    
+        
+    }

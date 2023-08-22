@@ -39,7 +39,7 @@ const Adminpaintinglist = (props) => {
             </div>
 
             {/* <!--Delete Modal Modal --> */}
-            <div className="modal fade" id="deletepaintingmodal" tabindex="-1" aria-labelledby="deletepaintingmodalLabel" aria-hidden="true">
+            <div className="modal fade" id="deletepaintingmodal" tablndex="-1" aria-labelledby="deletepaintingmodalLabel" aria-hidden="true">
               <div className="modal-dialog border-danger">
                 <div className="modal-content">
                   <div className="modal-header">

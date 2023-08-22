@@ -35,12 +35,17 @@ const Login = () => {
   const loginform = async () => {
     setIsLoggingIn(true);
     try {
+      // Check if the user exists
       const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-  
+      
+      // Check if the user's email is verified
       if (!userCredential.user.emailVerified) {
+        // If the email is not verified, log the user out and display a message
+        await auth.signOut();
         console.log('Please verify your email before logging in.');
-        setIsLoggingIn(false); // Make sure to set isLoggingIn back to false when email is not verified
-        return;
+        message.error('Please verify your email before logging in.');
+        setIsLoggingIn(false); // Set isLoggingIn back to false
+        return; // Prevent further execution of the login process
       }
   
       // Proceed with login...
@@ -62,6 +67,7 @@ const Login = () => {
     }
   };
   
+
   
   return (
     <div>
@@ -143,7 +149,12 @@ const Login = () => {
           <p>If You Don't Have An Account <Link to="/register"> Register</Link> </p>
 
           <div className="text-danger">
-            {!isEmailVerified === false && <p>Please verify your email before logging in.</p>}
+      {!isEmailVerified && (
+        <div className="text-danger">
+          <p>Please verify your email before logging in.</p>
+        </div>
+      )}
+
           </div>
         </Form>
       </div>

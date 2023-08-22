@@ -13,19 +13,19 @@ html /
 
 <!-- The `.container` element will contain all the images -->
 <!-- It will be used also to perform the custom scroll behavior -->
-<div class="container">
+<div className="container">
   <!-- Each following `div` correspond to one image -->
   <!-- The images will be set using CSS backgrounds -->
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
-  <div class="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
+  <div className="image"></div>
 </div>
 
 

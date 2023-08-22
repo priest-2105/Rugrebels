@@ -113,7 +113,7 @@ const Admindashboard = () => {
         <div className="painting-header ms-auto mt-3 me-auto col-lg-10 align-items-center  d-flex">
             <h2> Manage Paintings</h2>
  
-   <li  className="text-end ms-auto new-painting-link"> <Link to="/addPainting">Add New painting <i class="bi bi-brush-fill"></i></Link>    </li>
+   <li  className="text-end ms-auto new-painting-link"> <Link to="/addPainting">Add New painting <i className="bi bi-brush-fill"></i></Link>    </li>
         </div> 
     {paintings && <Adminpaintinglist paintinglistprop={paintings} />}
 

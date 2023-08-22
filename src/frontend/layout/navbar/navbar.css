@@ -1,181 +1,124 @@
-.nav-container{
-    padding-top: 5%;
-}
-
-.mobile-navbar{
-    display: none !important;
-}
-
-
-
 .navbar{
-    align-items: center;
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5); 
-    padding: 10px 10px 10px 10px;
-    height: 100px;
-    display: flex;
+  background: linear-gradient( 160deg, rgba(255, 255, 255, 0.13) 20%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.05) 80%, rgba(255, 255, 255, 0.3) 100% );
 }
 
 
-.navbar-nav{
-    margin-left: auto;
-    margin-right: auto;
-    width:40%;
-    font-weight: 800;
-    display: flex;
-    text-align: center; 
-    align-items: center;
-    margin-right: auto;
-    margin-top: -1px;
-    justify-content: space-around;
-   }
+.navbar-brand img {
+  height: 80px;
+  width:  50px;
+  animation: brand-logo-rotation 3s linear;
+  }
+  
+  @keyframes brand-logo-rotation {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  } 
+  
 
-
-.navbar-nav li{
-    text-align: center;
-    padding-right: 20px;
-     border-right: 2px solid silver;
-    list-style-type: none;
+.navbar-brand-logo:hover ~ .navbar-brand-p {
+  width: 100px;
+  transition-duration: 1.5s;
 }
+
+
+
+.navbar-brand p{
+  margin-top: 15px;
+  background-color: transparent;
+  height: 30px;
+  width: 0px;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  animation-name: navbar-brand-name;
+  animation-duration: 3s;
+  animation-delay: 1s;
+  animation-timing-function: ease-in;
+}
+
+
+@keyframes navbar-brand-name{
+  0% { width: 0px;}
+  75% {width: 100px; }
+  100% {width: 0px; }
+
+}
+
+
+
+.navbar-togglericons img{
+  height: 30px;
+  width:35px;
+}
+
+
+.navbar-togglericons img:hover{
+  animation-name: hamburger-shake;
+  animation-duration: 0.2s;
+  animation-iteration-count: infinite;
+}
+
+
+ @keyframes hamburger-shake{
+from{transform: rotate(10deg);}
+to{ transform: rotate(-10deg);}
+
+}
+
+
+.navbar-offcanvas{
+  background: linear-gradient( 160deg, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.5) 65%, rgba(0, 0, 0, 0.8) 100% );
+  display: block;
+  animation-name: offcanvas-slide;
+  animation-duration: 2s !important;
+  animation-timing-function: ease-in-out !important;
+  animation-play-state: running;
+  animation-iteration-count: initial;
+  animation-fill-mode: forwards;
+}
+
+@keyframes offcanvas-slide {
+  from{width: 0px;}
+  to{width: 250px;}
+}
+
+
+.nav-item:hover{
+
+  transition-duration:0.5s;
+  transition-timing-function: ease-out;
+  letter-spacing: 1.5px;
+
+}
+
+.profile-section{
+ justify-content: center;
+ text-align: center;
+ color: black;
+}
+
+
+
+.profile-section i{
+  color: black;
+  font-size: 15px;
+ }
  
 
 
-   .navbar-nav a{
-    text-decoration: none;
-    color: white;
-    font-size: 20px;
+.profile-section p{
+ color: black;
+ font-size: 15px;
+}
+.profile-section p:hover{
+transition-duration:0.5s;
+transition-timing-function: ease-out;
+letter-spacing: 0.5px;
 }
 
- 
-
-.navbar-nav a:hover{
-    text-decoration: none;
-    color: rgb(233, 222, 155);
+.offcanvas-footer{
+  margin-top: 70%;
 }
-
-.profile-tab i{
-    color: rgb(233, 222, 155);
-    font-size: 25px;
-
-}
-
-.socials a{
-    text-decoration: none;
-    color: white;
-    font-size: 20px;
-    margin-left: 15px;
-}
-
-
-
- 
-
-.socials a:hover{
-    text-decoration: none;
-    color: rgb(233, 222, 155);
-}
-
-.profile-tab a{
-    margin-top: 10px;
-    color: rgb(233, 222, 155);
-}
-
-.offcanvas-body{
-    background-color: rgba(0, 0, 0, 0.5); 
-
-}
-.offcanvas-header{
-    background-color: rgba(0, 0, 0, 0.5); 
-
-}
-
-@media only screen and (max-width:991px) {
-
-
-    .desktop-navbar{
-        display: none !important;
-}
-
-    .mobile-navbar{
-     display: block !important;
-     background-color: rgba(0, 0, 0, 0.5); 
-   }
-
-  .navbar-nav li{
-    text-align: center;
-     border: none !important;
-}
- 
-.profile-tab a{
-    color: rgb(233, 222, 155) !important;
-}
-    
-}
-
-
-.wrapper-menu {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    transition: transform 330ms ease-out;
-  }
-  
- 
-  
-  .line-menu {
-    background-color: rgb(233, 222, 155);
-    border-radius: 5px;
-    width: 100%;
-    height: 6px;
-  }
-
-  .navbar-toggler:active{border:none;}
-  
-  .line-menu.half {
-    width: 50%;
-  }
-
-  .cart-canvas{
-    overflow:scroll;
-    overflow-x: scroll !important;
-
-  }
-
-  
-  .cart-canvas-header{
-    background-color: rgb(233, 222, 155);
-  }
-
-  .cart-canvas-body{
-    height: 150px !important;
-    background-color: white;
-    overflow-x: scroll !important;
-  }
-
-
-
-
-
-  
-  .profile-canvas{
-    overflow:scroll;
-    overflow-x: scroll !important;
-
-  }
-
-  
-  .profile-canvas-header{
-    background-color: rgb(233, 222, 155);
-  }
-
-  .profile-canvas-body{
-    height: 150px !important;
-    background-color: white;
-    overflow-x: scroll !important;
-  }

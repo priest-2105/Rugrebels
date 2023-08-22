@@ -1,0 +1,48 @@
+
+.new-preloader-container{
+    position:fixed;
+    height: 100%;
+    width:100%;
+    top:0;
+    left:0;
+    background-color: rgb(94, 47, 47);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation-name: preloader-fade;
+    animation-delay: 2s;
+    animation-duration: 5s;
+    /* animation-iteration-count: infinite; */
+    animation-timing-function: ease-in;
+}
+
+@keyframes preloader-fade {
+
+    from{background-color: rgb(255, 255, 255,0.9);}
+    to{background-color: rgb(255, 255, 255,0.1);}
+    
+}
+
+#preloader-svg{
+    height: 180px;
+    width: 60px;
+    margin-top: 30vh;
+    stroke-dasharray: 628;
+    animation-name: preloader-animation ;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    /* animation-iteration-count: infinite; */
+}
+
+@keyframes preloader-animation  {
+    from{ 
+    height: 180px;
+    width: 60px;
+    stroke-dashoffset: 628;}
+    
+    to{ 
+    height: 200px;
+    width: 80px;
+    stroke-dashoffset: 9;}
+}
+

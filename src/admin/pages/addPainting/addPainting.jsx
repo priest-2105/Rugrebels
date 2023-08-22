@@ -13,12 +13,16 @@ const AddPainting = () => {
   const [date, setDate] = useState("");
   const [price, setPrice] = useState();
   const [img, setImg] = useState("");
+  const [tags, setTags] = useState([]); 
   const [adding, setAdding] = useState(false); // new state for tracking if the painting is being added
   const history = useHistory();
+ 
+
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const painting = { title, about, artist, date, img, price };
+    const painting = { title, about, artist, date, img, price, tags };
     setAdding(true); // set adding to true before sending the request
     fetch("https://rugrebelsdb.onrender.com/paintings", {
       method: "POST",
@@ -43,6 +47,44 @@ const AddPainting = () => {
       setImg(reader.result);
     };
   };
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Parse the price input value as a number
+    if (name === 'price') {
+      setPrice(parseInt(value));
+    } else {
+      // For other input fields, set the value directly
+      switch (name) {
+        case 'title':
+          setTitle(value);
+          break;
+        case 'about':
+          setAbout(value);
+          break;
+        case 'artist':
+          setArtist(value);
+          break;
+        case 'date':
+          setDate(value);
+          break;
+        case 'tags':
+          setTags(value);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+
+  const handleTagChange = (e) => {
+    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
+    setTags(selectedTags);}
+    
+  
 
   return (
     <div>
@@ -97,6 +139,18 @@ const AddPainting = () => {
           required
         />
 
+      <label>Tags: </label>
+            <select
+              multiple
+              value={tags}
+              onChange={handleTagChange}
+              required
+                  >
+              <option value="homecover">Home Cover</option>
+              <option value="top5">Top 5</option>
+            </select>
+
+
         <button disabled={adding}> Add painting</button> {/* disable the button while the painting is being added */}
         {adding && <p className="notification" >Adding {title}...</p>} {/* display a message while the painting is being added */}
       </form>
@@ -106,6 +160,7 @@ const AddPainting = () => {
       <p> {about}</p>
       <p> {date}</p>
       <p>{price}</p>
+      <p>{tags}</p>
       {img && <img src={img} alt="" />}
     </div>
   );

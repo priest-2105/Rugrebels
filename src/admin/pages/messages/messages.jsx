@@ -108,7 +108,7 @@ const handleDeletemessage = (id) => {
                     <div 
                       className="modal fade" 
                       id={`deletemessagemodal-${message.id}`} 
-                      tabindex="-1" 
+                      tablndex="-1" 
                       aria-labelledby={`deletemessagemodalLabel-${message.id}`} 
                       aria-hidden="true"
                     >
@@ -143,7 +143,7 @@ const handleDeletemessage = (id) => {
                     <div 
                       className="modal fade" 
                       id={`viewmessagemodal-${message.id}`} 
-                      tabindex="-1" 
+                      tablndex="-1" 
                       aria-labelledby={`viewmessagemodalLabel-${message.id}`} 
                       aria-hidden="true"
                     >

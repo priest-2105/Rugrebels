@@ -1,82 +1,101 @@
 import './cart.css';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { auth } from '../../config/fire';
+import { db } from '../../config/fire'; 
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 
 const Cart = () => {
+  const [removed, setRemoved] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [cartItems, setCartItems] = useState([]);
-  const [removed, setRemoved] = useState(false); // new state for tracking if the painting is being added
-
+  const [loading, setLoading] = useState(true); // Set loading state to true initially
 
   useEffect(() => {
-    fetch('https://rugrebelsdb.onrender.com/cart')
-      .then(response => response.json())
-      .then(data => {
-        setCartItems(data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    if (auth.currentUser) {
+      const userId = auth.currentUser.uid;
+      const cartItemsRef = collection(db, 'carts', userId, 'items');
+
+      getDocs(cartItemsRef)
+        .then((querySnapshot) => {
+          const items = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          setCartItems(items);
+
+          const calculatedTotalPrice = items.reduce((acc, curr) => {
+            const itemPrice = typeof curr.paintingPrice === 'string' ? parseFloat(curr.paintingPrice) : curr.paintingPrice;
+            return acc + itemPrice;
+          }, 0);
+          setTotalPrice(calculatedTotalPrice);
+          
+          setLoading(false); 
+        })
+        .catch((error) => {
+          console.error('Error fetching cart items:', error);
+          setLoading(false); 
+        });
+    }
   }, []);
 
-  const totalPrice = cartItems.reduce((acc, curr) => {
-    // If 'price' is a string, convert it to a number using parseFloat or parseInt
-    const itemPrice = typeof curr.price === 'string' ? parseFloat(curr.price) : curr.price;
-    return acc + itemPrice;
-  }, 0);
+  const handleRemove = (itemId) => {
+    if (auth.currentUser) {
+      const userId = auth.currentUser.uid;
+      const cartItemRef = doc(db, 'carts', userId, 'items', itemId);
   
-
-
-  
-  const handleRemove = (id) => {
-    fetch(`https://rugrebelsdb.onrender.com/cart/${id}`, {
-      method: "DELETE",
-    })
-      .then(() => {
-        console.log("Painting Removed");
-        // Reload the cart items after removing the item
-        fetch('https://rugrebelsdb.onrender.com/cart')
-          .then(response => response.json())
-          .then(data => {
-            setCartItems(data);
-            setRemoved(true);
-            setTimeout(() => {
-              setRemoved(false);
-            }, 3000); 
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-      })
-      .catch((error) => {
-        console.log("error removing painting", error);
-      });
+      deleteDoc(cartItemRef)
+        .then(() => {
+          console.log('Item removed from cart!');
+          setRemoved(true);
+          setTimeout(() => {
+            setRemoved(false);
+          }, 3000);
+          // After successful removal, update the cart items state
+          setCartItems(prevCartItems => prevCartItems.filter(item => item.id !== itemId));
+        })
+        .catch((error) => {
+          console.error('Error removing item from cart:', error);
+        });
+    } else {
+      console.log('User is not authenticated');
+    }
   };
   
-
   
-
   return (
     <div className="cart-container">
-      {/* <h1>Cart</h1> */}
-      <div className="cart-items-container">
-        {cartItems.length === 0 && <p>Your cart is empty</p>}
-        {cartItems.map(item => (
+      {loading ? (
+      <p>Loading cart items...</p>
+    ) : (
+      <>
+      
+     
+     {cartItems.length > 0 ? (   
+     <div className="cart-items-container">
+    
+    {cartItems.map(item => (
           <div className="cart-item" key={item.id}>
-            <img src={item.img} alt="" />
+            <img src={item.paintingImage} alt="" />
             <div>
-              <h3>{item.title}</h3>
-              <p>{item.about}</p>
-              <p>Price: ${item.price}</p>
+              <h3>{item.paintingTitle}</h3>
+              <p>{item.paintingArtist}</p>
+              <p>Price: ${item.paintingPrice}</p>
               <button onClick={() => handleRemove(item.id)}>Remove</button>
-              {removed && <p className="notification" >Painting Removed</p>}  
+              {removed && <p className="notification">Painting Removed</p>}
             </div>
           </div>
         ))}
-      </div>
+        </div>
+    ) : (
+  <p>Your cart is empty</p>
+)}
+
+        {/* {cartItems.length === 0 && <p>Your cart is empty</p>} */}
+        
+     
       <div className="cart-total-container">
         <h2>Total Price: ${totalPrice}</h2>
         <button>Checkout</button>
       </div>
-    </div>
+      </>
+    )}  </div>
   );
 };
 
