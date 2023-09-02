@@ -1,24 +1,42 @@
-import React from 'react';
-import './adminpaintinglist.css'
+import React, { useEffect, useState } from 'react';
+import './adminpaintinglist.css';
 import { Link } from 'react-router-dom';
+import { collection, getDocs, deleteDoc } from 'firebase/firestore'; // Import necessary Firestore functions
+import { db } from '../../../backend/config/fire'; // Import the Firestore instance from your Firebase configuration
 
-const Adminpaintinglist = (props) => {
+const Adminpaintinglist = () => {
+  const [paintings, setPaintings] = useState([]);
 
-  const paintings = props.paintinglistprop;
+  // Fetch paintings from Firestore on component mount
+  useEffect(() => {
+    const fetchPaintings = async () => {
+      try {
+        const paintingsCollection = collection(db, 'paintings');
+        const snapshot = await getDocs(paintingsCollection);
+        const paintingData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setPaintings(paintingData);
+      } catch (error) {
+        console.error('Error fetching paintings:', error);
+      }
+    };
 
-  const handleDelete = () => {
-    fetch(`https://rugrebelsdb.onrender.com/paintings/${id}`, {
-      method: "DELETE",
-    })
-      .then(() => {
-        console.log("painting deleted");
-        history.push(`/admindashboard`);
-      })
-      .catch((error) => {
-        console.log("error deleting painting", error);
-      }); 
+    fetchPaintings();
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const paintingRef = doc(db, 'paintings', id);
+      await deleteDoc(paintingRef);
+      console.log('Painting deleted');
+      // Refresh the list of paintings after deletion
+      const updatedPaintings = paintings.filter((painting) => painting.id !== id);
+      setPaintings(updatedPaintings);
+    } catch (error) {
+      console.error('Error deleting painting:', error);
+    }
   };
 
+  
   return (
     <div> 
       <div className="painting-grid">

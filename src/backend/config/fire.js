@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import "firebase/database";
+import { getStorage } from 'firebase/storage'; 
 
 
 const firebaseConfig = { 
@@ -21,5 +22,4 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore and Auth
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-
-// You don't need to log db here, it won't provide meaningful information
+export const storage = getStorage(app);

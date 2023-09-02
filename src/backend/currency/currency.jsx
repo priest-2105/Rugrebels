@@ -192,7 +192,7 @@ const CurrencyConverter = ({ basePriceUSD, baseCurrency, targetCurrency }) => {
     const [rate, setRate] = useState(null);
     
     useEffect(() => {
-      const currencyApi = new CurrencyAPI('cur_live_pnom20wPBhKiLIEmcIH95Yo50udzIGyJDGd6F3Mp');
+      const currencyApi = new CurrencyAPI('cur_live_z9MRKPZZ0E1c9hWDPM39EKEzJVAC3DZPvtp7BOiD');
       currencyApi.latest({
         base_currency: baseCurrency,
         currencies: targetCurrency,

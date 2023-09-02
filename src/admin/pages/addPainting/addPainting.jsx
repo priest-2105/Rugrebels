@@ -1,53 +1,69 @@
-import React from 'react';
-import { useState } from 'react';
-import './addPainting.css'
+import React, { useState } from 'react';
+import './addPainting.css';
 import { useHistory } from 'react-router-dom';
-import useFetch from '../../../assets/hooks/usefetch';
+import { db, storage } from '../../../backend/config/fire'; // Import the Firestore and Storage instances from your Firebase configuration
+import { doc, setDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import necessary Storage functions
+import { collection, addDoc } from 'firebase/firestore';
+
 
 const AddPainting = () => {
-  const { preloader } = useFetch("https://rugrebelsdb.onrender.com/paintings");
-
-  const [title, setTitle] = useState("");
-  const [about, setAbout] = useState("");
-  const [artist, setArtist] = useState("");
-  const [date, setDate] = useState("");
+  const [title, setTitle] = useState('');
+  const [about, setAbout] = useState('');
+  const [artist, setArtist] = useState('');
+  const [date, setDate] = useState('');
   const [price, setPrice] = useState();
-  const [img, setImg] = useState("");
-  const [tags, setTags] = useState([]); 
+  const [img, setImg] = useState('');
+  const [tags, setTags] = useState([]);
   const [adding, setAdding] = useState(false); // new state for tracking if the painting is being added
   const history = useHistory();
- 
 
- 
-
-  const handleSubmit = (e) => {
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const painting = { title, about, artist, date, img, price, tags };
-    setAdding(true); // set adding to true before sending the request
-    fetch("https://rugrebelsdb.onrender.com/paintings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(painting),
-    })
-      .then(() => {
-        console.log("new painting added");
-        setAdding(false); // set adding to false when the request is complete
-        history.push("/admindashboard");
-      })
-      .catch(() => {
-        setAdding(false); // set adding to false if there was an error
-      });
+  
+    setAdding(true);
+  
+    try {
+      const paintingsCollection = collection(db, 'paintings');
+      await addDoc(paintingsCollection, painting);
+  
+      console.log('New painting added to Firestore');
+      setAdding(false);
+      history.push('/admindashboard');
+    } catch (error) {
+      console.error('Error adding painting:', error);
+      setAdding(false);
+    }
   };
+  
+  
+
 
   const handleImageChange = (e) => {
     const reader = new FileReader();
     const file = e.target.files[0];
-    reader.readAsDataURL(file);
+    
     reader.onloadend = () => {
-      setImg(reader.result);
+      setImg(reader.result); // Save the base64-encoded image temporarily
+  
+      // Upload the image to Firebase Cloud Storage
+      const storageRef = ref(storage, 'paintings/' + file.name);
+      uploadBytes(storageRef, file)
+        .then((snapshot) => getDownloadURL(snapshot.ref))
+        .then((url) => {
+          setImg(url); // Save the download URL
+        })
+        .catch((error) => {
+          console.error('Error uploading image:', error);
+        });
     };
+  
+    reader.readAsDataURL(file);
   };
 
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,9 +86,6 @@ const AddPainting = () => {
         case 'date':
           setDate(value);
           break;
-        case 'tags':
-          setTags(value);
-          break;
         default:
           break;
       }
@@ -88,7 +101,7 @@ const AddPainting = () => {
 
   return (
     <div>
-      {preloader && <div className="preloader">...Loading </div>}
+      {/* {preloader && <div className="preloader">...Loading </div>} */}
 
       <h2>Add Painting</h2>
 

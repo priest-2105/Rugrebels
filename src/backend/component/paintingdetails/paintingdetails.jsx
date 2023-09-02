@@ -1,4 +1,3 @@
-import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '../../config/fire';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
@@ -6,6 +5,7 @@ import useFetch from '../../../assets/hooks/usefetch';
 import './paintingdetails.css';
 import CurrencyAPI from '@everapi/currencyapi-js';  
 import CurrencyConverter from '../../currency/currency';
+import { collection, doc, getDoc, setDoc, query, where, getDocs } from 'firebase/firestore';
 
 
 
@@ -13,11 +13,12 @@ import CurrencyConverter from '../../currency/currency';
 const Paintingdetails = () => {
   const history = useHistory();
   const { id } = useParams();
-  const { data: painting, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings/' + id);
+  const [painting, setPainting] = useState(null);
   const [isAdded, setIsAdded] = useState(false);
   const [rates, setRates] = useState({});
-  const [selectedCurrency, setSelectedCurrency] = useState("USD"); 
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const baseCurrency = 'USD';
+
 
 
 
@@ -205,23 +206,44 @@ const Paintingdetails = () => {
   ];
 
 
+    useEffect(() => {
+      const currencyApi = new CurrencyAPI('cur_live_z9MRKPZZ0E1c9hWDPM39EKEzJVAC3DZPvtp7BOiD');
 
-   useEffect(() => {
-    const currencyApi = new CurrencyAPI('cur_live_bW63J02Ob9PGvUZrQZiJNhlpENGdroQF0dfFHxzZ');
-    currencyApi.latest({
-      base_currency: baseCurrency,
-    }).then((response) => {
-      console.log('Exchange rate response:', 
-      // response.data
-      );
-      setRates(response.data);
-    }).catch((error) => {
-      console.error('Error fetching exchange rates:', error);
-      // Set default rates here if needed
-    });
-  }, []);
+    // Fetch exchange rates and update rates state
+    currencyApi
+      .latest({
+        base_currency: baseCurrency,
+        currencies: targetCurrency,
+      })
+      .then((response) => {
+        setRates(response.data);
+        setRate(response.data[targetCurrency]?.value);
+      })
+      .catch((error) => {
+        console.error('Error fetching exchange rates:', error);
+      });
 
-  // console.log('Current rates:', rates);
+    fetchPainting();
+  }, [id, baseCurrency, targetCurrency]);
+
+      const fetchPainting = async () => {
+        if (!id) return;
+        try {
+          const paintingDocRef = doc(db, 'paintings', id);
+          const paintingDocSnap = await getDoc(paintingDocRef);
+          if (paintingDocSnap.exists()) {
+            const paintingData = paintingDocSnap.data();
+            setPainting(paintingData);
+          } else {
+            console.log('Painting not found');
+          }
+        } catch (error) {
+          console.error('Error fetching painting:', error);
+        }
+      };
+
+
+    
 
 const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
   try {
@@ -243,8 +265,11 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
 };
   
 
-  const handleAddToCart = async (painting) => {
-    if (auth.currentUser) {
+const handleAddToCart = async (painting) => {
+  if (!painting) {
+    console.error('Painting data is not available');
+    return;
+  } if (auth.currentUser) {
       const userId = auth.currentUser.uid;
       const cartRef = collection(db, 'carts', userId, 'items');
   
@@ -264,6 +289,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
   
           try {
             await setDoc(doc(cartRef), {
+              userId: auth.currentUser.uid, 
               paintingId: painting.id,
               paintingTitle: painting.title,
               paintingImage: painting.img,
@@ -271,7 +297,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               paintingPrice: convertedPrice,
               targetCurrency: selectedCurrency,
               paintingDate: painting.date,
-              paintingArtist: painting.artist
+              paintingArtist: painting.artist,
             });
   
             console.log('Item added to cart:',
@@ -303,9 +329,9 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
   return (
     <div className='painting-details'>
       <button className='prevbutton' onClick={prevbutton}><i className="bi bi-arrow-left-square-fill"></i></button> 
-      { error && <div>{ error }</div>}
+      {/* { error && <div>{ error }</div>} */}
 
-      { preloader && <div className='preloader'>...Loading </div> }
+      {/* { preloader && <div className='preloader'>...Loading </div> } */}
 
       { painting && (
         <div className='painting-detail-container'>

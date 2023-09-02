@@ -23,6 +23,9 @@ html, body {
   font-family: 'Alkatra', cursive;
   background-size: cover;
   min-height: 100vh;
+  scroll-behavior:smooth; 
+  overscroll-behavior: none;
+  overflow: hidden;
 }
 
 .errorpagemessage{

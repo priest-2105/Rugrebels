@@ -1,66 +1,96 @@
-import useFetch from '../../../assets/hooks/usefetch';
-import Register from '../../../backend/auth/register/register';
-import PaintingList from '../../../backend/component/painting-list/painting-list';
-import { auth } from '../../../backend/config/fire';
-import './home.css'; 
-import { Link, useLocation } from 'react-router-dom'; 
-
- 
+import React, { useState, useEffect } from 'react';
+import './home.css';
+import { Link } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore'; 
+import { db } from '../../../backend/config/fire'; 
 
 
 const Home = () => {
 
-  // const location = useLocation();
-  // const userEmail = location.state?.userEmail;
+    const [paintings, setPaintings] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(0);  
+    const [loading, setLoading] = useState(true); 
 
-    const {  preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings'); 
-
-  //   // https://rugrebelsdb.onrender.com/paintings
-  //   // https://rugrebelsdb.onrender.com/paintings
+    
+    useEffect(() => {
+      const fetchPaintings = async () => {
+        try {
+          const paintingsCollectionRef = collection(db, 'paintings');
+          const querySnapshot = await getDocs(paintingsCollectionRef);
+          const paintingsData = querySnapshot.docs.map((doc) => doc.data());
   
+          const homeCoverPaintings = paintingsData.filter(
+            (painting) => painting.tags && painting.tags.includes('homecover')
+          );
+  
+          setPaintings(homeCoverPaintings);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching paintings:', error);
+          setLoading(false);
+        }
+      };
+  
+      fetchPaintings();
+    }, []);
 
-  //   // Scene
+  // Handle clicking on tab buttons
+  const handleTabClick = (index) => {
+    setActiveIndex(index); // Update the active index
+  };
 
-
-
-
-
-
+  if (loading) {
+    return <div>loading....</div>;
+  }
 
   return (
-        <div>
-  
-     {/* { error && <div>{ error }</div>} */}
+    <div>
+    <div className="home-top">
+      <ul className="nav nav-pills text-danger mb-3 home-top-nav-pills" id="pills-tab" role="tablist"> 
+        {paintings.map((painting, index) => (
+          <li className="nav-item" key={painting.id} role="presentation">
+            <button
+              className={`nav-link home-top-nav-link bg-transparent ${
+                index === activeIndex ? 'active' : ''
+              }`}
+              onClick={() => handleTabClick(index)} // Call the click handler
+              type="button"
+              role="tab"
+              aria-controls={`pills-${painting.id}`}
+              aria-selected={index === activeIndex}
+            >
+              {painting.title} 
+            </button>
+          </li>
+        ))}
+      </ul>
 
-    {/* preloader  */}
-     {/* { preloader && <div  className='preloader'>...Loading </div> }                                                                     */}
-  
-  {/* {userEmail && <Link to="/admindashboard">Your email is: {userEmail}</Link >}  */}
-  {/* <Link to="/profile"> View Profile </Link> */}
-
- 
-    
- <div className="header-container">
-    <span> WELCOME TO</span>
-      <div className="header-border">
-
-          <div className="header">
-              <h1>INSIDE PERRY ACE</h1>
-                <span>ART GALLERY</span>
+      <div className="tab-content home-top-tab-content" id="pills-tabContent">
+        {paintings.map((painting, index) => (
+          <div
+            key={painting.id}
+            style={{
+              backgroundImage: `url(${painting.img})`,
+            }}
+            className={`tab-pane home-top-tab-pane fade ${
+              index === activeIndex ? 'show active' : ''
+            }`}
+            id={`pills-${painting.id}`}
+            role="tabpanel"
+            aria-labelledby={`pills-${painting.id}-tab`}
+            tabIndex="0"
+          >
+             <div className="home-top-painting-details">
+                <h2>{painting.title}</h2>
+                <h5>${painting.price}</h5>
+                <Link to={`/paintings/${painting.id}`} >View in Store</Link>
+              </div>
           </div>
-
-        </div>
+        ))}
+      </div>
+    </div>
   </div>
-  
-
-  <div className="go-to-shop"> 
-    <Link to="/shop"><i className="bi fs-1 bi-cart-fill"></i>GO TO STORE  </Link>
-  </div>
-
-
-
-        </div>
-    ); 
-}
+  );
+};
 
 export default Home;

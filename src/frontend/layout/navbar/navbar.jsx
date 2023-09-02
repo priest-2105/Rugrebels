@@ -31,14 +31,14 @@ import Cart from '../../../backend/cart/carts/cart';
        <img className='navbar-brand-logo' src="/images/327614953_1009264350035658_5769637390323480968_n-removebg-preview.png" alt="" />
          <p className='navbar-brand-p'>Rug Rebels</p></Link>
   
-          <Link className='ms-auto me-xs-3 me-sm-4 me-md-5 me-lg-5 text-end' to="/cart"> <i className="bi fs-3 bi-cart-fill"></i> </Link>           
+          <Link className='ms-auto me-xs-3 me-sm-4 me-md-5 me-lg-5 text-end' to="/cart"> <i className="bi fs-3 bi-cart-fill "></i> </Link>           
   
     <button className="navbar-togglericons bg-transparent border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
     <img src="/images/sandwich.png" alt="" />
     </button>
     <div className="offcanvas animate-open navbar-offcanvas offcanvas-end" tablndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div className="offcanvas-header d-flex align-items-center">
-      <Link className="navbar-brand d-flex align-items-center ms-0" to="/newhome">
+      <Link className="navbar-brand d-flex align-items-center ms-0" to="/">
        <img className='navbar-brand-logo' src="/images/327614953_1009264350035658_5769637390323480968_n-removebg-preview.png" alt="" />
          <p className='navbar-brand-p'>Rug Rebels</p></Link>
         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -68,7 +68,7 @@ import Cart from '../../../backend/cart/carts/cart';
         <p>{user.email}</p> </Link>
         </>
       ) : ( 
-       <Link to="/login">
+       <Link to="/auth">
        <i className="bi bi-person-circle"></i> 
          <p>Log In</p>
        </Link>    
@@ -85,10 +85,7 @@ import Cart from '../../../backend/cart/carts/cart';
    <Link target='_blank' to="https://twitter.com"><i className="bi bi-facebook"></i></Link>
         </div>
 
-        <footer>
-          
-        </footer>
-        
+      
       </div>
     </div>
   </div>

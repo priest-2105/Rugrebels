@@ -1,0 +1,357 @@
+css 
+
+
+
+  
+  /* // The styles for a `div` element (inserted with Javascript)
+  // Used to make the page scrollable
+  // Will be setted a proper `height` value using Javascript */
+  .fake-scroll {
+    /* position: absolute; */
+    top: 0;
+    width: 1px;
+  }
+  
+  /* // The container for all images */
+  .shop-items-container {
+    /* // 2 columns grid */
+    display: grid
+    ;
+    grid-template-columns: 1.5fr 1.5fr;
+    grid-gap: 0 5%;
+    justify-items: end; 
+    /* // Fixed positioned, so it won't be affected by default scroll */
+    /* // It will be moved using `transform`, to achieve a custom scroll behavior */
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  
+  /* // Styles for image elements */
+  /* // Mainly positioning and background styles */
+  .image {
+    position: relative;
+    width: 300px;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
+  
+    /* // This will align all even images to the left */
+    /* // For getting centered positioned images, respect the viewport */
+    &:nth-child(2n) {
+      justify-self: start;
+    }
+  
+}
+   
+  /* // Adjusting layout for small screens */
+  @media screen and (max-width: 760px) {
+    .shop-items-container  {
+      /* // 1 column grid */
+      grid-template-columns: 1fr;
+      /* // Fix image centering */
+      justify-items: center;
+    }
+  
+    /* // Fix image centering */
+    .image:nth-child(2n) {
+      justify-self: center;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+/* REact  */
+
+
+
+
+
+import React, { useState, useEffect,useRef } from 'react';
+import useFetch from '../../../assets/hooks/usefetch';
+import PaintingList from '../../../backend/component/painting-list/painting-list';
+import { useLocation } from 'react-router-dom';
+import './shop.css';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../../backend/config/fire';
+
+
+
+
+ 
+ 
+
+const Shop = () => {
+
+  const containerRef = useRef(null);
+  
+  const location = useLocation();
+  const userEmail = location.state?.userEmail;
+
+  // Fetch paintings from Firebase
+  const [paintings, setPaintings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPaintings = async () => {
+      try {
+        const paintingsCollectionRef = collection(db, 'paintings');
+        const querySnapshot = await getDocs(paintingsCollectionRef);
+
+        const paintingsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setPaintings(paintingsData);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    fetchPaintings();
+  }, []);
+
+
+
+  useEffect(() => {
+    // iOS Chrome detection
+    const iOSChromeDetected = /CriOS/.test(navigator.userAgent);
+    if (iOSChromeDetected) {
+      const getHeight = function getComputedHeightFrom(element) {
+        const computedHeightString = getComputedStyle(element).height;
+        const elementHeight = Number(computedHeightString.replace('px', ''));
+        return elementHeight;
+      };
+      const calculateVh = function calculateVhFrom(elementHeight) {
+        const approximateVh = (elementHeight / initialViewportHeight) * 100;
+        const elementVh = Math.round(approximateVh);
+        return elementVh;
+      };
+      const setDataAttribute = function setDataAttributeUsing(elementVh, element) {
+        const dataAttributeValue = `${elementVh}`;
+        element.setAttribute('data-vh', dataAttributeValue);
+      };
+      const setHeight = function setHeightBasedOnVh(element) {
+        const landscape = orientation;
+        const vhRatio = Number(element.dataset.vh / 100);
+        if (landscape) {
+          element.style.height = `${vhRatio * landscapeHeight}px`;
+        } else {
+          element.style.height = `${vhRatio * portraitHeight}px`;
+        }
+      };
+      const initialize = function initializeDataAttributeAndHeight(element) {
+        const elementHeight = getHeight(element);
+        const elementVh = calculateVh(elementHeight);
+        setDataAttribute(elementVh, element);
+        setHeight(element);
+      };
+      const initialViewportHeight = window.innerHeight;
+      const elements = Array.from(document.getElementsByClassName('vh-fix'));
+      const statusBarHeight = 20;
+      const portraitHeight = screen.height - statusBarHeight;
+      const landscapeHeight = screen.width - statusBarHeight;
+      window.addEventListener('orientationchange', function () {
+        elements.forEach(setHeight);
+      });
+      elements.forEach(initialize);
+    }
+    // Animation code
+    // const iOSChromeDetected = /CriOS/.test(navigator.userAgent);
+    // Easing function used for `translateX` animation
+    function easeOutQuad(t) {
+      return t * (2 - t);
+    }
+    // Returns a random number (integer) between `min` and `max`
+    function random(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    // Returns a random number as well, but it could be negative also
+    function randomPositiveOrNegative(min, max) {
+      return random(min, max) * (Math.random() > 0.5 ? 1 : -1);
+    }
+    // Set CSS `tranform` property for an element
+    function setTransform(el, transform) {
+      el.style.transform = transform;
+      el.style.WebkitTransform = transform;
+    }
+    // Current scroll position
+    var current = 0;
+    // Target scroll position
+    var target = 0;
+    // Ease or speed for moving from `current` to `target`
+    var ease = 0.075;
+    // Utility variables for `requestAnimationFrame`
+    var rafId = undefined;
+    var rafActive = false;
+    // Array with `.image` elements
+    var images = Array.prototype.slice.call(document.querySelectorAll('.image'));
+    // Variables for storing dimensions
+    var windowWidth, containerHeight, imageHeight;
+    // Variables for specifying transform parameters and limits
+    var rotateXMaxList = [];
+    var rotateYMaxList = [];
+    var translateXMax = -200;
+    // Populating the `rotateXMaxList` and `rotateYMaxList` with random values
+    images.forEach(function () {
+      rotateXMaxList.push(randomPositiveOrNegative(20, 40));
+      rotateYMaxList.push(randomPositiveOrNegative(20, 60));
+    });
+    // The `fakeScroll` is an element to make the page scrollable
+    // Here we are creating it and appending it to the `body`
+    var fakeScroll = document.createElement('div');
+    fakeScroll.className = 'fake-scroll';
+    document.body.appendChild(fakeScroll);
+    // In the `setupAnimation` function (below) we will set the `height` properly
+    // Getting dimensions and setting up all for animation
+    function setupAnimation() {
+      // Updating dimensions
+      windowWidth = window.innerWidth;
+      containerHeight = containerRef.current.getBoundingClientRect().height;
+      imageHeight = containerHeight / (windowWidth > 760 ? images.length / 2 : images.length);
+      // Set `height` for the fake scroll element
+      fakeScroll.style.height = containerHeight + 'px';
+      // Start the animation, if it is not running already
+      startAnimation();
+    }
+    // Update scroll `target`, and start the animation if it is not running already
+    function updateScroll() {
+      target = window.scrollY || window.pageYOffset;
+      startAnimation();
+    }
+    // Start the animation, if it is not running already
+    function startAnimation() {
+      if (!rafActive) {
+        rafActive = true;
+        rafId = requestAnimationFrame(updateAnimation);
+      }
+    }
+    // Do calculations and apply CSS `transform`s accordingly
+    function updateAnimation() {
+      // Difference between `target` and `current` scroll position
+      var diff = target - current;
+      // `delta` is the value for adding to the `current` scroll position
+      // If `diff < 0.1`, make `delta = 0`, so the animation would not be endless
+      var delta = Math.abs(diff) < 0.1 ? 0 : diff * ease;
+      if (delta) {
+        // If `delta !== 0`
+        // Update `current` scroll position
+        current += delta;
+        // Round value for better performance
+        current = parseFloat(current.toFixed(2));
+        // Call `update` again, using `requestAnimationFrame`
+        rafId = requestAnimationFrame(updateAnimation);
+      } else {
+        // If `delta === 0`
+        // Update `current`, and finish the animation loop
+        current = target;
+        rafActive = false;
+        cancelAnimationFrame(rafId);
+      }
+      // Update images
+      updateAnimationImages();
+      // Set the CSS `transform` corresponding to the custom scroll effect
+      setTransform(containerRef.current, 'translateY(' + -current + 'px)');
+    }
+    // Calculate the CSS `transform` values for each `image`, given the `current` scroll position
+    function updateAnimationImages() {
+      // This value is the `ratio` between `current` scroll position and image's `height`
+      var ratio = current / imageHeight;
+      // Some variables for using in the loop
+      var intersectionRatioIndex, intersectionRatioValue, intersectionRatio;
+      var rotateX, rotateXMax, rotateY, rotateYMax, translateX;
+      // For each `image` element, make calculations and set CSS `transform` accordingly
+      images.forEach(function (image, index) {
+        // Calculating the `intersectionRatio`, similar to the value provided by
+        // the IntersectionObserver API
+        intersectionRatioIndex = windowWidth > 760 ? parseInt(index / 2) : index;
+        intersectionRatioValue = ratio - intersectionRatioIndex;
+        intersectionRatio = Math.max(0, 1 - Math.abs(intersectionRatioValue));
+        // Calculate the `rotateX` value for the current `image`
+        rotateXMax = rotateXMaxList[index];
+        rotateX = rotateXMax - (rotateXMax * intersectionRatio);
+        rotateX = rotateX.toFixed(2);
+        // Calculate the `rotateY` value for the current `image`
+        rotateYMax = rotateYMaxList[index];
+        rotateY = rotateYMax - (rotateYMax * intersectionRatio);
+        rotateY = rotateY.toFixed(2);
+        // Calculate the `translateX` value for the current `image`
+        if (windowWidth > 760) {
+          translateX = translateXMax - (translateXMax * easeOutQuad(intersectionRatio));
+          translateX = translateX.toFixed(2);
+        } else {
+          translateX = 0;
+        }
+        // Invert `rotateX` and `rotateY` values in case the image is below the center of the viewport
+        // Also update `translateX` value, to achieve an alternating effect
+        if (intersectionRatioValue < 0) {
+          rotateX = -rotateX;
+          rotateY = -rotateY;
+          translateX = index % 2 ? -translateX : 0;
+        } else {
+          translateX = index % 2 ? 0 : translateX;
+        }
+        // Set the CSS `transform`, using calculated values
+        setTransform(image, 'perspective(500px) translateX(' + translateX + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)');
+      });
+    }
+    // Listen for `resize` event to recalculate dimensions
+    window.addEventListener('resize', setupAnimation);
+    // Listen for `scroll` event to update `target` scroll position
+    window.addEventListener('scroll', updateScroll);
+    // Initial setup
+    setupAnimation();
+  }, []);
+  
+
+
+  return (
+    <div>
+      <h5>SHOP</h5>
+
+      {error && <div>{error.message}</div>}
+
+      {loading && (
+        <div className='preloader'>
+          <div className="container">
+            <canvas id="canvas"></canvas>
+          </div>
+        </div>
+      )}
+
+     
+
+
+      {/* Pass paintings to PaintingList */}
+      {!loading && !error && <PaintingList paintinglistprop={paintings} userEmail={userEmail} />}
+    <div className="shop-items-container" ref={containerRef}>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image1.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image2jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image3.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image4.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image5.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image6.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image7.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image8.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image9.jpg')"}} className="image vh-fix"></div>
+  <div style={{ backgroundImage: "url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation@master/img/image10.jpg')"}} className="image vh-fix"></div></div>
+    
+    </div>
+  );
+};
+
+export default Shop;

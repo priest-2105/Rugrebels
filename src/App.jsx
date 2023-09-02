@@ -19,18 +19,25 @@ import Footer from './frontend/layout/footer/footer';
 import About from './frontend/pages/about/about';
 import Contact from './frontend/pages/contact/contact';
 import Checkout from './backend/checkout/checkout';
-import Newhome from './frontend/pages/homepage/newhome';
+import { useEffect } from 'react';
+import SmoothScroll from '../Pagescrolll/smoothscroll/smoothscroll'; 
+import Auth from './backend/auth/auth/auth';
+import Forgotpassword from './backend/auth/forgotpassword/forgotpassword';
+
 
  
 function App() { 
 
 
+  
 
 
   
   return (
    
-   <div className="App">
+   
+     <div className="App">
+  
     <BrowserRouter> 
    
     {/* <div className="new-preloader-container">
@@ -100,31 +107,36 @@ function App() {
   </svg>
   </div>   */}
 
-    <div className="contents">
+    
+      
+      <Navbar/>
+       <SmoothScroll>
+      <div className="contents" style={{paddingTop:"100px"}}>
 
-  
+ 
 
   {/* <Route path="*" component={Pagenotfound}/>  */}
 
-    <Navbar/>
+    
  
     {/* <Switch> */}
 
 
    
       {/* register page  */}
-      <Route path="/Register" component={Register}/>  
+      {/* <Route path="/Register" component={Register}/>   */}
+
+      <Route path="/auth" component={Auth} exact/>  
+
+      <Route path="/auth/forgotpassword" component={Forgotpassword} exact />
 
       {/* login page  */}
-      <Route  path="/login"  component={Login}/>  
+      {/* <Route  path="/login"  component={Login}/>   */}
 
 
       {/* error page  */}
     
       <Route exact path="/" component={Home} />
-
-      <Route exact path="/newhome" component={Newhome} />
-
 
       <Route exact path="/shop" component={Shop} />
 
@@ -159,12 +171,12 @@ function App() {
 </div></a> */}
 
 
-        </div>
-        <Footer/>
- {/* </Switch> */} 
+        </div>   
+      </SmoothScroll>   <Footer/>
+ {/* </Switch> */}
 </BrowserRouter>
-  
     </div>
+   
   );
 }
 

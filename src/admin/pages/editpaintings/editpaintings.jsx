@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import './editpaintings.css';
 import useFetch from '../../../assets/hooks/useFetch';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import { db } from '../../../backend/config/fire';
+
 
 const Editpaintings = () => {
   const { id } = useParams();
-  const { data: painting, error, preloader } = useFetch(`https://rugrebelsdb.onrender.com/paintings/${id}`);
+  // const { data: painting, error, preloader } 
   const [title, setTitle] = useState("");
   const [about, setAbout] = useState("");
   const [artist, setArtist] = useState("");
@@ -17,35 +20,48 @@ const Editpaintings = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (painting) {
-      setTitle(painting.title);
-      setAbout(painting.about);
-      setArtist(painting.artist);
-      setDate(painting.date);
-      setPrice(painting.price);
-      setImg(painting.img);
-      setTags(painting.tags);
-    }
-  }, [painting]);
+    const getPaintingData = async () => {
+      try {
+        const docRef = doc(db, 'paintings', id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const paintingData = docSnap.data();
+          setTitle(paintingData.title);
+          setAbout(paintingData.about);
+          setArtist(paintingData.artist);
+          setDate(paintingData.date);
+          setPrice(paintingData.price);
+          setImg(paintingData.img);
+          setTags(paintingData.tags);
+        } else {
+          // Handle when the painting doesn't exist
+        }
+      } catch (error) {
+        console.error('Error fetching painting data:', error);
+      }
+    };
 
-  const handleSubmit = (e) => {
+    getPaintingData();
+  }, [id]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedPainting = { title, about, artist, date, img, tags };
     setSaving(true);
-    fetch(`https://rugrebelsdb.onrender.com/paintings/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedPainting),
-    })
-      .then(() => {
-        console.log("painting updated");
-        setSaving(false);
-        history.push(`/paintings/${id}`);
-      })
-      .catch(() => {
-        setSaving(false);
-      });
+  
+    try {
+      const docRef = doc(db, 'paintings', id);
+      await updateDoc(docRef, updatedPainting);
+  
+      console.log('Painting updated in Firestore');
+      setSaving(false);
+      history.push(`/paintings/${id}`);
+    } catch (error) {
+      console.error('Error updating painting:', error);
+      setSaving(false);
+    }
   };
+  
 
   const handleImageChange = (e) => {
     const reader = new FileReader();
@@ -69,17 +85,19 @@ const Editpaintings = () => {
       }); 
   };
 
-  if (preloader) {
-    return <div className="preloader">...Loading </div>;
-  }
+  // if (preloader) {
+  //   return <div className="preloader">...Loading </div>;
+  // }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  // if (error) {
+  //   return <div>{error}</div>;
+  // }
 
   const handleTagChange = (e) => {
     const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
-    setTags(selectedTags);}
+    setTags(selectedTags);
+  };
+  
     
 
   return (
@@ -88,7 +106,7 @@ const Editpaintings = () => {
 
       <form className='edit-painting-form' onSubmit={handleSubmit}>
      
-      <img src={painting.img} alt=""/>
+      <img src={img} alt="painting" />
         <input
           type="file"
           name="image"
