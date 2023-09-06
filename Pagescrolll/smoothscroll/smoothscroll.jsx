@@ -4,13 +4,11 @@ import useWindowSize from "../windowsize/usewindowsize";
 
 
 const SmoothScroll = ({ children }) => {
-  // 1.
+  
   const windowSize = useWindowSize();
 
-  //2.
-  const scrollingContainerRef = useRef();
-
-  // 3.
+  const scrollingContainerRef = useRef(); 
+  
   const data = {
     ease: 0.1,
     current: 0,

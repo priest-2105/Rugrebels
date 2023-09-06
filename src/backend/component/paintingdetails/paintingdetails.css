@@ -1,8 +1,18 @@
+painting-details{
+  position: relative;
+}
+
+
 .painting-detail-container{
-    width: 90%;
+  
+    margin-top: 5%;
+    width: 95%;
     height: fit-content;
-    padding: 50px 100px 50px 100px;
-    background-color: snow;
+    padding: 30px 70px 30px 70px;
+    background-color: rgba(255, 250, 250, 0.1);
+    box-shadow: inset 2px 2px 10px rgb(0, 0, 0),
+    inset -1px -1px 5px rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
     margin-left: auto;
     display: block;
     margin-right: auto;
@@ -21,7 +31,7 @@
     margin-top: 20px;
     margin-bottom: 40px;
     font-size: 55px;
-    color:rgb(233, 222, 155); 
+    color:rgb(240, 248, 255); 
 
 }
 
@@ -29,82 +39,456 @@
     margin-top: 50px;
     display: flex;
     width: 100%;
+    align-items: center;
 
 }
 
 
-.painting-detail img{
-    width: 60%;
-    height: 700px;
+
+
+
+
+.image-swiper-container{
+  border-radius: 15px;
+  width: 65%;
+  display:block;
+  height:fit-content;
 }
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  display: block;
+  
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: block;
+  height: fit-content;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+.mySwiper2 {
+  height: 500px;
+  width: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.mySwiper {
+  height: 80px;
+  /* box-sizing: border-box;        */
+}
+
+.mySwiper .swiper-slide {
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+
+
 
 .buttons{ 
-    width: 70%;
+    width: 100%;
     margin-top: 20px;
     margin-bottom: 30px;
 }
 
 .buttons button{
-    font-size: 20px;
-    background-color: rgba(233, 214, 12, 0.4);  
-    border: 1px solid rgba(233, 214, 12);
-    width: 100%;
-    display: block;
-    margin-top: 10px;
+    margin-left: 20px;
+    margin-top: 40px;
 }
 
-
-.buttons button:hover{
-    background-color: rgba(233, 214, 12) ;  
-    border: 1px solid rgba(233, 214, 12, 0.4);
-    transition-duration: 0.5s;
+.product-description h2{
+  color: #b3cf11;  
+  background: linear-gradient(
+    -225deg,
+      #fafe24 0%,
+      rgb(167, 213, 15) 29%,
+        rgb(88, 101, 25) 80%,
+      rgb(255, 255, 255) 90%
+  );
+  background-position: auto auto;
+  background-size: auto auto;
+  background-clip: text;
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 5s linear reverse;
 }
-    
-
-.product-description{
-    width: 40%;
+  
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
 }
 
 .product-description h5{
-    text-align: end;
+    color: rgb(240, 248, 255, 0.2);
+}
+
+
+.product-description h4{
+    color: rgb(240, 248, 255);
+}
+
+.product-description-price {
+  align-items: center;
+  display: flex;
+}
+
+.product-description-price h3{
+  margin-left: 15px;
+  text-decoration: line-through;
+  color: rgb(240, 248, 255, 0.2);
 }
 
 .product-description span{
     font-size: 20px;
+    color: rgb(240, 248, 255, 0.5);
     font-weight: 600;
 
 }
 
-.accordion{
+.painting-description-currency{
+
+  align-items: center;
+  display: flex;
+
+}
+
+
+.btn,.select-input  {
+    padding: 10px 35px;
+    cursor: pointer;
+    background-color: #212121;
+
+    border-radius: 6px;
+    border: 2px solid #212121;
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6);
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.35s;
+  }
+  
+  .btn,.select-input :hover {
+    transform: scale(1.05);
+    color: rgb(240, 255, 255,0.6);
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 10px rgba(0,0,0,1),
+    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+    border: none !important;
+  }
+  
+  .btn,.select-input :focus {
+    transform: scale(1.05);
+    color: rgb(240, 255, 255,0.6);
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 10px rgba(0,0,0,1),
+    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+  }
+  
+
+
+  .mobile-cart-button{
+
     width: 100%;
-    border: none;
+    height: 100px;
+    position:fixed;
+    bottom: 0;
+    z-index: 5000;
+    background-color: #212121;
+
+  }
+
+  .mobile-cart-button h4{
+
+    color: rgb(240, 248, 255);
+
+  }
+
+  .mobile-cart-button span{
+    color: aliceblue;
+  }
+
+
+  .mobile-cart-button h2{
+    font-size: 15px;
+  color: #b3cf11;  
+  background: linear-gradient(
+    -225deg,
+      #fafe24 0%,
+      rgb(167, 213, 15) 29%,
+        rgb(88, 101, 25) 80%,
+      rgb(255, 255, 255) 90%
+  );
+  background-position: auto auto;
+  background-size: auto auto;
+  background-clip: text;
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 5s linear reverse;
+}
+  
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+     
+
+.bottom-product-details{  
+  margin-top: 5%;
+  width: 95%;
+  height: fit-content;
+  padding: 30px 70px 30px 70px;
+  background-color: rgba(255, 250, 250, 0.1);
+  box-shadow: inset 2px 2px 10px rgb(0, 0, 0),
+  inset -1px -1px 5px rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bottom-product-details h3{
+  color: #b3cf11;  
+  background: linear-gradient(
+    -225deg,
+      #fafe24 0%,
+      rgb(167, 213, 15) 29%,
+        rgb(88, 101, 25) 80%,
+      rgb(255, 255, 255) 90%
+  );
+  background-position: auto auto;
+  background-size: auto auto;
+  background-clip: text;
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 5s linear reverse;
+}
+  
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}  
+  
+
+
+.bottom-product-details-tab-content{
+  color: #fff;
+  font-weight: 700;
+  padding: 30px 30px;
+}
+
+.bottom-product-details-nav-tabs li{
+
+  margin-left: 10px;
+
 }
 
 
-.accordion-item{
-    width: 100%;
-    border: none;
+
+
+
+
+
+
+                    /* ````````````    REVIEWS  ~~~~~ */
+
+  
+  .product-review-star-container{
+    width:60%;
+  }
+
+                    
+.review_name {
+  font-size: 18px;
+  color: #b3cf11;  
+  background: linear-gradient(
+    -225deg,
+      rgb(250, 254, 36) 0%,
+      rgb(167, 213, 15) 29%,
+        rgb(88, 101, 25) 80%,
+      rgb(255, 255, 255) 90%
+  );
+  background-position: auto auto;
+  background-size: auto auto;
+  background-clip: text;
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 5s linear reverse;
+}
+  
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
 }
 
-.accordion-header{
-    background-color: transparent;
-    border: none;
+.review_image {
+  width: 50px;
 }
 
-.accordion-header:active{
-    background-color: transparent;
-    border: none;
+.review_text {
+  font-size: 15px;
 }
-    
-.accordion-header::after{
-    background-color: transparent;
-    border: none;
+                    
+.review-img img {
+  border-radius: 50%;
 }
+
+.review_helpful {
+  font-size: 13px;
+}
+
+
+.btn.review-report {
+  /* width: 150px; */
+  /* color: #204d74; */
+  font-weight: 500;
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+
+
+.review_name {
+  font-size: 18px;
+  color: yellow;
+  font-weight: 500;
+}
+
+.review_image {
+  width: 50px;
+}
+
+.review_text {
+  font-size: 15px;
+}
+
+
+
+.review_text {
+  font-size: 15px;
+}
+.client_review span {
+  font-size: 24px;
+}
+
+.page-item {
+  background-color: red !important;
+}
+
+/* NEW CODE */
+
+.client_review_star {
+  align-items: center;
+}
+
+.client_review_star .progress_bar {
+  height: 25px;
+  border-radius: 16px;
+  background-color: #b3cf11;  
+  background: linear-gradient(
+    -225deg,
+      #fafe24 0%,
+      rgb(167, 213, 15) 29%,
+        rgb(88, 101, 25) 80%,
+      rgb(255, 255, 255) 90%
+  );
+  background-position: auto auto;
+  background-size: auto auto;
+  /* background-clip: text; */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+  animation: textclip 5s linear reverse;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+
+
+.client_review_star .progress_bar.five {
+  width: 70%;
+}
+
+.client_review_star .progress_bar.four {
+  width: 60%;
+}
+
+.client_review_star .progress_bar.three {
+  width: 50%;
+}
+
+.client_review_star .progress_bar.two {
+  width: 30%;
+}
+
+.client_review_star .progress_bar.one {
+  width: 10%;
+}
+
+.client_review_star i {
+  color: #204d74;
+  font-size: 14px;
+}
+
+.star_text {
+  font-size: 20px;
+}
+
+
+
+
+                    /* ````````````    REVIEWS  ~~~~~ */
+
+
+
+
+
+
 
 
 
 
 @media only screen and (max-width:991px) {
+
+     
+  .product-review-star-container{
+    width:100%;
+  }
+
 
 
     .painting-detail-container{
@@ -113,26 +497,29 @@
         padding: 25px 50px 25px 50px; 
     }
 
+    .image-swiper-container{
+        border-radius: 15px;
+        width: 100%;
+        display:block;
+    }
     
-.painting-detail{
-    margin-top: 50px;
-    display: block;
-    width: 100%;
+    .mySwiper {
+        height: 80px;
+      }
+      
+    
+    .painting-detail{
+        margin-top: 50px;
+        display: block;
+        width: 100%;
 
-}
-
-
-
-.painting-detail img{
-    width: 100%;
-    height: 550px;
-}
+    }
 
 
-.product-description{
-    margin-top: 50px;
-    width: 100%;
-}
+    .product-description{
+        margin-top: 50px;
+        width: 100%;
+    }
 
 
 }
@@ -149,10 +536,33 @@
         padding: 5px 25px 5px 15px; 
     }
 
-     
+    
+    .painting-detail img{ 
+        height: 400px;
+      }
 
 
-.painting-detail img{ 
-    height: 400px;
-}
-}
+
+          
+    .bottom-product-details{  
+      margin-top: 5%;
+      width: 95%;
+      height: fit-content;
+      padding: 10px 20px 10px 20px;
+      background-color: rgba(255, 250, 250, 0.1);
+      box-shadow: inset 2px 2px 10px rgb(0, 0, 0),
+      inset -1px -1px 5px rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      margin-left: auto;
+      margin-right: auto;
+    }  
+
+    .bottom-product-details-tab-content{
+      color: #fff;
+      font-weight: 700;
+      padding: 20px 20px;
+    }
+
+
+    
+  }

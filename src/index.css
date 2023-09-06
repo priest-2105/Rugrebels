@@ -14,6 +14,45 @@ html, body {
   padding: 0px;
 }
 
+i{
+  color: #b3cf11;  
+  background: linear-gradient(
+    -225deg,
+      #fafe24 0%,
+      rgb(167, 213, 15) 29%,
+        rgb(88, 101, 25) 80%,
+      rgb(255, 255, 255) 90%
+  );
+  background-position: auto auto;
+  background-size: auto auto;
+  background-clip: text;
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 5s linear reverse;
+}
+
+i:hover{
+  color: #8b9264;  
+  background: linear-gradient(
+    -225deg,
+    rgb(255, 255, 255) 0%      
+        rgb(88, 101, 25) 29%,
+        rgb(167, 213, 15) 80%,
+        #fafe24 90%,
+      
+  );
+  background-position: auto auto;
+  background-size: auto auto;
+  background-clip: text;
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: 1s;
+  transition-timing-function: ease-in-out;
+}
+
+
 .App{
   background-color: rgb(18, 18, 18);
   /* background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/1400/1ea9cb174272965.649f070e5cf0d.jpg'); */
@@ -22,7 +61,7 @@ html, body {
   background-position: center;
   font-family: 'Alkatra', cursive;
   background-size: cover;
-  min-height: 100vh;
+  min-height: 10vh;
   scroll-behavior:smooth; 
   overscroll-behavior: none;
   overflow: hidden;

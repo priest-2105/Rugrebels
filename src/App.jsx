@@ -31,6 +31,8 @@ function App() {
 
   
 
+  
+
 
   
   return (
@@ -110,9 +112,9 @@ function App() {
     
       
       <Navbar/>
-       <SmoothScroll>
+     
       <div className="contents" style={{paddingTop:"100px"}}>
-
+  {/* <SmoothScroll> */}
  
 
   {/* <Route path="*" component={Pagenotfound}/>  */}
@@ -171,8 +173,9 @@ function App() {
 </div></a> */}
 
 
-        </div>   
-      </SmoothScroll>   <Footer/>
+        {/* </SmoothScroll>   */}
+         </div>   
+      <Footer/>
  {/* </Switch> */}
 </BrowserRouter>
     </div>

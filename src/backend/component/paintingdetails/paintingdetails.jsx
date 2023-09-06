@@ -1,11 +1,30 @@
+// ligth gallery and swiperjs 
+import LightGallery from 'lightgallery/react';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-thumbnail.css';
+import lgThumbnail from 'lightgallery/plugins/thumbnail';
+import lgZoom from 'lightgallery/plugins/zoom'; 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Thumbs, FreeMode, Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+
+
+// General 
+import { doc, getDoc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '../../config/fire';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import useFetch from '../../../assets/hooks/usefetch';
 import './paintingdetails.css';
 import CurrencyAPI from '@everapi/currencyapi-js';  
 import CurrencyConverter from '../../currency/currency';
-import { collection, doc, getDoc, setDoc, query, where, getDocs } from 'firebase/firestore';
 
 
 
@@ -13,12 +32,12 @@ import { collection, doc, getDoc, setDoc, query, where, getDocs } from 'firebase
 const Paintingdetails = () => {
   const history = useHistory();
   const { id } = useParams();
-  const [painting, setPainting] = useState(null);
+  const [painting, setPainting] = useState(null);   
   const [isAdded, setIsAdded] = useState(false);
   const [rates, setRates] = useState({});
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState("USD"); 
   const baseCurrency = 'USD';
-
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
 
 
@@ -26,224 +45,67 @@ const Paintingdetails = () => {
   const currencyOptions = [
     { value: 'AED', label: 'United Arab Emirates Dirham' },
     { value: 'AFN', label: 'Afghan Afghani' },
-    { value: 'ALL', label: 'Albanian Lek' },
-    { value: 'AMD', label: 'Armenian Dram' },
-    { value: 'ANG', label: 'NL Antillean Guilder' },
-    { value: 'AOA', label: 'Angolan Kwanza' },
-    { value: 'ARS', label: 'Argentine Peso' },
-    { value: 'AUD', label: 'Australian Dollar' },
-    { value: 'AWG', label: 'Aruban Florin' },
-    { value: 'AZN', label: 'Azerbaijani Manat' },
-    { value: 'BAM', label: 'Bosnia-Herzegovina Convertible Mark' },
-    { value: 'BBD', label: 'Barbadian Dollar' },
-    { value: 'BDT', label: 'Bangladeshi Taka' },
-    { value: 'BGN', label: 'Bulgarian Lev' },
-    { value: 'BHD', label: 'Bahraini Dinar' },
-    { value: 'BIF', label: 'Burundian Franc' },
-    { value: 'BMD', label: 'Bermudan Dollar' },
-    { value: 'BND', label: 'Brunei Dollar' },
-    { value: 'BOB', label: 'Bolivian Boliviano' },
-    { value: 'BRL', label: 'Brazilian Real' },
-    { value: 'BSD', label: 'Bahamian Dollar' },
-    { value: 'BTN', label: 'Bhutanese Ngultrum' },
-    { value: 'BWP', label: 'Botswanan Pula' },
-    { value: 'BYN', label: 'Belarusian ruble' },
-    { value: 'BYR', label: 'Belarusian Ruble' },
-    { value: 'BZD', label: 'Belize Dollar' },
-    { value: 'CAD', label: 'Canadian Dollar' },
-    { value: 'CDF', label: 'Congolese Franc' },
-    { value: 'CHF', label: 'Swiss Franc' },
-    { value: 'CLF', label: 'Unidad de Fomento' },
-    { value: 'CLP', label: 'Chilean Peso' },
-    { value: 'CNY', label: 'Chinese Yuan' },
-    { value: 'COP', label: 'Coombian Peso' },
-    { value: 'CRC', label: 'Costa Rican Colón' },
-    { value: 'CUC', label: 'Cuban Convertible Peso' },
-    { value: 'CUP', label: 'Cuban Peso' },
-    { value: 'CVE', label: 'Cape Verdean Escudo' },
-    { value: 'CZK', label: 'Czech Republic Koruna' },
-    { value: 'DJF', label: 'Djiboutian Franc' },
-    { value: 'DKK', label: 'Danish Krone' },
-    { value: 'DOP', label: 'Dominican Peso' },
-    { value: 'DZD', label: 'Algerian Dinar' },
-    { value: 'EGP', label: 'Egyptian Pound' },
-    { value: 'ERN', label: 'Eritrean Nakfa' },
-    { value: 'ETB', label: 'Ethiopian Birr' },
-    { value: 'EUR', label: 'Euro' },
-    { value: 'FJD', label: 'Fijian Dollar' },
-    { value: 'FKP', label: 'Falkland Islands Pound' },
-    { value: 'GBP', label: 'British Pound Sterling' },
-    { value: 'GEL', label: 'Georgian Lari' },
-    { value: 'GGP', label: 'Guernsey pound' },
-    { value: 'GHS', label: 'Ghanaian Cedi' },
-    { value: 'GIP', label: 'Gibraltar Pound' },
-    { value: 'GMD', label: 'Gambian Dalasi' },
-    { value: 'GNF', label: 'Guinean Franc' },
-    { value: 'GTQ', label: 'Guatemalan Quetzal' },
-    { value: 'GYD', label: 'Guyanaese Dollar' },
-    { value: 'HKD', label: 'Hong Kong Dollar' },
-    { value: 'HNL', label: 'Honduran Lempira' },
-    { value: 'HRK', label: 'Croatian Kuna' },
-    { value: 'HTG', label: 'Haitian Gourde' },
-    { value: 'HUF', label: 'Hungarian Forint' },
-    { value: 'IDR', label: 'Indonesian Rupiah' },
-    { value: 'ILS', label: 'Israeli New Sheqel' },
-    { value: 'IMP', label: 'Manx pound' },
-    { value: 'INR', label: 'Indian Rupee' },
-    { value: 'IQD', label: 'Iraqi Dinar' },
-    { value: 'IRR', label: 'Iranian Rial' },
-    { value: 'ISK', label: 'Icelandic Króna' },
-    { value: 'JEP', label: 'Jersey pound' },
-    { value: 'JMD', label: 'Jamaican Dollar' },
-    { value: 'JOD', label: 'Jordanian Dinar' },
-    { value: 'JPY', label: 'Japanese Yen' },
-    { value: 'KES', label: 'Kenyan Shilling' },
-    { value: 'KGS', label: 'Kyrgystani Som' },
-    { value: 'KHR', label: 'Cambodian Riel' },
-    { value: 'KMF', label: 'Comorian Franc' },
-    { value: 'KPW', label: 'North Korean Won' },
-    { value: 'KRW', label: 'South Korean Won' },
-    { value: 'KWD', label: 'Kuwaiti Dinar' },
-    { value: 'KYD', label: 'Cayman Islands Dollar' },
-    { value: 'KZT', label: 'Kazakhstani Tenge' },
-    { value: 'LAK', label: 'Laotian Kip' },
-    { value: 'LBP', label: 'Lebanese Pound' },
-    { value: 'LKR', label: 'Sri Lankan Rupee' },
-    { value: 'LRD', label: 'Liberian Dollar' },
-    { value: 'LSL', label: 'Lesotho Loti' },
-    { value: 'LTL', label: 'Lithuanian Litas' },
-    { value: 'LVL', label: 'Latvian Lats' },
-    { value: 'LYD', label: 'Libyan Dinar' },
-    { value: 'MAD', label: 'Moroccan Dirham' },
-    { value: 'MDL', label: 'Moldovan Leu' },
-    { value: 'MGA', label: 'Malagasy Ariary' },
-    { value: 'MKD', label: 'Macedonian Denar' },
-    { value: 'MMK', label: 'Myanma Kyat' },
-    { value: 'MNT', label: 'Mongolian Tugrik' },
-    { value: 'MOP', label: 'Macanese Pataca' },
-    { value: 'MRO', label: 'Mauritanian ouguiya' },
-    { value: 'MUR', label: 'Mauritian Rupee' },
-    { value: 'MVR', label: 'Maldivian Rufiyaa' },
-    { value: 'MWK', label: 'Malawian Kwacha' },
-    { value: 'MXN', label: 'Mexican Peso' },
-    { value: 'MYR', label: 'Malaysian Ringgit' },
-    { value: 'MZN', label: 'Mozambican Metical' },
-    { value: 'NAD', label: 'Namibian Dollar' },
-    { value: 'NGN', label: 'Nigerian Naira' },
-    { value: 'NIO', label: 'Nicaraguan Córdoba' },
-    { value: 'NOK', label: 'Norwegian Krone' },
-    { value: 'NPR', label: 'Nepalese Rupee' },
-    { value: 'NZD', label: 'New Zealand Dollar' },
-    { value: 'OMR', label: 'Omani Rial' },
-    { value: 'PAB', label: 'Panamanian Balboa' },
-    { value: 'PEN', label: 'Peruvian Nuevo Sol' },
-    { value: 'PGK', label: 'Papua New Guinean Kina' },
-    { value: 'PHP', label: 'Philippine Peso' },
-    { value: 'PKR', label: 'Pakistani Rupee' },
-    { value: 'PLN', label: 'Polish Zloty' },
-    { value: 'PYG', label: 'Paraguayan Guarani' },
-    { value: 'QAR', label: 'Qatari Rial' },
-    { value: 'RON', label: 'Romanian Leu' },
-    { value: 'RSD', label: 'Serbian Dinar' },
-    { value: 'RUB', label: 'Russian Ruble' },
-    { value: 'RWF', label: 'Rwandan Franc' },
-    { value: 'SAR', label: 'Saudi Riyal' },
-    { value: 'SBD', label: 'Solomon Islands Dollar' },
-    { value: 'SCR', label: 'Seychellois Rupee' },
-    { value: 'SDG', label: 'Sudanese Pound' },
-    { value: 'SEK', label: 'Swedish Krona' },
-    { value: 'SGD', label: 'Singapore Dollar' },
-    { value: 'SHP', label: 'Saint Helena Pound' },
-    { value: 'SLL', label: 'Sierra Leonean Leone' },
-    { value: 'SOS', label: 'Somali Shilling' },
-    { value: 'SRD', label: 'Surinamese Dollar' },
-    { value: 'STD', label: 'São Tomé and Príncipe dobra' },
-    { value: 'SVC', label: 'Salvadoran Colón' },
-    { value: 'SYP', label: 'Syrian Pound' },
-    { value: 'SZL', label: 'Swazi Lilangeni' },
-    { value: 'THB', label: 'Thai Baht' },
-    { value: 'TJS', label: 'Tajikistani Somoni' },
-    { value: 'TMT', label: 'Turkmenistani Manat' },
-    { value: 'TND', label: 'Tunisian Dinar' },
-    { value: 'TOP', label: 'Tongan Paʻanga' },
-    { value: 'TRY', label: 'Turkish Lira' },
-    { value: 'TTD', label: 'Trinidad and Tobago Dollar' },
-    { value: 'TWD', label: 'New Taiwan Dollar' },
-    { value: 'TZS', label: 'Tanzanian Shilling' },
-    { value: 'UAH', label: 'Ukrainian Hryvnia' },
-    { value: 'UGX', label: 'Ugandan Shilling' },
-    { value: 'USD', label: 'US Dollar' },
-    { value: 'UYU', label: 'Uruguayan Peso' },
-    { value: 'UZS', label: 'Uzbekistan Som' },
-    { value: 'VEF', label: 'Venezuelan Bolívar' },
-    { value: 'VND', label: 'Vietnamese Dong' },
-    { value: 'VUV', label: 'Vanuatu Vatu' },
-    { value: 'WST', label: 'Samoan Tala' },
-    { value: 'XAF', label: 'CFA Franc BEAC' },
-    { value: 'XAG', label: 'Silver Ounce' },
-    { value: 'XAU', label: 'Gold Ounce' },
-    { value: 'XCD', label: 'East Caribbean Dollar' },
-    { value: 'XDR', label: 'Special drawing rights' },
-    { value: 'XOF', label: 'CFA Franc BCEAO' },
-    { value: 'XPF', label: 'CFP Franc' },
-    { value: 'YER', label: 'Yemeni Rial' },
-    { value: 'ZAR', label: 'South African Rand' },
-    { value: 'ZMK', label: 'Zambian Kwacha' },
-    { value: 'ZMW', label: 'Zambian Kwacha' },
-    { value: 'ZWL', label: 'Zimbabwean dollar' },
-    { value: 'XPT', label: 'Platinum Ounce' },
-    { value: 'XPD', label: 'Palladium Ounce' },
-    { value: 'BTC', label: 'Bitcoin' },
-    { value: 'ETH', label: 'Ethereum' },
-    { value: 'BNB', label: 'Binance' },
-    { value: 'XRP', label: 'Ripple' },
-    { value: 'SOL', label: 'Solana' },
-    { value: 'DOT', label: 'Polkadot' },
-    { value: 'AVAX', label: 'Avalanche' },
-    { value: 'MATIC', label: 'Matic Token' },
-    { value: 'LTC', label: 'Litecoin' },
-    { value: 'ADA', label: 'Cardano' },
-  ];
+  ]
 
 
-    useEffect(() => {
-      const currencyApi = new CurrencyAPI('cur_live_z9MRKPZZ0E1c9hWDPM39EKEzJVAC3DZPvtp7BOiD');
 
-    // Fetch exchange rates and update rates state
-    currencyApi
-      .latest({
-        base_currency: baseCurrency,
-        currencies: targetCurrency,
-      })
-      .then((response) => {
-        setRates(response.data);
-        setRate(response.data[targetCurrency]?.value);
-      })
-      .catch((error) => {
-        console.error('Error fetching exchange rates:', error);
-      });
 
-    fetchPainting();
-  }, [id, baseCurrency, targetCurrency]);
-
-      const fetchPainting = async () => {
-        if (!id) return;
-        try {
-          const paintingDocRef = doc(db, 'paintings', id);
-          const paintingDocSnap = await getDoc(paintingDocRef);
-          if (paintingDocSnap.exists()) {
-            const paintingData = paintingDocSnap.data();
-            setPainting(paintingData);
-          } else {
-            console.log('Painting not found');
-          }
-        } catch (error) {
-          console.error('Error fetching painting:', error);
-        }
+        // Lightgallery inintilization 
+        const onInit = () => {
+          console.log('lightGallery has been initialized');
       };
 
+      // swiper js 
+      const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-    
+
+      // Paintings fetch 
+      useEffect(() => {
+        const paintingRef = doc(db, 'paintings', id);
+
+        // Fetch the document data
+        getDoc(paintingRef)
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.data();
+              setPainting(data);
+            } else {
+              console.log('Document does not exist');
+            }
+      
+          })
+          .catch((error) => {
+            console.error('Error fetching document:', error.message);
+          });
+        
+      }, [id, db]);
+      
+
+          // Function to handle quantity selection changes
+        const handleQuantityChange = (e) => {
+          setSelectedQuantity(parseInt(e.target.value, 10));
+        };
+        const calculatedPrice = painting ? painting.price * selectedQuantity : 0;
+
+
+
+      // Currency io token initializtion and config 
+   useEffect(() => {
+    const currencyApi = new CurrencyAPI('cur_live_bW63J02Ob9PGvUZrQZiJNhlpENGdroQF0dfFHxzZ');
+    currencyApi.latest({
+      base_currency: baseCurrency,
+    }).then((response) => {
+      console.log('Exchange rate response:', 
+      // response.data
+      );
+      setRates(response.data);
+    }).catch((error) => {
+      console.error('Error fetching exchange rates:', error);
+      // Set default rates here if needed
+    });
+  }, []);
+
+  // console.log('Current rates:', rates);
 
 const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
   try {
@@ -263,13 +125,16 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
     return null;
   }
 };
-  
 
-const handleAddToCart = async (painting) => {
-  if (!painting) {
-    console.error('Painting data is not available');
-    return;
-  } if (auth.currentUser) {
+
+
+
+
+
+
+    // ADD to cart Function  
+  const handleAddToCart = async (painting) => {
+    if (auth.currentUser) {
       const userId = auth.currentUser.uid;
       const cartRef = collection(db, 'carts', userId, 'items');
   
@@ -289,15 +154,14 @@ const handleAddToCart = async (painting) => {
   
           try {
             await setDoc(doc(cartRef), {
-              userId: auth.currentUser.uid, 
               paintingId: painting.id,
               paintingTitle: painting.title,
               paintingImage: painting.img,
               paintingdescription: painting.about,
-              paintingPrice: convertedPrice,
+              paintingPrice: calculatedPrice,
               targetCurrency: selectedCurrency,
               paintingDate: painting.date,
-              paintingArtist: painting.artist,
+              paintingArtist: painting.artist
             });
   
             console.log('Item added to cart:',
@@ -326,94 +190,340 @@ const handleAddToCart = async (painting) => {
     history.push("/shop");
   };
 
+        
+       
   return (
     <div className='painting-details'>
       <button className='prevbutton' onClick={prevbutton}><i className="bi bi-arrow-left-square-fill"></i></button> 
       {/* { error && <div>{ error }</div>} */}
+    { painting && (  <div className="backlinks">
+            <Link to='/'>Home</Link>
+            /<Link to='/shop'>Shop</Link>  
+           /<Link className='disabled' to='/'>{painting.title}</Link>
 
+          </div>)}
       {/* { preloader && <div className='preloader'>...Loading </div> } */}
 
       { painting && (
         <div className='painting-detail-container'>
-          <div className="backlinks">
-            <Link to='/'>Home</Link>
-            /<Link to='/shop'>Shop</Link>  
-            /<Link className='disabled' to='/'>{painting.title}</Link>
-          </div>
+      
           <div className='painting-detail'>
-            <img src={painting.img} alt="painting" />
+          
+        <div className="image-swiper-container">
+       {thumbsSwiper && ( <Swiper
+            style={{
+              '--swiper-navigation-color': 'rgb(250, 254, 36,0.5)',
+              '--swiper-pagination-color': 'rgb(250, 254, 36,0.5)',
+            }}
+            loop={true}
+            spaceBetween={0}
+            navigation={true}
+            scrollbar={{ draggable: true }}
+            thumbs={{ swiper: thumbsSwiper }}
+            onSwiper={setThumbsSwiper}
+            slidesPerView={1}
+            freeMode={true}
+            watchSlidesProgress={true}
+            modules={[Navigation, Scrollbar]}
+           className="mySwiper2"
+           >
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+          </Swiper>  )}
+         
+        
+        <Swiper
+            onSwiper={setThumbsSwiper}
+            loop={true}
+            spaceBetween={10}
+            slidesPerView={4}
+            freeMode={true}
+            modules={[Navigation,Pagination, Scrollbar, A11y]} 
+            navigation
+            className="mySwiper"
+            style={{
+              '--swiper-navigation-color': 'rgb(250, 254, 36,0.2)',
+              '--swiper-pagination-color': 'rgb(250, 254, 36,0.2)',
+            }}
+          >
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={painting.img} />
+            </SwiperSlide>
+          </Swiper>
+         
+          </div>  
+            {/* <img src={painting.img} alt="painting" /> */}
             <div className="product-description ms-4">
-              <h2>{painting.title}</h2>
-
-  
-            <select value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.target.value)}>
+              <h2>{painting.title}</h2> 
+          
+          {/* <div className="painting-description-currency"> */}
+             {/* <span>Convert</span> */}
+              {/* <select className='select-input col-6 ms-2' value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.target.value)}>
                 {currencyOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.value} - {option.label}
                   </option>
                 ))}
-              </select>
+              </select> */}
+              {/* </div> */}
 
-              <h4>
-                {calculateConvertedPrice(painting.price, selectedCurrency)} {selectedCurrency}
-                </h4>
-
-
-              
-              <div className="buttons">
-                <div  className="quantity">
-                  <span>Quantity</span>
-                  <select className='ms-2 pe-4 ps-4 pt-2 pb-2' name="quantityselect" id="quantityselect">  
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                </div>
-                <button onClick={() => handleAddToCart(painting)}>Add to Cart</button>
-                <button>Buy Now</button>
+              <div className="product-description-price">
+                {/* {calculateConvertedPrice(painting.price, selectedCurrency)} {selectedCurrency} */}
+                  <h4>${calculatedPrice}</h4>
+                <h3>$60000</h3>
               </div>
 
-            <div className="accordion" id="accordionPanelsStayOpenExample">
-      <div className="accordion-item">
-      <h2 className="accordion-header" id="panelsStayOpen-headingOne">
-        <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-        Description
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-        <div className="accordion-body about-product">
-        <p>{painting.about}</p>
-            </div>
-      </div>
-      </div>
-      <div className="accordion-item">
-      <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
-        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-        Return Policy
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseTwo" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
-        <div className="accordion-body"> 
-      I’m a Return and Refund policy. I’m a great place to let your customers know what to do in case they are
-      dissatisfied with their purchase. Having a straightforward refund or exchange policy 
-      is a great way to build trust and reassure your customers that they can buy with confidence.
-            </div>
-      </div>
-      </div> 
-      </div>
-            </div>
+            <div className="buttons">
+              <div className="quantity">
+                <span>Quantity</span>
+                <select
+            className="select-input ms-2 pe-4 ps-4 pt-2 pb-2"
+            name="quantityselect"
+            id="quantityselect"
+            onChange={handleQuantityChange}
+            value={selectedQuantity}
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+              </div>
+                <button className='btn' onClick={() => handleAddToCart(painting)}>Add to Cart</button>
+                <button className='btn'>Buy Now</button>
+              </div>
+
+            
+                  
+           </div>
           </div>
 
           {isAdded && (
-            <div className="popup">
+             <div className="popup">
               Item added to cart!
               <button onClick={() => setIsAdded(false)}>Close</button>
             </div>
           )}
         </div>
       )}
+    
+      
+
+         <div className="bottom-product-details">
+            <ul className="nav nav-tabs" id="myTab" role="tablist">
+      <li className="nav-item bg-transparent" role="presentation">
+        <button className="nav-link active bg-transparent" id="productdescription-tab" data-bs-toggle="tab" data-bs-target="#productdescription-tab-pane" type="button" role="tab" aria-controls="productdescription-tab-pane" aria-selected="true">
+          <h3>Description</h3></button>
+      </li>
+      <li className="nav-item bg-transparent" role="presentation">
+        <button className="nav-link bg-transparent" id="Reviews-tab" data-bs-toggle="tab" data-bs-target="#Reviews-tab-pane" type="button" role="tab" aria-controls="Reviews-tab-pane" aria-selected="false">
+         <h3> Reviews</h3>
+          </button>
+      </li>
+      </ul>
+   
+        { painting &&(
+    <div className="tab-content bottom-product-details-tab-content" id="myTabContent">
+      <div className="tab-pane fade show active" id="productdescription-tab-pane" role="tabpanel" aria-labelledby="productdescription-tab" tabIndex="0">
+        {painting.about}
+        </div>
+
+
+        {/* Reviews Tab */}
+      <div className="tab-pane fade" id="Reviews-tab-pane" role="tabpanel" aria-labelledby="Reviews-tab" tabIndex="0">
+
+      <div className="row">
+        <div className="col-12 col-lg-12 d-lg-flex  align-items-start">
+          <div className="client_review mx-2 ">
+            
+            <h2 className="pt-4 mb-3">Client Reviews</h2>
+            <i className="bi bi-star-fill"></i>
+            <i className="bi bi-star-fill"></i>
+            <i className="bi bi-star-fill"></i>
+            <i className="bi bi-star"></i>
+            <i className="bi bi-star"></i>
+            <span className="ms-1">4.32</span>
+            <p>1200 reviews</p>    
+            <div className="mt-3">
+            <button className="btn review-report">
+              Create review
+            </button>
+          </div>
+          </div>
+            <div className="ms-lg-4 mt-lg-5 mt-md-4 mt-sm-4 mt-xs-4 product-review-star-container">
+            <div className="client_review_star mt-1 d-flex flex-row">
+              <span className="star_text">5</span>
+              <i className="bi bi-star-fill ms-1"></i>
+              <div className="progress_bar five ms-2"></div>
+              <span className="ms-2">32940</span>
+            </div>
+
+            <div className="client_review_star mt-1 d-flex flex-row">
+              <span className="star_text">4</span>
+              <i className="bi bi-star-fill ms-1"></i>
+              <div className="progress_bar four ms-2"></div>
+              <span className="ms-2">3294</span>
+            </div>
+
+            <div className="client_review_star mt-1 d-flex flex-row">
+              <span className="star_text">3</span>
+              <i className="bi bi-star-fill ms-1"></i>
+              <div className="progress_bar three ms-2"></div>
+              <span className="ms-2">329</span>
+            </div>
+
+            <div className="client_review_star mt-1 d-flex flex-row">
+              <span className="star_text">2</span>
+              <i className="bi bi-star-fill ms-1"></i>
+              <div className="progress_bar two ms-2"></div>
+              <span className="ms-2">32</span>
+            </div>
+
+            <div className="client_review_star mt-1 d-flex flex-row">
+              <span className="star_text">1&nbsp;</span>
+              <i className="bi bi-star-fill ms-1"></i>
+              <div className="progress_bar one ms-2"></div>
+              <span className="ms-2">3</span>
+            </div>
+          </div>
+          </div>
+      
+        <div className="col-12">
+          <hr />
+          <div>
+            <div className="py-2">
+              <div className="d-flex flex-row align-items-center">
+                
+                <div className="user-info">
+                  <span className="review_name">Ifeanyi Okeakwalam</span><br/>
+                  <span className="qualification mt-1">
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star"></i>
+                    <i className="bi bi-star"></i>
+                    <span className="ps-2">2 weeks ago</span>
+                  </span>
+                </div>
+
+                <div className="ms-auto">
+                  <i className="bi bi-share"></i>
+                </div>
+              </div>
+
+              <div className="pt-3 review_text">
+                <p>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                  Facere vel reprehenderit cumque architecto cupiditate
+                  distinctio earum repudiandae adipisci.
+                </p>
+              </div>
+              <div className=" ">
+                <button className="btn ms-3">
+                  <i className="bi bi-hand-thumbs-up-fill"></i>
+                </button>
+                <button className="btn ms-3">
+                  <i className="bi bi-hand-thumbs-down-fill"></i>
+                </button>
+                <button className="btn review-report ms-3 mt-xs-3">
+                  Report this review
+                </button>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div>
+            <div className="py-2">
+              <div className="d-flex flex-row align-items-center">
+                
+                <div className="user-info">
+                  <span className="review_name">Ifeanyi Okeakwalam</span><br/>
+                  <span className="qualification mt-1">
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star"></i>
+                    <i className="bi bi-star"></i>
+                    <span className="ps-2">2 weeks ago</span>
+                  </span>
+                </div>                <div className="ms-auto">
+                  <i className="bi bi-share"></i>
+                </div>
+              </div>
+
+              <div className="pt-3 review_text">
+                <p>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                  Facere vel reprehenderit cumque architecto cupiditate
+                  distinctio earum repudiandae adipisci.
+                </p>
+              </div>
+              <div className="review_helpful">
+                <button className="btn ms-3">
+                  <i className="bi bi-hand-thumbs-up-fill"></i>
+                </button>
+                <button className="btn ms-3">
+                  <i className="bi bi-hand-thumbs-down-fill"></i>
+                </button>
+                <button className="btn review-report ms-3 mt-xs-3">
+                  Report this review
+                </button>
+              </div>
+            </div>
+            <hr />
+          </div>
+         </div>
+      </div>
+
+      </div>
+    </div>    
+    )} 
+       </div>  
+
+
+
+       
+        { painting &&(  
+        <div className="mobile-cart-button">
+             <h2>{painting.title}</h2>  
+             <h4>${calculatedPrice}</h4>
+             <div className="mobile-qauntity-button d-flex">
+              <button onClick={() => selectedQuantity + 1}>-</button>
+              <span>{selectedQuantity}</span>
+              <button onClick={() =>  selectedQuantity + 1}>+</button>
+                 <button className='btn' onClick={() => handleAddToCart(painting)}>Add to Cart</button>
+            </div> 
+             </div>)}
+
+       
+
     </div>
   );
 }
