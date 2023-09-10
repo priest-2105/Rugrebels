@@ -113,7 +113,7 @@ function App() {
       
       <Navbar/>
      
-      <div className="contents" style={{paddingTop:"100px"}}>
+      <div className="contents">
   {/* <SmoothScroll> */}
  
 
@@ -149,6 +149,7 @@ function App() {
       <Route path="/paintings/:id" component={Paintingdetails} />
 
       <Route path="/checkout" component={Checkout} />
+
        
 
 
