@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './editpaintings.css';
 import useFetch from '../../../assets/hooks/useFetch';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
@@ -17,7 +17,7 @@ const Editpaintings = () => {
   const [img, setImg] = useState("");
   const [tags, setTags] = useState([]);
   const [saving, setSaving] = useState(false);
-  const history = useHistory();
+  const history = useNavigate();
 
   useEffect(() => {
     const getPaintingData = async () => {

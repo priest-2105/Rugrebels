@@ -20,7 +20,7 @@ import 'swiper/css/scrollbar';
 import { doc, getDoc, addDoc , setDoc, collection, onSnapshot , query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '../../config/fire';
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import useFetch from '../../../assets/hooks/usefetch';
 import './paintingdetails.css';
 import CurrencyAPI from '@everapi/currencyapi-js';  
@@ -30,10 +30,9 @@ import CurrencyConverter from '../../currency/currency';
 
 
 const Paintingdetails = () => {
-  const history = useHistory();
+  const history = useNavigate();
   const { id } = useParams();
   const [painting, setPainting] = useState(null);   
-  const [reviews, setReviews] = useState([]);
   const [isAdded, setIsAdded] = useState(false);
   const [rates, setRates] = useState({});
   const [selectedCurrency, setSelectedCurrency] = useState("USD"); 
@@ -41,6 +40,8 @@ const Paintingdetails = () => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
     // Review init  
+  const reviewId = useParams().reviewId;
+  const [reviews, setReviews] = useState([]);
   const [numReviews, setNumReviews] = useState(0);
   const [name, setName] = useState('');
   const [rating, setRating] = useState('');
@@ -356,7 +357,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             const reviewData = reviewDocSnap.data();
             const updatedLikes = (reviewData.likes || 0) + 1;
             await setDoc(reviewDocRef, { ...reviewData, likes: updatedLikes }, { merge: true });
-            // Optionally, update the UI state to reflect the change
+        // Optionally, update the UI state to reflect the change
           } else {
             // If the review document doesn't exist, create it with the initial like count of 1
             await setDoc(reviewDocRef, { likes: 1 }, { merge: true });
@@ -373,15 +374,22 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             const reviewData = reviewDocSnap.data();
             const updatedDislikes = (reviewData.dislikes || 0) + 1;
             await setDoc(reviewDocRef, { ...reviewData, dislikes: updatedDislikes }, { merge: true });
-            // Optionally, update the UI state to reflect the change
           } else {
-            // If the review document doesn't exist, create it with the initial dislike count of 1
-            await setDoc(reviewDocRef, { dislikes: 1 }, { merge: true });
-            // Optionally, update the UI state to reflect the change
+            // The review does not exist
           }
         };
         
         
+                
+                // UseEffect hook to update the UI after the useParams hook has been executed
+        // useEffect(() => {
+        //   // Get the reviewId from the URL parameters
+        //   const reviewId = useParams().reviewId;
+
+          
+        //   handleLike(reviewId)
+        //   handleDislike(reviewId);
+        // }, []);
 
 
         useEffect(() => {
@@ -390,6 +398,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
         const unsubscribe = onSnapshot(reviewDocRef, (doc) => {
           if (doc.exists()) {
             const reviewData = doc.data();
+            
           } else {
           }
         });
@@ -511,7 +520,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               <div className="product-description-price">
                 {/* {calculateConvertedPrice(painting.price, selectedCurrency)} {selectedCurrency} */}
                   <h4>${calculatedPrice}</h4>
-                <h3>$60000</h3>
+                <h3>${calculatedPrice * 1.5}</h3>
               </div>
 
             <div className="buttons">
@@ -996,7 +1005,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               value="5"
               onChange={(e) => setRating(e.target.value)}
               />
-              <label for="rating-5"></label>
+              <label htmlFor="rating-5"></label>
            
               <input 
               type="radio" 
@@ -1004,7 +1013,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               id="rating-4"
               value="4"
               onChange={(e) => setRating(e.target.value)}/>
-              <label for="rating-4"></label>
+              <label htmlFor="rating-4"></label>
              
               <input
               type="radio" 
@@ -1012,7 +1021,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               id="rating-3"
               value="3"
               onChange={(e) => setRating(e.target.value)}/>
-              <label for="rating-3"></label>
+              <label htmlFor="rating-3"></label>
             
               <input
               type="radio" 
@@ -1020,7 +1029,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               id="rating-2"
               value="2"
               onChange={(e) => setRating(e.target.value)}/>
-              <label for="rating-2"></label>
+              <label htmlFor="rating-2"></label>
               
               <input 
               type="radio" 
@@ -1028,7 +1037,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               id="rating-1"
               value="1"
               onChange={(e) => setRating(e.target.value)}/>
-              <label for="rating-1"></label>
+              <label htmlFor="rating-1"></label>
               <div className="emoji-wrapper">
                 <div className="emoji">
                   <svg className="rating-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -1123,7 +1132,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
 
 
       <div className='review-input-group'>
-        <label for="name">Name:</label>
+        <label htmlFor="name">Name:</label>
         <input
           className='review-input'
           type="text"
@@ -1133,7 +1142,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
         />
       </div>
       <div className='review-input-group'>
-        <label  className='mb-5' for="comments">Comments:</label>
+        <label  className='mb-5' htmlFor="comments">Comments:</label>
         <textarea
           className='review-input'
           id="comments"

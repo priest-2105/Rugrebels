@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '../../config/fire';
 import './register.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const Register = () => {

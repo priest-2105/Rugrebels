@@ -606,11 +606,15 @@ painting-details{
     background-color: transparent !important;
 }
 .review-modal-bg{
-  background-color: #212121;
+  background-color: rgb(33, 33, 33,0.9);
 }
 
 .review-modal{
-  background-color: rgba(240, 248, 255,0.6)
+  background-color: rgba(240, 248, 255,0.4);
+  box-shadow: 6px 6px 10px rgb(255, 254, 254,0.3),
+  1px 1px 10px rgba(255, 255, 255, 0.6),
+  inset 2px 2px 10px rgba(0,0,0,0.2),
+  inset -1px -1px 5px rgba(255, 255, 255, 0.6);
 }
 
 .review-input-group{

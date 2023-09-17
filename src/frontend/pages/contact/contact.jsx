@@ -1,7 +1,7 @@
 import React from 'react'; 
 import './contact.css';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useFetch from '../../../assets/hooks/usefetch';
 
 const Contact = () => { 
@@ -16,7 +16,7 @@ const Contact = () => {
   const smile = ":)"
   
 
-  const history = useHistory(); // add this line to use useHistory hook
+  const history = useNavigate(); // add this line to use useNavigate hook
 
   const handleSubmit = (e) => {
     e.preventDefault();

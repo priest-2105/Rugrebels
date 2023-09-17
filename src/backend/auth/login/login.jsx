@@ -2,11 +2,11 @@ import { Button, Checkbox, Form, Input, message } from 'antd';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { auth } from '../../config/fire';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './login.css';
 
 const Login = () => {
-  const history = useHistory();
+  const history = useNavigate();
 
   const onFinish = (values) => {
     console.log('Success:', values);

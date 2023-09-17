@@ -61,7 +61,7 @@ i:hover{
   background-position: center;
   font-family: 'Alkatra', cursive;
   background-size: cover;
-  min-height: 10vh;
+  /* min-height: 10vh; */
   scroll-behavior:smooth; 
   overscroll-behavior: none;
   overflow: hidden;

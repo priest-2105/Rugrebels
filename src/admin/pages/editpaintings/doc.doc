@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useFetch from '../../../assets/hooks/usefetch';
 import './editpaintings.css'
  
@@ -12,7 +12,7 @@ const Editpaintings = () => {
 
     const { data:painting, preloader, error } = useFetch('https://rugrebelsdb.onrender.com/paintings/' + id); 
  
-    const history = useHistory();
+    const history = useNavigate();
 
     const handleClick = () => {
       fetch('https://rugrebelsdb.onrender.com/paintings/' + painting.id, {

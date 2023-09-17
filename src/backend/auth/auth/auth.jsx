@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { auth } from '../../config/fire';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import './auth.css'
 
@@ -87,7 +87,7 @@ const Auth = () => {
 
     // Login Config 
 
-    const history = useHistory();
+    const history = useNavigate();
 
     const onFinish = (values) => {
       console.log('Success:', values);

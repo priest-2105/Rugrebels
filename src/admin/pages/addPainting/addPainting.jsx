@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './addPainting.css';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../../../backend/config/fire'; // Import the Firestore and Storage instances from your Firebase configuration
 import { doc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import necessary Storage functions
@@ -16,7 +16,7 @@ const AddPainting = () => {
   const [img, setImg] = useState('');
   const [tags, setTags] = useState([]);
   const [adding, setAdding] = useState(false); // new state for tracking if the painting is being added
-  const history = useHistory();
+  const history = useNavigate();
 
   
   const handleSubmit = async (e) => {
