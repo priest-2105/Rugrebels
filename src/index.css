@@ -54,17 +54,13 @@ i:hover{
 
 
 .App{
-  background-color: rgb(18, 18, 18);
+  background-color: rgb(49, 44, 44);
   /* background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/1400/1ea9cb174272965.649f070e5cf0d.jpg'); */
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
   font-family: 'Alkatra', cursive;
   background-size: cover;
-  /* min-height: 10vh; */
-  scroll-behavior:smooth; 
-  overscroll-behavior: none;
-  overflow: hidden;
 }
 
 .errorpagemessage{
@@ -83,10 +79,6 @@ i:hover{
   width: 100%;
 }
 
-
-.contents{
-  min-height: 100vh;
-}
 
 
 .chatbox-container {

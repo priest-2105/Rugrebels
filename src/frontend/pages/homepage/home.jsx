@@ -3,6 +3,7 @@ import './home.css';
 import { Link } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore'; 
 import { db } from '../../../backend/config/fire'; 
+import './home.css';
 
 
 const Home = () => {

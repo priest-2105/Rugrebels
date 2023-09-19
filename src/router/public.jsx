@@ -42,7 +42,7 @@ const Public = () => {
             </Routes>
 
             </div>
-            <Footer/>
+            {/* <Footer/> */}
 
         </div>
     );

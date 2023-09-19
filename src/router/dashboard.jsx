@@ -29,7 +29,7 @@ const Dashboard = () => {
     ***********************************--> */}
     <div className="nav-header">
         {/* <Link to="index.html" className="brand-logo"> */}
-        <img src="../../public/images/327614953_1009264350035658_5769637390323480968_n-removebg-preview.png" className='ms-5' height="70px" width="50px"  alt="" />
+        <img src="images/327614953_1009264350035658_5769637390323480968_n-removebg-preview.png" className='ms-5' height="70px" width="50px"  alt="" />
         {/* </Link> */}
         <div className="nav-control">
             <div className="hamburger">
@@ -53,17 +53,10 @@ const Dashboard = () => {
                         <div className="dashboard_bar">
                             Dashboard
                         </div>
-                        <div className="d-flex align-items-center">
-                            <div className="input-group search-area">
-                                <input type="text" className="form-control" placeholder="Search"/>
-                                <span className="input-group-text"><Link to="javascript:void(0)"><i className="flaticon-381-search-2"></i></Link></span>
-                            </div>
-                           
-                        </div>
                     </div>
                     <ul className="navbar-nav header-right">
                         <li className=" dropdown notification_dropdown">
-                            <Link className="nav-link bell-link " to="javascript:void(0);">
+                            <Link className="nav-link bell-link " to="#">
                            <i className="bi bi-chat-fill"></i>
                                 <span className="badge light text-white bg-primary rounded-circle">76</span>
                             </Link>
@@ -71,7 +64,7 @@ const Dashboard = () => {
                         
                         
                         <li className=" dropdown notification_dropdown">
-                            <Link className="nav-link " to="javascript:void(0);" data-bs-toggle="dropdown">
+                            <Link className="nav-link " to="#" data-bs-toggle="dropdown">
                                  <i className="bi bi-bell-fill"></i>
 
                                 <span className="badge light text-white bg-primary rounded-circle">15</span>
@@ -81,7 +74,7 @@ const Dashboard = () => {
                                 <ul className="timeline">
                                     <li>
                                         <div className="timeline-badge primary"></div>
-                                        <Link className="timeline-panel text-muted" to="javascript:void(0);">
+                                        <Link className="timeline-panel text-muted" to="#">
                                             <span>10 minutes ago</span>
                                             <h6 className="mb-0">Youtube, a video-sharing website, goes live <strong className="text-primary">$500</strong>.</h6>
                                         </Link>
@@ -89,7 +82,7 @@ const Dashboard = () => {
                                     <li>
                                         <div className="timeline-badge info">
                                         </div>
-                                        <Link className="timeline-panel text-muted" to="javascript:void(0);">
+                                        <Link className="timeline-panel text-muted" to="#">
                                             <span>20 minutes ago</span>
                                             <h6 className="mb-0">New order placed <strong className="text-info">XF-2356.</strong></h6>
                                             <p className="mb-0">Quisque a consequat ante Sit amet magna at volutapt...</p>
@@ -98,7 +91,7 @@ const Dashboard = () => {
                                     <li>
                                         <div className="timeline-badge danger">
                                         </div>
-                                        <Link className="timeline-panel text-muted" to="javascript:void(0);">
+                                        <Link className="timeline-panel text-muted" to="#">
                                             <span>30 minutes ago</span>
                                             <h6 className="mb-0">john just buy your product <strong className="text-warning">Sell $250</strong></h6>
                                         </Link>
@@ -106,7 +99,7 @@ const Dashboard = () => {
                                     <li>
                                         <div className="timeline-badge success">
                                         </div>
-                                        <Link className="timeline-panel text-muted" to="javascript:void(0);">
+                                        <Link className="timeline-panel text-muted" to="#">
                                             <span>15 minutes ago</span>
                                             <h6 className="mb-0">StumbleUpon is acquired by eBay. </h6>
                                         </Link>
@@ -114,7 +107,7 @@ const Dashboard = () => {
                                     <li>
                                         <div className="timeline-badge warning">
                                         </div>
-                                        <Link className="timeline-panel text-muted" to="javascript:void(0);">
+                                        <Link className="timeline-panel text-muted" to="#">
                                             <span>20 minutes ago</span>
                                             <h6 className="mb-0">Mashable, a news website and blog, goes live.</h6>
                                         </Link>
@@ -122,7 +115,7 @@ const Dashboard = () => {
                                     <li>
                                         <div className="timeline-badge dark">
                                         </div>
-                                        <Link className="timeline-panel text-muted" to="javascript:void(0);">
+                                        <Link className="timeline-panel text-muted" to="#">
                                             <span>20 minutes ago</span>
                                             <h6 className="mb-0">Mashable, a news website and blog, goes live.</h6>
                                         </Link>
@@ -134,7 +127,7 @@ const Dashboard = () => {
                             </div>
                         </li>
                         <li className="  dropdown header-profile">
-                            <Link className="nav-link" to="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+                            <Link className="nav-link" to="#" role="button" data-bs-toggle="dropdown">
                                 <img src="/UI-ASSETS/images/images/avatar/1.jpg" width="20" alt=""/>
                             </Link>
                             <div className="dropdown-menu dropdown-menu-end">
@@ -146,7 +139,7 @@ const Dashboard = () => {
                                     <svg id="icon-inbox1" xmlns="http://www.w3.org/2000/svg" className="text-success" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                                     <span className="ms-2">Settings</span>
                                 </Link>
-                                <Link to="javascript:void(0);" className="dropdown-item ai-icon" data-bs-toggle="modal" data-bs-target=".logout-modal">
+                                <Link to="#" className="dropdown-item ai-icon" data-bs-toggle="modal" data-bs-target=".logout-modal">
                                     <span className="ms-2">Logout </span>
                                 </Link>
                             </div>
@@ -231,7 +224,7 @@ const Dashboard = () => {
                 </li>
                 
                 <li>
-                <Link to="javascript:void(0);" className="has-arrow " data-bs-toggle="modal" data-bs-target=".logout-modal">
+                <Link to="#" className="has-arrow " data-bs-toggle="modal" data-bs-target=".logout-modal">
                  <i className="bi bi-box-arrow-right"></i>
                   <span className="nav-text">Logout</span>
             </Link>
@@ -256,23 +249,23 @@ const Dashboard = () => {
 
 
 
-                <Route path="/addPainting" component={AddPainting} />
+                <Route exact path="/addPainting" element={<AddPainting/>} />
                 
                 
-                {  /* <Route path="/paintings/:id" component={Paintingdetails} /> */}
+                {  /* <Route exact path="/paintings/:id" element={<Paintingdetails/>} /> */}
                 
                 
-                <Route path="/admindashboard" component={Admindashboard} />
+                <Route exact path="/admindashboard" element={<Admindashboard/>} />
                 
-                <Route path="/adminpaintinglist" component={Adminpaintinglist} />
+                <Route exact path="/adminpaintinglist" element={<Adminpaintinglist/>} />
                 
-                <Route path="/editpaintings/:id" component={Editpaintings} />
+                <Route exact path="/editpaintings/:id" element={<Editpaintings/>} />
                 
                 
-                <Route path="/adminpaintingpreview/:id" component={Adminpaintingpreview} />
+                <Route exact path="/adminpaintingpreview/:id" element={<Adminpaintingpreview/>} />
                 
 
-                <Route path="/messages" component={Messages} />
+                <Route exact path="/messages" element={<Messages/>} />
 
 
                 </Routes>
