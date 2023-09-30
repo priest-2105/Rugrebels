@@ -103,7 +103,7 @@ function App() {
 
 
       {/* Dashboard ROUTE */}
-      <Route exact path="/dashboard/*" element={<Dashboard/>}/>
+      <Route exact path="/admin/*" element={<Dashboard/>}/>
 
 
     </Routes>

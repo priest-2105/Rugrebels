@@ -1,0 +1,113 @@
+.admin-customer-details-container{
+    margin-top: 20px;
+   padding: 20px;
+    width: 100%;
+    justify-content: center;
+    color: aliceblue;
+    background-color: #0f0f13;
+    border-radius: 10px;    
+      height: fit-content;
+}
+
+.admin-customer-details-container-inner{
+    display: flex;
+    align-items: center;
+
+}
+
+
+.admin-customer-details-container-inner img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.admin-customer-details-container-inner-description{
+    display: block;
+
+}
+
+
+.admin-customer-details-container-inner-description h2{
+    font-size: 15px;
+    margin-top: 10px;
+    line-height: normal;
+    font-weight: 760;
+    color: rgba(240, 248, 255, 0.799);
+}
+
+.admin-customer-details-container-inner-description p{
+    font-size: 15px;
+    margin-top: -10px;
+    font-weight: 760;
+    color: rgba(240, 248, 255, 0.301);
+}
+
+
+
+.admin-customer-details-container-inner button{
+    /* background:linear-gradient( 160deg, rgba(155, 33, 33, 6) 20%, rgba(255, 255, 255, 0) 100%)!important; */
+    background: linear-gradient( 160deg, rgb(255, 255, 255) 0% , rgb(88, 101, 25) 50%,  rgb(167, 213, 15) 80%,rgb(250, 254, 36) 90% ) !important;
+    padding: 10px 25px 10px 25px;
+    border-radius:8px;
+    margin-left: auto;
+    font-weight: 600;
+    margin-right: 50px;
+    transition-duration:0.5s ;
+    transition-timing-function: ease-in-out;
+  }
+  
+  
+  .admin-customer-details-container-inner button:hover{
+    transition-duration:0.5s ;
+    color: #1816167e;
+    transition-timing-function: ease-in-out;
+    /* background:linear-gradient( 160deg, rgba(155, 33, 33, 6) 20%, rgba(255, 255, 255, 0) 100%)!important; */
+    background: linear-gradient( 160deg,rgb(250, 254, 36)  0% ,rgb(167, 213, 15) 50%,   rgb(88, 101, 25) 80%, rgb(255, 255, 255, 0.9 ) 100% ) !important;
+    padding: 10px 25px 10px 25px;
+    border-radius:8px;
+  }
+
+
+  .admin-customer-more-details-tab span{
+
+        display: block;
+    }
+
+  .admin-customer-more-details-tab span{
+    margin-top: 10px;
+    align-items: center;
+    display: flex;
+    
+  }
+
+  .admin-customer-more-details-tab h6{
+    
+    font-weight: 500;
+    font-size: 17px;
+    color: grey;
+  }
+
+  .admin-customer-more-details-tab p{
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+
+
+  .delete-customer-button{
+    padding:10px 20px 10px 20px ;
+    margin-top: 50px;
+    border-radius: 8px;
+    font-weight: 799;
+    color:rgba(240, 248, 255, 0.801);
+  }
+
+
+  .delete-customer-button:hover{
+    
+    color:rgba(240, 248, 255, 0.511);
+
+  }

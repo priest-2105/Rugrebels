@@ -1,0 +1,98 @@
+.message-preview-container{    
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #0f0f13ad;
+    padding:40px 40px 40px 40px;
+    border-radius: 10px;
+    margin-top: 50px;
+    
+}
+
+
+.dashboard-message-outer-container h4{
+
+    color: aliceblue;
+    font-weight: 800;
+    font-size: 26px;
+
+}
+
+
+.message-preview-container table{
+
+    width: 100%;
+    justify-content: space-around;
+
+}
+
+.message-preview-container tr{
+   color: aliceblue;
+    margin-bottom: 50px !important;
+    padding: 20px 30px;
+}    
+
+.message-preview-container th button{
+
+    background-color: transparent;
+    border: none;
+   color: aliceblue;
+
+
+}
+
+.message-preview-container th button:hover{
+
+    background-color: transparent;
+    border: none;
+   color: rgba(240, 248, 255, 0.801);
+
+
+}
+
+.message-preview-container td{
+
+    color:rgba(240, 248, 255, 0.258);
+    font-weight: 800;
+
+}
+
+.message-preview-container td:nth-child(2){
+
+    color:rgba(240, 248, 255, 0.559);
+    font-weight: 800;
+
+}
+
+
+
+.message-preview-container table tr a{
+
+    margin-right: 20px;
+    font-weight: 600;
+    padding: 8px 15px 8px 15px;
+    border-radius: 8px;
+    color: #0f0f13;
+    background-color: rgba(255, 255, 255, 0.847);
+
+}
+
+
+.message-preview-container table  tr a:hover{
+
+    background-color: rgba(255, 255, 255, 0.355);
+
+}
+
+.message-preview-container table tr button{
+    font-size: 20px;
+    background-color: transparent;
+    border:none;
+}
+
+
+.message-preview-container .decoy-button{
+    height:50px;
+    background-color: transparent;
+    border:none;
+}

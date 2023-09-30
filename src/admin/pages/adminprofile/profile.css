@@ -1,0 +1,170 @@
+.admin-dashboard-profile-container h3{
+
+    font-size: 25px;
+    font-weight: 800;
+    color: aliceblue;
+}
+
+
+.admin-dashboard-profile{
+    padding: 20px 20px 50px 20px;
+    /* margin-bottom: 20px; */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #0f0f13ad;
+    border-radius: 10px;
+    
+}
+
+.admin-dashboard-profile h6{
+    color: rgba(240, 248, 255, 0.565);
+    font-weight: 700;
+    border-bottom: 4px solid rgba(240, 248, 255, 0.234);
+    padding-bottom: 15px;
+}
+
+.dashboard-profile-pic-change {
+
+    padding-bottom: 30px;
+    border-bottom: 4px solid rgba(240, 248, 255, 0.234);
+
+}
+
+
+.dashboard-profile-pic-change h4{
+
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: rgba(240, 248, 255, 0.565);
+    font-weight: 700;
+}
+
+.dashboard-profile-pic-change img{
+    border-radius: 50%;
+    width: 80px;
+    height: 75px;
+}
+
+.dashboard-profile-pic-change button{
+
+    margin-left: 20px;
+    font-weight: 600;
+    padding: 8px 15px 8px 15px;
+    border-radius: 8px;
+
+}
+
+
+.dashboard-profile-pic-change button:hover{
+
+    background-color: rgba(255, 255, 255, 0.355);
+
+}
+
+
+
+
+.dashboard-profile-account-information {
+
+    padding-top: 40px;
+    border-bottom: 4px solid rgba(240, 248, 255, 0.234);
+
+}
+
+
+
+.dashboard-profile-account-information h4{
+
+    margin-top: 10px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: rgba(240, 248, 255, 0.565);
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.dashboard-profile-account-information input::placeholder{
+    font-weight: 800;
+}
+
+.dashboard-profile-account-information-input-group input{
+    margin-right: 50px;
+}
+
+.dashboard-profile-account-information-input-group{
+    display: flex; 
+    margin-bottom: 30px;
+
+}
+
+
+
+.dashboard-profile-account-information-input-group button{
+
+    margin-left: 0px;
+    font-weight: 600;
+    padding: 8px 15px 8px 15px;
+    border-radius: 8px;
+
+}
+
+
+.dashboard-profile-account-information-input-group button:hover{
+
+    background-color: rgba(255, 255, 255, 0.355);
+
+}
+
+
+
+
+
+
+.dashboard-profile-account-security {
+
+    padding-top: 40px;
+
+
+}
+
+
+
+.dashboard-profile-account-security h4{
+
+    margin-top: 10px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: rgba(240, 248, 255, 0.565);
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.dashboard-profile-account-security input::placeholder{
+    font-weight: 800;
+}
+
+
+
+.dashboard-profile-account-security button{
+
+    margin-right: 20px;
+    font-weight: 600;
+    padding: 8px 15px 8px 15px;
+    border-radius: 8px;
+
+}
+
+
+.dashboard-profile-account-security button:hover{
+
+    background-color: rgba(255, 255, 255, 0.355);
+
+}
+
+
+.dashboard-change-email-adress{
+
+
+
+}

@@ -1,241 +1,579 @@
-.painting-preview-container {
+
+.dashboard-arts-container{
+  width: 100%;
+}
+
+
+.dashboard-top-art-info{
+width: 100%;
+justify-content: center;
+color: aliceblue ;
+background-color: #0f0f13;
+padding: 20px;
+border-radius: 10px;
+margin-bottom: 20px;
+font-weight: 800;
+align-items: center;
+
+}
+
+
+.dashboard-top-art-info h3{
+color: aliceblue ;
+font-size: 24px;
+}  
+
+.dashboard-top-art-info p{
+width: 400px;
+font-size: 14px;
+font-weight: 700;
+color: rgba(240, 248, 255,0.5);
+}
+
+.dashboard-arts-button{
+  /* background:linear-gradient( 160deg, rgba(155, 33, 33, 6) 20%, rgba(255, 255, 255, 0) 100%)!important; */
+  background: linear-gradient( 160deg, rgb(255, 255, 255) 0% , rgb(88, 101, 25) 50%,  rgb(167, 213, 15) 80%,rgb(250, 254, 36) 90% ) !important;
+  padding: 10px 25px 10px 25px;
+  border-radius:8px;
+  transition-duration:0.5s ;
+  transition-timing-function: ease-in-out;
+}
+
+
+.dashboard-arts-button:hover{
+  transition-duration:0.5s ;
+  transition-timing-function: ease-in-out;
+  /* background:linear-gradient( 160deg, rgba(155, 33, 33, 6) 20%, rgba(255, 255, 255, 0) 100%)!important; */
+  background: linear-gradient( 160deg,rgb(250, 254, 36)  0% ,rgb(167, 213, 15) 50%,   rgb(88, 101, 25) 80%, rgb(255, 255, 255, 0.9 ) 100% ) !important;
+  padding: 10px 25px 10px 25px;
+  border-radius:8px;
+}
+
+.product-dashboard-charts {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+
+}
+
+
+.product-dashboard-charts div{
+  margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  flex-wrap: wrap;     
-  width: 85%;
-  
-  }
-  .painting-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:space-around;
+  background-color: #0f0f13;
+  padding:10px 10px 10px 10px;
+  border-radius: 10px;
+}
 
+.product-total-revenue-charts{
+  width: 550px;
+}
+
+
+.product-traffic-impressions{
+ width:500px;
+}
+
+.dashboard-arts{
+margin-top: 20px;
+padding: 20px;
+width: 100%;
+justify-content: center;
+color: aliceblue;
+background-color: #0f0f13;
+border-radius: 10px;
+min-height: 500px;
+
+
+}
+
+
+
+
+.dashboard-art-header{
+border-bottom: rgb(240, 248, 255);
+}
+
+
+.dashboard-art-header h3{
+  color: rgb(240, 248, 255);
   }
+    
+
+.dashboard-arts h3{
+color: aliceblue;
+}
+
+
+.dashboard-arts table{
+margin-left: auto;
+margin-right: auto;
+width: 100%;
+
+}
+
+
+
+.dashboard-arts tbody{
+ width: 100%;
+ border-radius: 10px;
+ overflow-y: scroll;
+ height: fit-content;
+}
+
+.dashboard-arts tbody tr img{
+object-fit: cover;
+}
+
+
+/* Hide the default checkbox */
+.dashboard-arts input[type="checkbox"] {
+  display: none;
+}
+
+/* Create a custom checkbox container */
+.dashboard-arts .checkbox-container {
+  display: inline-block;
+  position: relative;
+  /* padding-left: 30px;  */
+  margin-bottom: 12px; 
+  cursor: pointer;
+  font-size: 16px; 
+}
+
+/* Style the custom checkbox */
+.dashboard-arts .checkbox-container .custom-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Style the checkmark (visible part) */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  border: 3px solid #ffffff46;
+  background-color: #eeeeee09; /* Unchecked background color */
+  border-radius: 5px;
+}
+
+/* On mouse-over, add a grey background color */
+.dashboard-arts .checkbox-container:hover .checkmark {
+  background-color:rgba(167, 213, 15,0.2);
+}
+
+
+.dashboard-arts .checkbox-container .custom-checkbox:checked + .checkmark {
+  background-color: rgb(167, 213, 15); 
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.dashboard-arts .checkbox-container .custom-checkbox:checked + .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.dashboard-arts .checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+
+
+.dashboard-arts thead{
+background-color: rgba(255, 255, 255, 0.03);
+border-radius: 10px;
+align-items: center;
+}
+
+
+.dashboard-arts th{
+color:grey;
+width: 120px;
+font-size: 14px;
+padding: 20px 5px 20px 5px;
+}
+
+.dashboard-arts th button{
+  background-color: transparent;
+  border: none;
+  font-weight: 800;
+  color:grey;
+  font-size: 14px;
+
+}
+
+
+
+.dashboard-arts thead th:nth-last-child(1){
+border-top-right-radius: 5px;
+border-bottom-right-radius: 5px;
+}
+
+.dashboard-arts thead th:nth-child(1){
+border-top-left-radius: 5px;
+border-bottom-left-radius: 5px;
+padding:0;
+}
+/* 
+.dashboard-arts tbody td:nth-child(1){
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding:0;
+ 
+} */
   
-  .painting-container{  background-color:rgba(255, 250, 250,0.7);
-    text-align: center;  
-    padding-bottom: 20px;
-    margin-top: 100px;
-    height: fit-content;
-    text-align: left;
-    position: relative;
-     flex-basis: calc(45% - 20px); 
-  }
+
+.dashboard-arts tr{
+align-items: center;
+border-bottom: 3px solid rgba(240, 248, 255, 0.054);
+}
+
+
+.dashboard-arts td{
+width: 140px;
+text-align: start;
+margin-right: auto;
+margin-bottom: 10px;
+padding: 15px 10px 15px 10px;
+font-weight: 700;
+color: rgba(240, 248, 255, 0.299);
+}
+
+.dashboard-arts table tr td:nth-last-child(1){
+
+font-weight: 700;
+-color:rgb(167, 213, 15,0.6) ; 
+
+}
+
+
+.dashboard-arts span{
+padding: 5px 10px 5px 10px;
+}
+
+.dashboard-arts span.active{
+background-color: rgba(66, 205, 147,0.4);
+}
+
+
+.dashboard-arts span.out-of-stock{
+background-color: rgba(222, 12, 9, 0.2);
+}
+
+
+.dashboard-arts span.inactive{
+background-color: rgba(188, 63, 188,0.3);
+
+}
+
+
+
+
+
+
+
 
  
 
-  .admin-painting-preview img{
-    margin-left: auto;
-    margin-right: auto;
-    height: 500px;
-    width:100%;
+
+
+
+
+
+
+
+
+
+.painting-grid{  
+  min-height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  justify-content: space-between;
+  display: grid;    
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0% 10%;
+  justify-items: end; 
+  padding-top: 5px;
   }
 
-  .admin-painting-preview:hover img{
-    transform: scale(0.98);
-    transition-duration: 0.5s; 
-    transition-timing-function: ease-out;
+
+
+  .painting-container {
+  transition-duration:0.5s !important;
+  transition-timing-function: ease-in-out;
+  position: relative;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;    
+  width: 100%;
+  overflow: hidden;
+  margin-top: 100px;
+  height: 350px;
+  text-align: left;
+  position: relative;
+  background-size: 120% 120%;
+  background-repeat: no-repeat;
+  background-position: center;
+  backface-visibility: visible;
+  display: block;
+  transition-duration: 1.5s;
+  transition-timing-function: ease-in-out;
   }
+
+
+  .painting-container:hover{
+  scale:1.1;
+  background-size: 200% 200%;
+  transition-duration: 5s; 
+  transition-property: all;
+  transition-timing-function: ease-in-out;
+ 
+  }
+
+  .animate:first-child {
+    transform: translateX(-150%);
+    opacity: 0;
+  }
+ .animate:last-child {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+  
+  .slide-in {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+  }
+
 
   a{text-decoration: none;}
 
-  .admin-painting-preview h2{
-    color:rgb(38, 19, 19);
-    text-align: left;
-    padding-left: 10px;
+  .admin-preview-details{
+  height: 100%;
+  width: 100%;
+  background: linear-gradient( 180deg, rgba(0, 0, 0, 0.05) 10%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0.9) 100% );
+  bottom: -78%; 
+  position: absolute;
+  transition-duration: 0.5s;
+  transition-property: all;
+  transition-timing-function: ease-in-out;
   }
 
-  .admin-painting-preview p{
-    padding-top: 20px;
-    width: 100%;
-    padding: 10px 20px 10px 20px;
-    color:grey;
-  }
-  
-  .admin-painting-preview span{ 
-    margin-right: auto;
-    margin-left: 0;
-    justify-content: left;
-    color:  rgb(61, 36, 36);
-    padding-left: 10px;
-    font-weight: 800;
-  }
-
-  .admin-painting-preview h5{
-    text-align: end;
-    color:  rgba(61, 36, 36,0.5);
-    padding-right: 10px;
-    font-weight: 400;
-    font-style: italic;
-
-  }
-
-  .admin-painting-preview h4{
-   margin-left: 15px;
-  }
-
-
-  .admin-painting-preview:hover img{
-    transform: scale(0.98);
-    transition-duration: 0.5s; 
-    transition-timing-function: ease-out;
-  }
-
-  a{text-decoration: none;}
-
-  .admin-painting-preview h2{
-    color:rgb(38, 19, 19);
-    text-align: left;
-    padding-left: 10px;
-  }
-
-  .admin-painting-preview p{
-    padding-top: 20px;
-    width: 100%;
-    padding: 10px 20px 10px 20px;
-    color:grey;
-  }
-  
-  .admin-painting-preview span{ 
-    margin-right: auto;
-    margin-left: 0;
-    justify-content: left;
-    color:  rgb(61, 36, 36);
-    padding-left: 10px;
-    font-weight: 800;
-  }
-
-  .admin-painting-preview h5{
-    text-align: end;
-    color:  rgba(61, 36, 36,0.5);
-    padding-right: 10px;
-    font-weight: 400;
-    font-style: italic;
+  .painting-container:hover .admin-preview-details{
+  transition-duration: 0.8s;
+  transition-property: all;
+  transition-timing-function: ease-in-out;
+  bottom: -15%; 
 
   }
 
 
-  .delete-button{
-    position: absolute;
-    bottom: 0%;
-    font-size: 20px;
-    font-weight: 700;
-    height:1px;
-    border: none;
-    background-color: transparent;
-    color: transparent;
-    width: 100%;
-    padding-top: 10px;
-    text-align: center;
-    
-    /* display: none; */
+  .painting-container h2{
+  color:aliceblue;
+  text-align: left;
+  font-size: 30px;
+  padding-left: 10px;
+  transition-duration: 0.8s;
+  transition-property: all;
+  transition-timing-function: ease-in-out;
   }
+
+  .painting-container:hover h2{
+  color:rgb(240, 248, 255,0.5);
+  transition-duration: 0.8s;
+  transition-property: all;
+  transition-timing-function: ease-in-out;
+  }
+
+
+  .painting-container h4{
+  margin-left: 15px;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(240, 248, 255,6);
+
+  }
+
+  .painting-container:hover{
+  color: rgb(240, 248, 255,0.6);
+
+  }
+
+
+  .painting-container p{
+  padding-top: 20px;
+  width: 100%;
+  font-size: 17px;
+  padding: 10px 20px 10px 20px;
+  color: rgb(240, 248, 255,0.7);
+  }
+
+  .painting-container h5{
+  text-align: end;
+  color: rgb(240, 248, 255,0.9);
+  padding-right: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  font-style: italic;
+  }
+
 
   .edit-button{
-    position: absolute;
-    top: 30%;
-    padding-top: 10px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 700;
-    height:1px;
-    border: none;
-    background-color: transparent;
-    color: transparent;
-    width: 100%;
-    /* display: none; */
+  position: absolute;
+  top: -25%;
+  right: 3%;
+  padding: 6px 6px 6px 6px ;
+  border-radius: 8px;
+  font-size: 15px;
+  border: 2px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  margin-left: 15px;
   }
 
-  .admin-painting-preview:hover .edit-button{
+  .edit-button i{
+    font-size:15px;
+  }
+
+  .edit-button:hover{
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+  color: aliceblue;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 2px solid aliceblue; 
+  }
+
+  .painting-container:hover  .edit-button{
     transition-duration: 0.5s;
-    /* display: block; */
-    transition-timing-function: ease-in-out;
-    background-color: rgba(233, 222, 155,0.6);
-    color: darkslategrey;
-    height: 55px;
-    }
+    transition-timing-function: ease-in-out;  
+    top: 1%;
+  }
+
+  .view-button{
+  padding: 6px 6px 6px 6px ;
+  border-radius: 8px;
+  font-size: 15px;
+  border: 2px solid aliceblue;
+  color: aliceblue;
+  text-decoration: none;
+  margin-left: 15px;
+  }
 
 
-  .admin-painting-preview:hover .delete-button{
-    transition-duration: 0.5s;
-    /* display: block; */
-    transition-timing-function: ease-in-out;
-    color: snow;
-    height: 55px;
-    }
+
+  .view-button:hover{
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+  color: rgb(0, 0, 0,0.5);
+  background-color: rgb(240, 248, 255,0.4);
+  border: none;
+
+  }
 
 
-    .popup{
-      position: fixed;
-      height: 100px;
-      width: 250px;
-    }
+
+  .popupp{
+  position:fixed;
+  top: 5%;
+  right:5%;
+  color: grey;
+  background-color:rgb(233, 222, 155); 
+  padding: 20px 50px 20px 50px; 
+  animation-name: notification;
+  animation-duration: 2s;
+  }
 
   @media only screen and (max-width:991px) {
-    
-    .admin-painting-preview {
-      flex-basis: calc(85% - 20px);
-      margin-top: 100px;
-    }
 
-    .admin-painting-preview h2{
-      font-size: 40px;
-    }
+  .painting-container {
+  flex-basis: calc(85% - 20px);
+  margin-top: 100px;
+  }
+
+  .painting-container h2{
+  font-size: 40px;
+  }
 
 
   }
-  
+
 
 
   @media only screen and (max-width:768px) {
-    
-    .admin-painting-preview {
-      flex-basis: calc(95% - 20px);
-      margin-top: 100px;
-    }
 
-    .admin-painting-preview img{
-      height: 400px;
-    }
-  
-    .admin-painting-preview h2{
-      font-size: 35px;
-    }
+  .painting-container {
+  flex-basis: calc(95% - 20px);
+  margin-top: 100px;
+  } 
 
-    .delete-button{
-    color: snow;
-    height: 30px;
-    font-size: 15px;
+  .painting-container h2{
+  font-size: 35px;
+  }
 
-    }
+  .edit-button{
+  font-size: 15px;
 
-    .delete-button i{
-      font-size: 15px !important;
-    }
-  
-    .edit-button{
-    padding-top: 0px;
-    height: 30px;
-    font-size: 15px;
-      background-color: rgba(233, 222, 155,0.6);
-      color: darkslategrey; 
-    }
-  
+  }
+
+  .view-button{
+  font-size: 15px;
+  }
+
 
 
   }
 
 
 
+  @media (min-width:760px) and (max-width:1100px) {
+
+  .painting-grid {
+  width: 97%;
+  grid-gap: 0% 3%;
+  }
+  }
+
   @media only screen and (max-width:480px) {
-    
-    
-    .admin-painting-preview img{
-      height: 250px;
-    }
-  
-    .admin-painting-preview h2{
-      font-size: 30px;
-    }
+
+  .painting-container h2{
+  font-size: 30px;
+  }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  @media screen and (max-width: 760px) {
+  .shop-items-container  {
+
+  grid-template-columns: 1fr;
+  justify-items: center;
+  }
+
   }

@@ -228,7 +228,7 @@ body {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #393939;
+  color: aliceblue;
   background-color: #F8F8F8;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
@@ -408,7 +408,7 @@ table {
 caption {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  color: #89879f;
+  color: aliceblue;
   text-align: left; }
 
 th {
@@ -1488,15 +1488,15 @@ progress {
 
 .table {
   --bs-table-bg: transparent;
-  --bs-table-striped-color: #393939;
+  --bs-table-striped-color: aliceblue;
   --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
-  --bs-table-active-color: #393939;
+  --bs-table-active-color: aliceblue;
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-  --bs-table-hover-color: #393939;
+  --bs-table-hover-color: aliceblue;
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
   width: 100%;
   margin-bottom: 1rem;
-  color: #393939;
+  color: aliceblue;
   vertical-align: top;
   border-color: #EEEEEE; }
   .table > :not(caption) > * > * {
@@ -1677,7 +1677,7 @@ progress {
 .form-text {
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: #89879f; }
+  color: aliceblue; }
 
 .form-control {
   display: block;
@@ -1686,7 +1686,7 @@ progress {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #393939;
+  color: aliceblue;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #e6e6e6;
@@ -1701,7 +1701,7 @@ progress {
     .form-control[type="file"]:not(:disabled):not([readonly]) {
       cursor: pointer; }
   .form-control:focus {
-    color: #393939;
+    color: aliceblue;
     background-color: #fff;
     border-color: #fc9d85;
     outline: 0;
@@ -1718,7 +1718,7 @@ progress {
     padding: 0.375rem 0.75rem;
     margin: -0.375rem -0.75rem;
     margin-inline-end: 0.75rem;
-    color: #393939;
+    color: aliceblue;
     background-color: #e9ecef;
     pointer-events: none;
     border-color: inherit;
@@ -1736,7 +1736,7 @@ progress {
     padding: 0.375rem 0.75rem;
     margin: -0.375rem -0.75rem;
     margin-inline-end: 0.75rem;
-    color: #393939;
+    color: aliceblue;
     background-color: #e9ecef;
     pointer-events: none;
     border-color: inherit;
@@ -1757,7 +1757,7 @@ progress {
   padding: 0.375rem 0;
   margin-bottom: 0;
   line-height: 1.5;
-  color: #393939;
+  color: aliceblue;
   background-color: transparent;
   border: solid transparent;
   border-width: 1px 0; }
@@ -1822,7 +1822,7 @@ textarea.form-control-lg {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #393939;
+  color: aliceblue;
   background-color: #fff;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
@@ -1843,7 +1843,7 @@ textarea.form-control-lg {
     background-color: #e9ecef; }
   .form-select:-moz-focusring {
     color: transparent;
-    text-shadow: 0 0 0 #393939; }
+    text-shadow: 0 0 0 aliceblue; }
 
 .form-select-sm {
   padding-top: 0.25rem;
@@ -2068,7 +2068,7 @@ textarea.form-control-lg {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #393939;
+  color: aliceblue;
   text-align: center;
   white-space: nowrap;
   background-color: #e9ecef;
@@ -2248,7 +2248,7 @@ textarea.form-control-lg {
   display: inline-block;
   font-weight: 400;
   line-height: 1.5;
-  color: #393939;
+  color: aliceblue;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
@@ -2264,7 +2264,7 @@ textarea.form-control-lg {
     .btn {
       transition: none; } }
   .btn:hover {
-    color: #393939; }
+    color: aliceblue; }
   .btn-check:focus + .btn, .btn:focus {
     outline: 0;
     box-shadow: 0 0 0 0.25remrgba(93, 145, 240,0.25); }
@@ -2743,7 +2743,7 @@ textarea.form-control-lg {
   padding: 0.5rem 0;
   margin: 0;
   font-size: 0.875rem;
-  color: #393939;
+  color: aliceblue;
   text-align: left;
   list-style: none;
   background-color: #fff;
@@ -3510,7 +3510,7 @@ textarea.form-control-lg {
   width: 100%;
   padding: 1rem 1.25rem;
   font-size: 0.875rem;
-  color: #393939;
+  color: aliceblue;
   text-align: left;
   background-color: transparent;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -3836,7 +3836,7 @@ textarea.form-control-lg {
     text-decoration: none;
     background-color: #f8f9fa; }
   .list-group-item-action:active {
-    color: #393939;
+    color: aliceblue;
     background-color: #e9ecef; }
 
 .list-group-item {
@@ -4563,7 +4563,7 @@ textarea.form-control-lg {
 
 .popover-body {
   padding: 1rem 1rem;
-  color: #393939; }
+  color: aliceblue; }
 
 .carousel {
   position: relative; }
@@ -5731,10 +5731,10 @@ textarea.form-control-lg {
   color: #fff !important; }
 
 .text-body {
-  color: #393939 !important; }
+  color: aliceblue !important; }
 
 .text-muted {
-  color: #89879f !important; }
+  color: aliceblue !important; }
 
 .text-black-50 {
   color: rgba(0, 0, 0, 0.5) !important; }
@@ -7672,7 +7672,7 @@ li {
   list-style: none; }
 
 a {
-  color: #393939;
+  color: aliceblue;
   text-decoration: none; }
   a:hover, a:focus, a.active {
     text-decoration: none; }
@@ -9099,7 +9099,7 @@ svg.pulse-svg {
     .header-profile > a.nav-link .header-info small, .header-profile > a.nav-link .header-info .small {
       display: block;
       font-size: 0.8125rem;
-      color: #89879f;
+      color: aliceblue;
       font-weight: 400;
       line-height: 1.2; }
   @media only screen and (max-width: 87.5rem) {
@@ -11710,7 +11710,7 @@ svg.pulse-svg {
     .dlabnav .header-info2 span {
       font-size: 1.125rem;
       font-weight: 500;
-      color: #393939; }
+      color: aliceblue; }
       @media only screen and (max-width: 87.5rem) {
         .dlabnav .header-info2 span {
           font-size: 0.9rem; } }
@@ -13886,7 +13886,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     .chatbox .card-header p {
       line-height: 1.2;
       font-size: 0.75rem;
-      color: #393939; }
+      color: aliceblue; }
   .chatbox .chat-list-header {
     justify-content: space-between;
     background: #fff; }
@@ -18891,7 +18891,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     .email-list .message-single .custom-checkbox {
       margin-top: 0.125rem; }
     .email-list .message-single i {
-      color: #89879f;
+      color: aliceblue;
       font-size: 1.125rem;
       padding-left: .4rem; }
     .email-list .message-single i.yellow {
@@ -19007,7 +19007,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .email-filter .input-group-prepend i {
   font-size: 0.875rem;
-  color: #89879f; }
+  color: aliceblue; }
 
 .email-filter .input-group-prepend .input-group-text {
   border: 0;
@@ -19019,11 +19019,11 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   border: 0;
   font-size: 0.875rem;
   height: 1.875rem;
-  color: #89879f;
+  color: aliceblue;
   border-bottom: 0.0625rem solid #DDDFE1; }
   .email-filter .input-group .form-control::placeholder {
     font-size: 0.875rem;
-    color: #89879f; }
+    color: aliceblue; }
 
 .email-filter .input-group > .form-control {
   min-height: 1.875rem; }
@@ -19321,7 +19321,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         .event-chat-ryt .chat-reciver .media .media-body p .time {
           position: absolute;
           font-size: 0.75rem;
-          color: #393939;
+          color: aliceblue;
           font-weight: 400;
           bottom: 0;
           left: -5rem; }
@@ -19361,7 +19361,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       .event-chat-ryt .chat-sender .media .media-body p .time {
         position: absolute;
         font-size: 0.625rem;
-        color: #393939;
+        color: aliceblue;
         font-weight: 400;
         bottom: 0;
         right: -5rem; }
@@ -19468,7 +19468,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     margin-bottom: 0; }
   .author-profile .author-info span {
     display: block;
-    color: #393939; }
+    color: aliceblue; }
     [data-theme-version="dark"] .author-profile .author-info span {
       color: #fff; }
   .author-profile .info-list li {
@@ -19484,7 +19484,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       [data-theme-version="dark"] .author-profile .info-list li a {
         color: #fff; }
     .author-profile .info-list li span {
-      color: #393939;
+      color: aliceblue;
       font-weight: 500; }
       [data-theme-version="dark"] .author-profile .info-list li span {
         color: #fff; }
@@ -20204,7 +20204,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   [data-theme-version="dark"] .form-file-label {
     background: #2e2e42;
     border-color: #2e2e42;
-    color: #393939; }
+    color: aliceblue; }
 
 .custom_file_input .form-file-label::after {
   height: 100%; }
@@ -20741,7 +20741,7 @@ textarea.form-control {
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
   line-height: 2.4rem;
-  color: #393939;
+  color: aliceblue;
   padding-left: 0.9375rem;
   min-height: 2.5rem; }
   [data-theme-version="dark"] .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -20770,7 +20770,7 @@ textarea.form-control {
 
 .select2-container .select2-selection--multiple {
   min-height: 2.5rem;
-  color: #393939;
+  color: aliceblue;
   border-radius: 0.625rem;
   border: 0.0625rem solid #c8c8c8; }
   [data-theme-version="dark"] .select2-container .select2-selection--multiple {
@@ -20788,7 +20788,7 @@ textarea.form-control {
     border-color: #2e2e42; }
 
 .swal2-popup .swal2-content {
-  color: #393939; }
+  color: aliceblue; }
 
 .select2-container--classic .select2-selection--single {
   background-image: none; }
@@ -21032,7 +21032,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     border: 1px solid #e6e6e6 !important;
     background-color: transparent !important;
     font-weight: 400;
-    color: #393939 !important; }
+    color: aliceblue !important; }
     [data-theme-version="dark"] .bootstrap-select .btn {
       border-color: #2e2e42 !important;
       background: #17171E !important; }
@@ -21040,7 +21040,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       outline: none !important;
       outline-offset: 0; }
       [data-theme-version="dark"] .bootstrap-select .btn:active, [data-theme-version="dark"] .bootstrap-select .btn:focus, [data-theme-version="dark"] .bootstrap-select .btn:hover {
-        color: #393939 !important; }
+        color: aliceblue !important; }
   .bootstrap-select .dropdown-menu {
     border-color: #e6e6e6 !important;
     box-shadow: 0rem 0rem 2.5rem 0rem rgba(82, 63, 105, 0.1); }
@@ -21910,7 +21910,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
     [data-theme-version="dark"] .accordion-primary .accordion-header.collapsed {
       background: var(--rgba-primary-5);
       border-color: var(--rgba-primary-5);
-      color: #393939; }
+      color: aliceblue; }
 
 .accordion-primary-solid .accordion-header {
   background: var(--primary);
@@ -21929,7 +21929,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
     [data-theme-version="dark"] .accordion-primary-solid .accordion-header.collapsed {
       background: var(--rgba-primary-1);
       border-color: var(--rgba-primary-1);
-      color: #393939; }
+      color: aliceblue; }
 
 .accordion-primary-solid .accordion__body {
   border: 0.125rem solid var(--primary);
@@ -21970,7 +21970,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
     [data-theme-version="dark"] .accordion-danger-solid .accordion-header.collapsed {
       background: rgba(247, 43, 80, 0.15);
       border-color: rgba(247, 43, 80, 0.15);
-      color: #393939; }
+      color: aliceblue; }
 
 .accordion-danger-solid .accordion__body {
   border: 0.125rem solid #f72b50;
@@ -22376,7 +22376,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
 
 .alert.alert-outline-secondary {
   background: transparent;
-  color: #393939;
+  color: aliceblue;
   border-color: #145650; }
 
 .alert.alert-outline-success {
@@ -22403,7 +22403,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
 
 .alert.alert-outline-dark {
   background: transparent;
-  color: #393939;
+  color: aliceblue;
   border-color: #6e6e6e; }
 
 .alert.alert-outline-light {
@@ -22466,7 +22466,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
   border: 0.0625rem solid #145650;
   color: #145650; }
   [data-theme-version="dark"] .badge-outline-secondary {
-    color: #393939; }
+    color: aliceblue; }
 
 .badge-outline-success {
   border: 0.0625rem solid #68e365;
@@ -22490,13 +22490,13 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
   border: 0.0625rem solid #e6e6e6;
   color: #6e6e6e; }
   [data-theme-version="dark"] .badge-outline-light {
-    color: #393939; }
+    color: aliceblue; }
 
 .badge-outline-dark {
   border: 0.0625rem solid #6e6e6e;
   color: #6e6e6e; }
   [data-theme-version="dark"] .badge-outline-dark {
-    color: #393939; }
+    color: aliceblue; }
 
 .badge-xs {
   font-size: 0.625rem;
@@ -22591,7 +22591,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
   color: #6e6e6e; }
   [data-theme-version="dark"] .light.badge-dark {
     background-color: #ffefeb;
-    color: #393939; }
+    color: aliceblue; }
 
 .light.badge-light {
   background-color: #fbfbfb;
@@ -22667,7 +22667,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
       color: #145650; }
     .page-titles .breadcrumb-datepicker {
       font-size: 0.75rem;
-      color: #89879f; }
+      color: aliceblue; }
       .page-titles .breadcrumb-datepicker__icon {
         font-size: 0.875rem; }
   .page-titles .breadcrumb-widget .border-dark {
@@ -23663,7 +23663,7 @@ button {
   padding: 1rem 1rem; }
   .dropdown-menu .dropdown-item {
     font-size: 1rem;
-    color: #393939;
+    color: aliceblue;
     padding: 0.5rem 1.75rem; }
     @media only screen and (max-width: 87.5rem) {
       .dropdown-menu .dropdown-item {
@@ -24509,7 +24509,7 @@ code {
       background-color: #fff;
       border-color: var(--primary); }
     .multi-steps > li.is-active ~ li {
-      color: #393939; }
+      color: aliceblue; }
       .multi-steps > li.is-active ~ li:before {
         background-color: #e6e6e6;
         border-color: #e6e6e6; }
@@ -24958,7 +24958,7 @@ code {
       color: var(--primary); }
 
 .social-icons-muted ul li a i {
-  color: #89879f; }
+  color: aliceblue; }
 
 .social-links a {
   padding: .5rem; }
@@ -25814,13 +25814,13 @@ table.dataTable.no-footer {
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
-  color: #393939 !important; }
+  color: aliceblue !important; }
 
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter,
 .dataTables_wrapper .dataTables_processing,
 .dataTables_wrapper .dataTables_paginate {
-  color: #393939;
+  color: aliceblue;
   border-radius: 1rem;
   padding: 0.125rem 0;
   margin-bottom: 1.25rem; }
@@ -25834,7 +25834,7 @@ table.dataTable.no-footer {
   padding: 0.3125rem 0.3125rem; }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-  color: #393939 !important; }
+  color: aliceblue !important; }
 
 table.dataTable.row-border tbody th,
 table.dataTable.row-border tbody td,

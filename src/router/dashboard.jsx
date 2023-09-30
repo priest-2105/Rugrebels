@@ -5,16 +5,35 @@ import Admindashboard from '../admin/pages/admindashboard/admindashboard';
 import Adminpaintinglist from '../admin/pages/adminpaintinglist/adminpaintinglist';
 import Adminpaintingpreview from '../admin/pages/adminpaintingpreview/adminpaintingpreview';
 import Editpaintings from '../admin/pages/editpaintings/editpaintings';
-import Messages from '../admin/pages/messages/messages';
 import '../admin/admin-styles.css'
+import Profile from '../admin/pages/adminprofile/profile';
+import Settings from '../admin/pages/adminsettings/settings';
+import Notification from '../admin/pages/notification/notification';
+import Customers from '../admin/pages/customers/customers';
+import Feedback from '../admin/pages/feedback/feedback';
+import { signOut} from 'firebase/auth';
+import { auth } from '../backend/config/fire';
+import { useState } from 'react';
+import Orders from '../admin/pages/orders/orders';
+import AdminCustomerDetails from '../admin/pages/customers/customerdetails';
+import AdminOrderDetails from '../admin/pages/orderdetails/orderdetails';
+import AdminFeedbackDetails from '../admin/pages/feedback/feedbackdetails';
+import TodayDate from '../backend/component/date/todaysdate'
+
 
 const Dashboard = () => {
-  
+
+  const [user, setUser] = useState(null);
+
+
+    const logOut = async () => {
+        await signOut(auth);
+      };
   
     return (
         <div>
 
-  <div className='dashboard--layout'>
+  <div className='dashboard--layout' style={{color:"#0f0f13"}}>
  
    
 
@@ -27,14 +46,17 @@ const Dashboard = () => {
 {/* <!--********************************** 
         Nav header start
     ***********************************--> */}
-    <div className="nav-header">
+   
+    <div className="nav-header ps-2" style={{backgroundColor:"#0f0f13"}}>
         {/* <Link to="index.html" className="brand-logo"> */}
-        <img src="images/327614953_1009264350035658_5769637390323480968_n-removebg-preview.png" className='ms-5' height="70px" width="50px"  alt="" />
-        {/* </Link> */}
-        <div className="nav-control">
+        <div  className="d-flex align-items-center pt-2"><img src="/images/327614953_1009264350035658_5769637390323480968_n-removebg-preview.png" height="70px" width="45px"  alt="" />
+        <h4 className='mt-2'>RugRebels</h4>
+            <div className="nav-control">
             <div className="hamburger">
                 <span className="line"></span><span className="line"></span><span className="line"></span>
-            </div>
+            </div> </div>
+        {/* </Link> */}
+       
         </div>
     </div>
     {/* <!--**********************************
@@ -46,19 +68,41 @@ const Dashboard = () => {
         Header start
     ***********************************--> */}
     <div className="header">
-        <div className="header-content">
-            <nav className="navbar navbar-expand">
+        <div className="header-content"  style={{backgroundColor:"#0F0F0F"}}>
+            <nav className="navbar navbar-expand" style={{ background:"linear-gradient( 160deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 100%)!important "}}>
                 <div className="collapse navbar-collapse justify-content-between">
                     <div className="header-left">
                         <div className="dashboard_bar">
-                            Dashboard
+                          
+            <div className="dropdown header-profile2">
+                <Link className="nav-link">
+                    <div className="header-info2 d-flex align-items-center">
+                        <img className='rounded' src="https://firebasestorage.googleapis.com/v0/b/rugrebelsstore.appspot.com/o/users%2Fcoolking%20bear.png?alt=media&token=6811bcf5-352c-4da0-9b75-04372f5490bb" height="40px" width="45px" alt=""/>
+                        <div className="d-flex align-items-center sidebar-info">
+                            <div>
+                                <h5 style={{fontWeight:"700",lineHeight:"4px"}} className="ms-2 mt-4 font-w400 d-block">John Doe </h5>
+                                <p style={{fontSize:"10px"}} className="ms-2 d-block">Johndoe@gmail.com</p>
+                                {/* <small className="text-end font-w400">Superadmin</small> */}
+                            </div>	
+                        </div>
+                        
+                    </div>
+                </Link>
+            </div>
                         </div>
                     </div>
-                    <ul className="navbar-nav header-right">
+                    <ul className="navbar-nav header-right mt-5">
+
+
+                    <li className="mt-2 dropdown notification_dropdown">
+                        <h5 style={{fontWeight:"900", fontSize:"13px", color:"aliceblue"}}><TodayDate /> </h5>
+                        </li>	
+                        
+
+
                         <li className=" dropdown notification_dropdown">
                             <Link className="nav-link bell-link " to="#">
-                           <i className="bi bi-chat-fill"></i>
-                                <span className="badge light text-white bg-primary rounded-circle">76</span>
+                           <i className="bi bi-moon-fill"></i>
                             </Link>
                         </li>	
                         
@@ -122,24 +166,25 @@ const Dashboard = () => {
                                     </li>
                                </ul>
                                
-                            </div>   <Link className="all-notification" to="/dashboard/notifications">See all notifications <i className="ti-arrow-end"></i></Link>
+                            </div>   <Link className="all-notification" to="/admin/notifications">See all notifications <i className="ti-arrow-end"></i></Link>
                               
                             </div>
                         </li>
-                        <li className="  dropdown header-profile">
-                            <Link className="nav-link" to="#" role="button" data-bs-toggle="dropdown">
-                                <img src="/UI-ASSETS/images/images/avatar/1.jpg" width="20" alt=""/>
+                        <li className="dropdown header-profile">
+                            <Link className="nav-link" to="/admin/account/profile" role="button" data-bs-toggle="dropdown">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/rugrebelsstore.appspot.com/o/users%2Fcoolking%20bear.png?alt=media&token=6811bcf5-352c-4da0-9b75-04372f5490bbg" width="15" height="15" alt=""/>
                             </Link>
                             <div className="dropdown-menu dropdown-menu-end">
-                                <Link to="/dashboard/profile" className="dropdown-item ai-icon">
+                                <Link to="/admin/account/profile" className="dropdown-item ai-icon">
                                     <svg id="icon-user2" xmlns="http://www.w3.org/2000/svg" className="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                     <span className="ms-2">Profile </span>
                                 </Link>
-                                <Link to="/dashboard/account/settings" className="dropdown-item ai-icon">
+                                <Link to="/admin/account/settings" className="dropdown-item ai-icon">
                                     <svg id="icon-inbox1" xmlns="http://www.w3.org/2000/svg" className="text-success" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                    <span className="ms-2">Settings</span>
+                                    <span className="ms-2">Feedbacks</span>
                                 </Link>
                                 <Link to="#" className="dropdown-item ai-icon" data-bs-toggle="modal" data-bs-target=".logout-modal">
+                                <i className="bi bi-box-arrow-right"></i>
                                     <span className="ms-2">Logout </span>
                                 </Link>
                             </div>
@@ -156,35 +201,49 @@ const Dashboard = () => {
     {/* <!--**********************************
         Sidebar start
     ***********************************--> */}
-    <div className="dlabnav">
+    <div className="dlabnav" style={{backgroundColor:"#0f0f13"}}>
         <div className="dlabnav-scroll">
-            <div className="dropdown header-profile2 ">
-                <Link className="nav-link">
-                    <div className="header-info2 d-flex align-items-center">
-                        <img src="/UI-ASSETS/images/images/avatar/1.jpg" alt=""/>
-                        <div className="d-flex align-items-center sidebar-info">
-                            <div>
-                                <span className="font-w400 d-block">John Doe </span>
-                                {/* <small className="text-end font-w400">Superadmin</small> */}
-                            </div>	
-                        </div>
-                        
-                    </div>
-                </Link>
-            </div>
-            <ul className="metismenu" id="menu">
-                <li><Link className="has-arrow " to="/dashboard/create" aria-expanded="false">
-                <i className="bi bi-pencil-square"></i>
-                        <span className="nav-text">Create</span>
+
+ 
+
+            <ul className="metismenu pt-5" id="menu">
+               
+                    <li><Link className="has-arrow mb-2" to="/admin/admindashboard" aria-expanded="false">
+                    <i className="bi bi-speedometer"></i>
+                        <span className="nav-text">Dashboard</span>
                     </Link>
                 </li>
-                <li><Link className="has-arrow " to="/dashboard/portfolio" aria-expanded="false">
-                <i className="bi bi-folder-fill"></i>
-                        <span className="nav-text">Portfolio</span>
+                
+                <li><Link className="has-arrow mb-2" to="/admin/orders" aria-expanded="false">
+                 <i className="bi bi-basket-fill"></i>
+                        <span className="nav-text">Orders</span>
                     </Link>
                 </li>
 
-                <li><Link className="has-arrow " to="/dashboard/profile" aria-expanded="false">
+                 <li><Link className="has-arrow mb-2" to="/admin/customers" aria-expanded="false">
+                 <i className="bi bi-people-fill"></i>
+                        <span className="nav-text">Customers</span>
+                    </Link>
+                </li>
+                <li><Link className="has-arrow mb-2" to="/admin/adminpaintinglist" aria-expanded="false">
+                <i className="bi bi-folder-fill"></i>
+                        <span className="nav-text">Arts</span>
+                    </Link>
+                </li>
+
+
+                <li><Link className="has-arrow mb-2" to="/admin/messages" aria-expanded="false">
+                          <i className="bi bi-envelope-arrow-down-fill"></i>
+                        <span className="nav-text">Feedbacks</span>
+                    </Link>
+                        </li>
+                    <li><Link className="has-arrow mb-2" to="/admin/notifications" aria-expanded="false">
+                    <i className="bi bi-bell"></i>
+                        <span className="nav-text">Notification</span>
+                    </Link>
+                </li>
+
+                <li><Link className="has-arrow mb-2" to="/admin/account/profile" aria-expanded="false">
                   <i className="bi bi-person-circle"></i>
                         <span className="nav-text">Profile</span>
                     </Link>
@@ -192,39 +251,14 @@ const Dashboard = () => {
                 </li>
 
 
-                <li><Link className="has-arrow " to="/dashboard/invitefriends" aria-expanded="false">
-                          <i className="bi bi-people"></i>
-                        <span className="nav-text">Invite Friends</span>
-                    </Link>
-                        </li>
-
-            
-                <li><Link className="has-arrow " to="/dashboard/createbot" aria-expanded="false">
-                <i className="bi bi-robot"></i>
-                        <span className="nav-text">Create a Bot</span>
-                    </Link>
-                </li>
-            
-                
-        
-                    <li className='widget mt-4'> 
-                        <span className="nav-text">Others</span>
-                </li>
-        
-                    <li><Link className="has-arrow " to="/dashboard/help" aria-expanded="false">
-                    <i className="bi bi-telephone-inbound"></i>
-                        <span className="nav-text">Help and Support</span>
-                    </Link>
-                </li>
-
-                <li><Link className="has-arrow " to="/dashboard/account/settings" aria-expanded="false">
+                <li><Link className="has-arrow mb-2" to="/admin/account/settings" aria-expanded="false">
                 <i className="bi bi-gear-wide-connected"></i>
                         <span className="nav-text">Settings</span>
                     </Link>
                 </li>
                 
                 <li>
-                <Link to="#" className="has-arrow " data-bs-toggle="modal" data-bs-target=".logout-modal">
+                <Link to="#" className="has-arrow" data-bs-toggle="modal" data-bs-target=".logout-modal">
                  <i className="bi bi-box-arrow-right"></i>
                   <span className="nav-text">Logout</span>
             </Link>
@@ -241,10 +275,11 @@ const Dashboard = () => {
     ***********************************--> */}
     <div className="content-body">
         {/* <!-- row --> */}
-        <div className="container-fluid">
+       <div style={{backgroundAttachment:'fixed', minHeight:"100vh", backgroundPosition:"center", backgroundSize:"contain" , backgroundImage:"url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjg4Mi1zYXNpLTIyLmpwZw.jpg')"}}>
+
+        <div className="container-fluid" style={{backgroundColor:"rgba(0,0,0,0.7)", minHeight:"100vh", paddingBottom:"100px"}}>
           
         <div className="dashboard-inner">
-
         <Routes>
 
 
@@ -257,15 +292,46 @@ const Dashboard = () => {
                 
                 <Route exact path="/admindashboard" element={<Admindashboard/>} />
                 
+             
                 <Route exact path="/adminpaintinglist" element={<Adminpaintinglist/>} />
-                
+
+
                 <Route exact path="/editpaintings/:id" element={<Editpaintings/>} />
                 
                 
                 <Route exact path="/adminpaintingpreview/:id" element={<Adminpaintingpreview/>} />
                 
 
-                <Route exact path="/messages" element={<Messages/>} />
+                <Route exact path="/admincustomerdetails/:id" element={<AdminCustomerDetails/>} />
+
+
+                <Route exact path="/adminorderdetails/:id" element={<AdminOrderDetails/>} />
+
+
+                <Route exact path="/adminfeedbackdetails/:id" element={<AdminFeedbackDetails/>} />
+
+
+                <Route exact path="/orders" element={<Orders/>} />
+
+
+                <Route exact path="/messages" element={<Feedback/>} />
+
+
+                <Route exact path="/customers" element={<Customers />} />
+               
+               
+                <Route exact path="/notifications" element={<Notification/>} />
+               
+             
+                <Route exact path="/account/profile" element={<Profile/>} />
+
+
+                <Route exact path="/account/settings" element={<Settings/>} />
+
+
+               
+
+
 
 
                 </Routes>
@@ -275,7 +341,7 @@ const Dashboard = () => {
 
 
          </div> 
-        </div>
+        </div>   </div>
     </div>
     {/* <!--**********************************
         Content body end
@@ -293,27 +359,29 @@ const Dashboard = () => {
  {/* <!-- Modal --> */}
 
 
-{/* logout modal  */}
-<div className="modal fade logout-modal" tabIndex="-1" role="dialog" aria-hidden="true">
-    <div className="modal-dialog modal-dialog-centered modal-lg">
-        <div className="modal-content">
-            <div className="modal-header">
-                <h5 className="modal-title text-primary">Are you sure you want to Log out?</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal">
-                </button>
-            </div>
-            <div className="modal-body">
-              
-              <p>Egestas vitae accumsan mollis posuere curabitur. Id lobortis auctor nulla ipsum in. Ornare pellentesque vitae.</p>
-            </div>
-            <div className="modal-footer">
-                 <button type="button" className="btn" data-bs-dismiss="modal">Cancel</button>
-                 <button type="button" className="btn btn-primary" >Logout</button>
-               
-            </div>
-        </div>
-    </div>
-</div>
+            {/* logout modal  */}
+        
+                     <div className="modal fade logout-modal" tabIndex="-1" role="dialog" aria-hidden="true">    
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
+                    
+                      <div className="modal-body">
+                         <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title text-primary">Logout</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss=".logout-modal">
+                            </button>
+                        </div>
+                          
+                        <p>Are You Sure You Want to Logout ?</p>
+                        </div>
+                       <div className="modal-footer">
+                            <button type="button" className="btn-secondary" data-bs-dismiss=".logout-modal">Cancel</button>
+                            <button type="button"  onClick={logOut} className="btn-danger" >Logout</button>
+                        </div>
+                    </div> 
+                </div>
+            </div>   
+  
 {/* end of logout modal */}
 
 

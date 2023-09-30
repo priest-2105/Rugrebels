@@ -53,8 +53,56 @@ i:hover{
 }
 
 
+
+/* For Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f15f;
+  border-radius: 6px;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background:  rgba(62, 78, 10, 0.5);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:  rgba(49, 63, 1, 0.716);
+      
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f15f;
+}
+
+*::-webkit-scrollbar-thumb {
+  background:    rgba(49, 63, 1, 0.716);
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background:   rgba(167, 213, 15,0.5);
+
+}
+
+
+
+
+
+
+
+
 .App{
-  background-color: rgb(49, 44, 44);
+  /* background-color: rgb(49, 44, 44); */
   /* background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/1400/1ea9cb174272965.649f070e5cf0d.jpg'); */
   background-repeat: no-repeat;
   background-attachment: fixed;

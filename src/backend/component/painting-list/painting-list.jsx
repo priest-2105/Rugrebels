@@ -82,7 +82,7 @@ const PaintingList = (props) => {
       {paintings.map((painting) => (
      <div  className={`painting-preview image vh-fix child-one${isIntersecting ? ' animate' : ''}`}
      style={{
-      backgroundImage: `url(${painting.img})`,
+      backgroundImage: `url(${painting.img[0]})`,
     }}
      key={painting.id}>
              <button className="cart-button" onClick={() => handleAddToCart(painting)}>
@@ -92,7 +92,7 @@ const PaintingList = (props) => {
           {/* <Link to={`/paintings/${painting.id}`}> */}
             {/* <img src={painting.img} className="rounded-top" alt="" /> */}
             <h2>{painting.title}</h2>
-            <h4>${painting.price}</h4>
+            <h4>${painting.price} - <b>${painting.compareAtPrice}</b> </h4>
             <p>{truncateText(painting.about, 25)}</p> 
             
          {/* <span>  {painting.date}</span> */}

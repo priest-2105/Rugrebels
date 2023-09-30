@@ -2,7 +2,8 @@ import React from 'react';
 import './contact.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useFetch from '../../../assets/hooks/usefetch';
+import { db } from '../../../backend/config/fire';
+import { collection, addDoc } from 'firebase/firestore';
 
 const Contact = () => { 
 
@@ -16,32 +17,35 @@ const Contact = () => {
   const smile = ":)"
   
 
-  const history = useNavigate(); // add this line to use useNavigate hook
+  // const history = useNavigate(); // add this line to use useNavigate hook
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const newMessage = { name, email, subject, message, date };
-    setSent(false); // set sent to false before sending the request
-    fetch("https://rugrebelsdb.onrender.com/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newMessage),
-    })
-      .then(() => {
-        console.log("Message Sent");
-        setSent(true);
-        setTimeout(() => {
-          setSent(false);
-        }, 3000); 
-        history.push("/contact");
-      })
-      .catch((error) => {
-        setSent(false); // set sent to false if there was an error
-        console.error(error);
-      });
+    const newMessage = {
+      name,
+      email,
+      subject,
+      message,
+      date: new Date(),
+    };
+  
+    try {
+      const messagesCollection = collection(db, 'messages');
+      await addDoc(messagesCollection, newMessage);
+  
+      console.log('New message added to Firestore');
+      setSent(true);
+      setTimeout(() => {
+        setSent(false);
+      }, 3000); 
+      // history.push('/contact');
+    } catch (error) {
+      console.error('Error adding message:', error);
+      setSent(false);
+    }
   };
-    
   
   return (
         <div>

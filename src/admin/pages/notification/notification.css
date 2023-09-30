@@ -1,0 +1,34 @@
+.dashboard-notifications h4{
+
+    color: aliceblue;
+    font-weight: 800;
+    font-size: 26px;
+
+}
+
+.dashboard-widget-timeline{
+    
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #0f0f13ad;
+    padding:10px 10px 10px 10px;
+    border-radius: 10px;
+    
+
+}
+
+.dashboard-widget-timeline .timeline-panel{
+    margin-bottom: 20px;
+}
+
+.dashboard-widget-timeline .timeline-panel span{
+    font-weight: 900;
+    color: rgba(240, 248, 255, 0.7);
+}
+
+
+.dashboard-widget-timeline .timeline-panel h6{
+    font-weight: 900;
+    color: rgba(240, 248, 255, 0.7);
+}

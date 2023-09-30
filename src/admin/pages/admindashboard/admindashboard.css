@@ -1,44 +1,276 @@
 .dashboard-header{
-    text-align: center;
-    margin-top: 80px;
-    margin-bottom: 50px;
-    font-size:50px;
-    font-weight: 700;
+    text-align: start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size:40px;
+    font-weight: 600;
     font-family: 'Alkatra', cursive;
     color: rgb(245, 225, 200);
 }
 
-.cards{
+.dashboard-top-counters{
+    background-color: #0f0f13 !important;
+
+}
+
+.dashboard-top-counters span{
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.dashboard-index-charts{
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
+    justify-content: space-between;
+    display: grid;    
+    grid-template-columns: 1fr 1fr;
+    /* grid-gap: 0% 4.5% 0% 4.5%;  */
+    justify-items: space-between; 
+    padding-top: 20px;
     
-    width: 90%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-evenly;
+    }
+  
+.dashboard-total-charts{
+    height: 350px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 520px;
+    background-color: #0f0f13;
+    padding: 10px 10px;
+    border-radius: 10px;
 }
 
-.card-header{
-    color: rgb(187, 94, 94) !important;
+.dashboard-total-charts h4{
+    margin:10px 20px 20px;
+    color:aliceblue;
+}
+
+.total-months-profit-chart{
+    height:350px;
+    padding-bottom: 100px;
 }
 
 
-.progress-cards {
-    margin-top: 50px;
-    border:none;
-    height: 250px;
-    width: 350px;
-    margin-left: 50px;
-    flex-wrap:wrap-reverse;
-    background-color: rgba(232, 223, 164,0.8);
-    border-color: gray;
-    color: grey;
+
+.monthly-payout-top-product-container{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    /* justify-content: space-between; */
+    display: grid;    
+    grid-template-columns: 1fr 1fr;
+    /* grid-gap: 0% 9%; */
+    justify-items: space-between; 
+    padding-top: 0px;
+    margin-bottom: 40px;
+    
+    }
+
+
+.monthly-payout{
+    margin-top: 20px;
+    margin-left: auto;
+    width:fit-content;
+    padding: 20px;
+    width: fit-content;
+    color: aliceblue;
+    background-color: #0f0f13;
+    border-radius: 10px;
+
 }
 
-.statistics-text{
-    margin-top: 30px;
-    font-size: 100px;
+.monthly-payout-header h3{
+    font-size: 15px;
+    font-weight: 500;
 }
+
+
+.monthly-payout-header{
+    padding-bottom: 10px;
+    align-items: center;
+    border-bottom: 3px solid rgba(240, 248, 255, 0.117);
+}
+
+
+.monthly-payout h3{
+    color: aliceblue;
+}
+
+.monthly-payout th{
+    color:grey;
+    width: 120px;
+    padding: 10px 10px 10px 10px;
+
+}
+
+.monthly-payout tr{
+    
+    border-bottom :2px solid rgba(240, 248, 255,0.1);
+}
+
+
+.monthly-payout td{
+    width: 160px;
+    text-align: start;
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+
+
+
+.dashboard-top-products{
+    margin-top: 20px;
+    width:fit-content;
+    padding: 20px;
+    width: fit-content;
+    color: aliceblue;
+    background-color: #0f0f13;
+    border-radius: 10px;
+
+}
+
+.dashboard-top-products-header h3{
+    color: aliceblue;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+.dashboard-top-products-header{
+    padding-bottom: 10px;
+    align-items: center;
+    width: 100%;
+    border-bottom: 3px solid rgba(240, 248, 255, 0.117);
+}
+
+.most-sold-items-each{
+    width:500px;
+    display: block;
+    height: fit-content;
+    padding: 10px 10px 20px 10px;
+    border-bottom: 2px solid rgba(240, 248, 255, 0.117);
+    
+}
+
+.most-sold-items-each-top{
+    display: flex;
+}
+
+.most-sold-items-each-top h6{
+    color: rgba(240, 248, 255,0.6);
+    font-weight: 700;
+}
+
+.most-sold-items-each-top span{
+    margin-left: auto;
+}
+
+
+.most-sold-items-each-progress{
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    background-color: rgba(231, 231, 231, 0.828);
+    border-radius: 10px;
+}
+
+.most-sold-items-each-progress-inner{
+    height: 10px;
+    width:60%;
+    border-radius: 10px;
+    background-color: rgba(34, 102, 227, 0.704);
+}
+
+
+
+
+
+
+
+.recent-customers-container{
+    padding: 20px;
+    width: 100%;
+    justify-content: center;
+    color: aliceblue;
+    background-color: #0f0f13;
+    border-radius: 10px;
+
+}
+
+ .recent-customers{
+    width: 100%;
+}
+
+.recent-customers table{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+
+.recent-customer-header{
+    border-bottom: rgb(240, 248, 255);
+}
+
+
+.recent-customers h3{
+    color: aliceblue;
+}
+
+.recent-customers th{
+    color:grey;
+    width: 120px;
+    padding: 10px 10px 10px 10px;
+
+}
+
+.recent-customers tr{
+    
+    border-bottom: 2px solid rgba(240, 248, 255,0.1);
+}
+
+
+.recent-customers td{
+    width: 140px;
+    text-align: start;
+    margin-right: auto;
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+
+.recent-customers span{
+    padding: 5px 10px 5px 10px;
+}
+
+.recent-customers span.success{
+    background-color: rgba(66, 205, 147,0.4);
+}
+
+
+.recent-customers span.danger{
+    background-color: rgba(222, 12, 9, 0.2);
+}
+
+
+.recent-customers span.pending{
+    background-color: rgba(188, 63, 188,0.3);
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .admin-messages{
     /* background-color: rgba(255, 255, 255,0.6); */
