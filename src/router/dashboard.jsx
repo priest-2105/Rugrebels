@@ -1,35 +1,72 @@
-import {Route, Link } from 'react-router-dom';  
+import {Route, Link, useParams } from 'react-router-dom';  
 import { Routes } from 'react-router-dom';
 import AddPainting from '../admin/pages/addPainting/addPainting';
 import Admindashboard from '../admin/pages/admindashboard/admindashboard';
 import Adminpaintinglist from '../admin/pages/adminpaintinglist/adminpaintinglist';
-import Adminpaintingpreview from '../admin/pages/adminpaintingpreview/adminpaintingpreview';
 import Editpaintings from '../admin/pages/editpaintings/editpaintings';
 import '../admin/admin-styles.css'
-import Profile from '../admin/pages/adminprofile/profile';
 import Settings from '../admin/pages/adminsettings/settings';
 import Notification from '../admin/pages/notification/notification';
 import Customers from '../admin/pages/customers/customers';
 import Feedback from '../admin/pages/feedback/feedback';
 import { signOut} from 'firebase/auth';
-import { auth } from '../backend/config/fire';
-import { useState } from 'react';
+import { auth, db } from '../backend/config/fire';
+import { useEffect, useState } from 'react';
 import Orders from '../admin/pages/orders/orders';
 import AdminCustomerDetails from '../admin/pages/customers/customerdetails';
 import AdminOrderDetails from '../admin/pages/orderdetails/orderdetails';
 import AdminFeedbackDetails from '../admin/pages/feedback/feedbackdetails';
 import TodayDate from '../backend/component/date/todaysdate'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import AdminUserDetails from '../admin/pages/adminuserdetails/adminuserdetails';
+import PaintingsByCategory from '../admin/pages/categories/categories';
+
+
+
 
 
 const Dashboard = () => {
 
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const { category } = useParams();
+
 
 
     const logOut = async () => {
         await signOut(auth);
       };
   
+
+        useEffect(() => {
+            const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
+            });
+            return unsubscribe;
+        }, []);
+
+        useEffect(() => {
+          if (user) {
+            const userRef = doc(db, 'adminusers', user.uid);
+        
+            const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
+              if (docSnapshot.exists()) {
+                const userData = docSnapshot.data();
+                setUserData(userData);
+              } else {
+                console.error('User document does not exist');
+              }
+            }, (error) => {
+              console.error('Error fetching user data:', error.message);
+              setError('An error occurred while deleting your account. Please try again later.');
+            });
+        
+            // Cleanup the listener when the component is unmounted or when user changes
+            return () => unsubscribe();
+          }
+        }, [user]);
+        
+
     return (
         <div>
 
@@ -76,17 +113,17 @@ const Dashboard = () => {
                           
             <div className="dropdown header-profile2">
                 <Link className="nav-link">
-                    <div className="header-info2 d-flex align-items-center">
-                        <img className='rounded' src="https://firebasestorage.googleapis.com/v0/b/rugrebelsstore.appspot.com/o/users%2Fcoolking%20bear.png?alt=media&token=6811bcf5-352c-4da0-9b75-04372f5490bb" height="40px" width="45px" alt=""/>
+                   {user && userData ? ( 
+                     <div className="header-info2 d-flex align-items-center">
+                    <img className='rounded'  src={userData.img} alt={userData.name} height="40px" width="45px" />     
                         <div className="d-flex align-items-center sidebar-info">
                             <div>
-                                <h5 style={{fontWeight:"700",lineHeight:"4px"}} className="ms-2 mt-4 font-w400 d-block">John Doe </h5>
-                                <p style={{fontSize:"10px"}} className="ms-2 d-block">Johndoe@gmail.com</p>
-                                {/* <small className="text-end font-w400">Superadmin</small> */}
+                                <h5 style={{fontWeight:"700",lineHeight:"4px"}} className="ms-2 mt-4 font-w400 d-block">{userData.name}</h5>
+                                <p style={{fontSize:"10px"}} className="ms-2 d-block">{userData.email}</p>
+                                {/* <small className="text-end font-w400">Superadmin</small> */}  
                             </div>	
-                        </div>
-                        
-                    </div>
+                        </div>  
+                    </div>) : ( <p>You are not logged in</p>)}
                 </Link>
             </div>
                         </div>
@@ -113,17 +150,10 @@ const Dashboard = () => {
 
                                 <span className="badge light text-white bg-primary rounded-circle">15</span>
                             </Link>
-                            <div className="dropdown-menu dropdown-menu-end">
+                            <div className="dropdown-menu dropdown-menu-end" style={{backgroundColor:"#0f0f13", color:"aliceblue"}}>
                                 <div id="DZ_W_TimeLine02" className="widget-timeline dlab-scroll style-1 ps ps--active-y p-3 height370">
                                 <ul className="timeline">
-                                    <li>
-                                        <div className="timeline-badge primary"></div>
-                                        <Link className="timeline-panel text-muted" to="#">
-                                            <span>10 minutes ago</span>
-                                            <h6 className="mb-0">Youtube, a video-sharing website, goes live <strong className="text-primary">$500</strong>.</h6>
-                                        </Link>
-                                    </li>
-                                    <li>
+                                  <li>
                                         <div className="timeline-badge info">
                                         </div>
                                         <Link className="timeline-panel text-muted" to="#">
@@ -172,18 +202,21 @@ const Dashboard = () => {
                         </li>
                         <li className="dropdown header-profile">
                             <Link className="nav-link" to="/admin/account/profile" role="button" data-bs-toggle="dropdown">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/rugrebelsstore.appspot.com/o/users%2Fcoolking%20bear.png?alt=media&token=6811bcf5-352c-4da0-9b75-04372f5490bbg" width="15" height="15" alt=""/>
+                            {user && userData ? (<div>
+                         <img className='rounded'  src={userData.img} alt={userData.name} height="40px" width="45px" />
+                            </div>) : ( <p>You are not logged in</p>)}
                             </Link>
-                            <div className="dropdown-menu dropdown-menu-end">
-                                <Link to="/admin/account/profile" className="dropdown-item ai-icon">
-                                    <svg id="icon-user2" xmlns="http://www.w3.org/2000/svg" className="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                    <span className="ms-2">Profile </span>
-                                </Link>
-                                <Link to="/admin/account/settings" className="dropdown-item ai-icon">
+                            <div className="dropdown-menu dropdown-menu-end" style={{backgroundColor:"#0f0f13"}}>
+                             
+                                <Link to="/admin/messages" className="dropdown-item ai-icon">
                                     <svg id="icon-inbox1" xmlns="http://www.w3.org/2000/svg" className="text-success" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                                     <span className="ms-2">Feedbacks</span>
                                 </Link>
-                                <Link to="#" className="dropdown-item ai-icon" data-bs-toggle="modal" data-bs-target=".logout-modal">
+                                  <Link to="/admin/account/profile" className="dropdown-item ai-icon">
+                                    <svg id="icon-settings" xmlns="http://www.w3.org/2000/svg" className="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <span className="ms-2">Settings </span>
+                                </Link>
+                                 <Link to="#" className="dropdown-item ai-icon" data-bs-toggle="modal" data-bs-target=".logout-modal">
                                 <i className="bi bi-box-arrow-right"></i>
                                     <span className="ms-2">Logout </span>
                                 </Link>
@@ -238,19 +271,12 @@ const Dashboard = () => {
                     </Link>
                         </li>
                     <li><Link className="has-arrow mb-2" to="/admin/notifications" aria-expanded="false">
-                    <i className="bi bi-bell"></i>
+                    <i className="bi bi-bell-fill"></i>
                         <span className="nav-text">Notification</span>
                     </Link>
                 </li>
 
-                <li><Link className="has-arrow mb-2" to="/admin/account/profile" aria-expanded="false">
-                  <i className="bi bi-person-circle"></i>
-                        <span className="nav-text">Profile</span>
-                    </Link>
-               
-                </li>
-
-
+    
                 <li><Link className="has-arrow mb-2" to="/admin/account/settings" aria-expanded="false">
                 <i className="bi bi-gear-wide-connected"></i>
                         <span className="nav-text">Settings</span>
@@ -296,19 +322,22 @@ const Dashboard = () => {
                 <Route exact path="/adminpaintinglist" element={<Adminpaintinglist/>} />
 
 
-                <Route exact path="/editpaintings/:id" element={<Editpaintings/>} />
+                <Route exact path="/adminpaintingpreview/:id" element={<Editpaintings/>} />
                 
                 
-                <Route exact path="/adminpaintingpreview/:id" element={<Adminpaintingpreview/>} />
-                
-
                 <Route exact path="/admincustomerdetails/:id" element={<AdminCustomerDetails/>} />
+
+
+                <Route exact path="/adminuserdetails/:id" element={<AdminUserDetails/>} />
 
 
                 <Route exact path="/adminorderdetails/:id" element={<AdminOrderDetails/>} />
 
 
                 <Route exact path="/adminfeedbackdetails/:id" element={<AdminFeedbackDetails/>} />
+
+
+                <Route exact path="/paintingcategory/:category" element={<PaintingsByCategory/>} />
 
 
                 <Route exact path="/orders" element={<Orders/>} />
@@ -322,8 +351,6 @@ const Dashboard = () => {
                
                 <Route exact path="/notifications" element={<Notification/>} />
                
-             
-                <Route exact path="/account/profile" element={<Profile/>} />
 
 
                 <Route exact path="/account/settings" element={<Settings/>} />

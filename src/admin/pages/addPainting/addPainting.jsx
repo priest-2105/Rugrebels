@@ -33,7 +33,17 @@ const AddPainting = () => {
     e.preventDefault();
     const stockNumber = document.getElementById('stockNumber').value;
   
-    const painting = { title, about, artist, date, compareAtPrice, img, price, tags, stockNumber };
+    const painting = {
+      title,
+      about,
+      artist,
+      date,
+      compareAtPrice,
+      img, 
+      price,
+      tags,
+      stockNumber
+    };
   
     setAdding(true);
   
@@ -56,49 +66,54 @@ const AddPainting = () => {
 
  
 
-  
-  
-
-
-  // const handleImageChange = (e) => {
-  //   const files = e.target.files;
-  //   const newImages = [];
-  
-  //   for (let i = 0; i < Math.min(files.length, 5); i++) {
-  //     const reader = new FileReader();
-  //     const file = files[i];
-  
-  //     reader.onloadend = () => {
-  //       newImages.push(reader.result);
-  
-  //       if (newImages.length === Math.min(files.length, 5)) {
-  //         setImg(newImages);
-  //       }
-  //     };
-  
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-
-
-  
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const files = e.target.files;
-    const fileArray = Array.from(files).map(file => URL.createObjectURL(file));
-    setImg(fileArray);
+    const newImages = [];
+  
+    for (let i = 0; i < Math.min(files.length, 5); i++) {
+      const file = files[i];
+      const storageRef = ref(storage, `images/${file.name}`);
+      
+      try {
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+        newImages.push(downloadURL);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+  
+    setImg(newImages);
   };
+  
+  
+
 
   const handleCoverImageChange = (index) => {
     const newImages = [...img];
     [newImages[0], newImages[index]] = [newImages[index], newImages[0]];
     setImg(newImages);
   };
+  const handleMoreImagesChange = async (e) => {
+    const files = e.target.files;
+    const newImages = [];
+    
+    for (let i = 0; i < Math.min(files.length, 5); i++) {
+      const file = files[i];
+      const storageRef = ref(storage, `images/${file.name}`);
+      
+      try {
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+        newImages.push(downloadURL);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
   
-  const handleMoreImagesChange = (e) => {
-    const newImages = Array.from(e.target.files).map(file => URL.createObjectURL(file));
     setImg(prevImages => [...prevImages, ...newImages]);
   };
+  
 
   const handleClearImages = () => {
     setImg([]);

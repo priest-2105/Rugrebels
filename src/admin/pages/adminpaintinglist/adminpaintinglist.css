@@ -8,7 +8,7 @@
 width: 100%;
 justify-content: center;
 color: aliceblue ;
-background-color: #0f0f13;
+background-color: #0f0f1395;
 padding: 20px;
 border-radius: 10px;
 margin-bottom: 20px;
@@ -61,7 +61,7 @@ color: rgba(240, 248, 255,0.5);
   margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
-  background-color: #0f0f13;
+  background-color: #0f0f13a8;
   padding:10px 10px 10px 10px;
   border-radius: 10px;
 }
@@ -81,7 +81,7 @@ padding: 20px;
 width: 100%;
 justify-content: center;
 color: aliceblue;
-background-color: #0f0f13;
+background-color: #0f0f139c;
 border-radius: 10px;
 min-height: 500px;
 
@@ -125,6 +125,27 @@ width: 100%;
 .dashboard-arts tbody tr img{
 object-fit: cover;
 }
+
+.dashboard-arts tr a{
+
+  margin-right: 20px;
+  font-weight: 600;
+  word-break: keep-all;
+  width: max-content;
+  padding: 8px 15px 8px 15px;
+  border-radius: 8px;
+  color: #0f0f13;
+  background-color: rgba(255, 255, 255, 0.847);
+
+}
+
+
+.dashboard-arts tr a:hover{
+
+  background-color: rgba(255, 255, 255, 0.355);
+
+}
+
 
 
 /* Hide the default checkbox */

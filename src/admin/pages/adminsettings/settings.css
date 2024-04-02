@@ -24,10 +24,8 @@
 }
 
 .dashboard-profile-pic-change {
-
     padding-bottom: 30px;
     border-bottom: 4px solid rgba(240, 248, 255, 0.234);
-
 }
 
 
@@ -163,8 +161,90 @@
 }
 
 
-.dashboard-change-email-adress{
+/* .dashboard-change-email-adress{
+
+} */
 
 
+.profile-images-modal{
+    display:flex;
+    flex-wrap: wrap;
+    padding: 10px 20px 10px 20px;
+}
+
+.profile-images-modal img{
+
+    height: 80px;
+    border: none;
+    width:85px;
+    border-radius: 8px;
+    object-fit: cover;
+    
+}
+
+
+.profile-images-modal button{
+    border: none;
+    margin: 5px 5px 5px 5px;
+    border-radius: 8px;
+
+}
+
+
+
+.profile-images-modal button:hover{
+    opacity: 0.5;
+
+}
+
+.profile-image-modal-content{
+  background-color: #0f0f13;
+  color:aliceblue;   
+}
+
+
+
+.profile-image-modal-content h5{
+    color:aliceblue;   
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+
+
+  
+.profile-image-modal-content h1{
+    margin-top: 10px;
+    font-size: 25px;
+    font-weight: 700;
+    color:aliceblue;   
+  }
+
+.profile-image-modal-selected-image{
+    display: flex;
+    align-items: center;
+}
+
+
+.profile-image-modal-selected-image img{
+    border-radius: 50%;
+    min-height: 100px;
+    width: 105px;
+    object-fit: cover;
+}
+
+
+
+.general-settings-tab-input-group{
+
+    border-bottom: 4px solid rgba(240, 248, 255, 0.234);
+    padding: 15px 30px 40px 30px;
+    color: aliceblue;
+}
+
+.general-settings-tab-input-group h5{
+
+    color: aliceblue;
+    font-weight: 700;
 
 }

@@ -24,7 +24,7 @@ const Auth = () => {
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
     const [verificationEmailSent, setVerificationEmailSent] = useState(false);
-    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [isEmailVerified, setIsEmailVerified] = useState(false); 
     const [errorMessage, setErrorMessage] = useState('');
   
     useEffect(() => {

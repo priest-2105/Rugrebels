@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate, Await } from 'react-router-dom';
 import './editpaintings.css';
 import useFetch from '../../../assets/hooks/useFetch';
-import { doc, updateDoc, getDoc } from 'firebase/firestore';
-import { db } from '../../../backend/config/fire';
+import { doc, updateDoc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { db, storage } from '../../../backend/config/fire';
+import { ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+
+
+
 
 
 const Editpaintings = () => {
@@ -14,10 +18,81 @@ const Editpaintings = () => {
   const [artist, setArtist] = useState("");
   const [date, setDate] = useState("");
   const [price, setPrice] = useState("");
-  const [img, setImg] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [img, setImg] = useState([]);
   const [tags, setTags] = useState([]);
+  const [category, setCategory] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState([]); 
+  const [moreImageloadingMessages, setMoreImageLoadingMessages] = useState([]); 
+  const [quantityDisplay, setQuantityDisplay] = useState('off');
   const history = useNavigate();
+  const [inputValue, setInputValue] = useState('');
+  const [compareAtPrice, setCompareAtPrice] = useState(0);
+  const [inputCategory, setInputCategory] = useState('');
+  const [allCategories, setAllCategories] = useState([]);
+  const [matchingCategories, setMatchingCategories] = useState([]);
+
+
+
+  const handleAddCategory = (selectedCategory) => {
+    if (selectedCategory.trim() !== '') {
+      setCategory(selectedCategory.trim());
+      setInputCategory('');
+    }
+  };
+  
+  const handleCategoryInputChange = (e) => {
+    const selectedCategory = e.target.value;
+    setInputCategory(selectedCategory);
+  
+    setCategory(prevCategory => {
+      if (prevCategory) {
+        return prevCategory + ' ' + selectedCategory;
+      } else {
+        return selectedCategory;
+      }
+    });
+  };
+  
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const categoriesRef = collection(db, 'paintingcategories');
+        const snapshot = await getDocs(categoriesRef);
+        const categoriesData = snapshot.docs.map(doc => doc.data().categories).flat();  
+        setAllCategories(categoriesData);
+    
+        setMatchingCategories(categoriesData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };   
+
+    fetchData();
+  }, []);
+
+  const handleInputChange = ({ target: { value } }) => {
+    setInputValue(value);
+  };
+  
+  
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter' && inputValue.trim() !== '') {
+        setTags([...tags, inputValue.trim()]);
+        setInputValue('');
+      }
+    };
+  
+    const handleTagClick = (tag) => {
+      setTags(tags.filter(t => t !== tag));
+    };
+
+
+    
+  
 
   useEffect(() => {
     const getPaintingData = async () => {
@@ -31,10 +106,12 @@ const Editpaintings = () => {
           setArtist(paintingData.artist);
           setDate(paintingData.date);
           setPrice(paintingData.price);
+          setQuantity(paintingData.quantity);
+          setQuantityDisplay(paintingData.quantityDisplay);
           setImg(paintingData.img);
           setTags(paintingData.tags);
+          setCategory(paintingData.categories);
         } else {
-          // Handle when the painting doesn't exist
         }
       } catch (error) {
         console.error('Error fetching painting data:', error);
@@ -46,7 +123,7 @@ const Editpaintings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedPainting = { title, about, artist, date, img, tags };
+    const updatedPainting = { title, about, artist, date, img, tags, category, quantity, quantityDisplay  };
     setSaving(true);
   
     try {
@@ -61,15 +138,74 @@ const Editpaintings = () => {
       setSaving(false);
     }
   };
+ 
+
+  const handleImageChange = async (e) => {
+    const files = e.target.files;
+    const newImages = []; 
+    const messages = Array.from({ length: Math.min(files.length, 5) }, (_, index) => `Uploading image ${index + 1}...`);
+    setLoadingMessages(messages);
+
+ 
+
+    for (let i = 0; i < Math.min(files.length, 5); i++) {
+      const file = files[i];
+      const storageRef = ref(storage, `images/${file.name}`);
+      
+      try {
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+        newImages.push(downloadURL);
+        setLoadedCount((prevCount) => prevCount + 1);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+    setLoadingMessages([]);
+    setImg(newImages);
+  };
+  
   
 
-  const handleImageChange = (e) => {
-    const reader = new FileReader();
-    const file = e.target.files[0];
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImg(reader.result);
-    };
+
+  const handleCoverImageChange = (index) => {
+    const newImages = [...img];
+    [newImages[0], newImages[index]] = [newImages[index], newImages[0]];
+    setImg(newImages);
+  };
+  const handleMoreImagesChange = async (e) => {
+    const files = e.target.files;
+    const newImages = [];
+    const messages = Array.from({ length: Math.min(files.length, 5) }, (_, index) => `Uploading image ${index + 1}...`);
+    setMoreImageLoadingMessages(messages);
+
+    
+    for (let i = 0; i < Math.min(files.length, 5); i++) {
+      const file = files[i];
+      const storageRef = ref(storage, `images/${file.name}`);
+      
+      try {
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+        newImages.push(downloadURL);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+  
+    setMoreImageLoadingMessages([]); 
+    setImg(prevImages => [...prevImages, ...newImages]);
+  };
+  
+
+  const handleClearImages = () => {
+    setImg([]);
+  }
+
+  const handleRemoveImage = (index) => {
+    const newImages = [...img];
+    newImages.splice(index, 1);
+    setImg(newImages);
   };
 
   const handleDelete = () => {
@@ -102,73 +238,216 @@ const Editpaintings = () => {
 
   return (
     <div>
+        <Link style={{display:"flex", width:"fit-content",alignItems:"center"}} to="/admin/adminpaintinglist"> <i className="bi mb-2 fs-1 bi-caret-left-fill"></i><h3 style={{color:"aliceblue"}}> Painting Preview</h3></Link> 
+
+        <div className="admin-add-product-container">
+
+
       <h2>Edit Painting</h2>
 
       <form className='edit-painting-form' onSubmit={handleSubmit}>
-     
-      <img src={img} alt="painting" />
-        <input
-          type="file"
-          name="image"
-          onChange={handleImageChange}
-          required
-        />
 
-     
-        <label> Painting Title: </label>
+  
+    <div className="add-product-input-group upload-image-input-group">  
+    <label htmlFor=""></label>
+    <label> Upload Media <button disabled data-title='Your Cover image will be the first and main picture of your product'> <i className="bi bi-question-circle-fill"></i> </button></label> <br/>
+   
         <input
+      className='input add-img-product-input'
+      type="file"
+      name="image"
+      id="add-img-product-input"
+      onChange={handleImageChange}
+      multiple
+      style={{ display: img.length === 0 ? 'block' : 'none' }}
+    />  <div className="add-paintings-image-preview">
+      {img.map((image, index) => (
+    <div  key={index} className={index === 0 ? 'dashboard-input-upload-larger-image' : 'dashboard-input-upload-smaller-image'}>
+      <input
+        type="checkbox"
+        name={`dashboard-media-upload-input-cover-${index}`}
+        id={`dashboard-media-upload-input-cover-${index}`}
+        checked={index === 0}
+        onChange={() => handleCoverImageChange(index)}
+        />
+         <img src={image} alt="" />
+         <button className="dashboard-delete-one-uploded-image" type='button' onClick={() => handleRemoveImage(index)}> Remove</button>
+         <label htmlFor={`dashboard-media-upload-input-cover-${index}`} className='dashboard-image--cover-info'> <p></p> </label>
+        
+      </div> ))} 
+      {loadingMessages.map((message, index) => (
+        <div className="initialImageloadingMessage image-upload-loader"></div>
+      ))}
+      {moreImageloadingMessages.map((message, index) => (
+        <div className="image-upload-loader"></div>
+      ))}      
+      {img.length >= 1 && (<label className='dashboard-upload-more-images' htmlFor="add-more-images-input"> <i className="bi bi-plus"></i> </label>)}
+      {img.length >= 1 && (<button type="button" className='clear-uploaded-images-button' onClick={handleClearImages}>Clear All<br/> <i className="bi bi-trash"></i> </button>)}
+     <input
+          type="file"
+          name="moreImages"
+          id="add-more-images-input"
+          onChange={handleMoreImagesChange}
+          multiple
+          style={{ display: 'none' }} 
+        />   </div>
+ 
+    </div>
+
+
+    <div className="add-product-input-group">
+        <label> Painting Title: </label><br/>
+        <input
+         className='input'
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
+        </div>
 
-        <label> Painting Description: </label>
+        
+    <div className="add-product-input-group">
+        <label> Painting Description: </label><br/>
         <textarea
+         className='input'
           required
           value={about}
           onChange={(e) => setAbout(e.target.value)}
-        />
+        /></div>
 
-        <label>Artist : </label>
-        <input
-          required
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-        />
 
-      <label>Price : </label>
+  <div className="add-product-input-group">
+          <label>Artist : </label><br/>
+          <input
+           className='input'
+            required
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+          />
+          </div>
+
+      
+   
+          <div className="add-product-input-group d-flex">
+    <div className="add-product-input-group-price-each">
+      <label>Price : </label><br/>
         <input
+        className='input'
           required
           value={price}
+          type="number"
           onChange={(e) => setPrice(e.target.value)}
-        />
+        /></div>
 
-        <label>Date : </label>
+
+        <div className="add-product-input-group-price-each">
+        <label>Compare at Price ( Leave Blank if you don't want it displayed) : <button disabled data-title='To display a markdown, enter a value higher than your price. Often shown with a strikethrough (e.g. $̶2̶5̶.0̶0̶).'> <i className="bi bi-question-circle-fill"></i> </button>  </label><br/>
         <input
+        className='input'
+          value={compareAtPrice}
+          type="number"
+          onChange={(e) => setCompareAtPrice(e.target.value)}
+        /></div>
+        
+        </div>
+
+        <div className="add-product-input-group d-flex align-items-center">
+            <div className="add-product-input-group-price-each">
+              <label>Quantity : </label><br/>
+                <input
+                className='input'
+                  required
+                  value={quantity}
+                  type="number"
+                  onChange={(e) => setQuantity(e.target.value)}
+                /></div>
+                
+                  <div className="checkbox-wrapper mt-3">
+               <input  id="terms-checkbox-37" name="checkbox" type="checkbox"  checked={quantityDisplay === 'on'}
+                    onChange={(e) => setQuantityDisplay(e.target.checked ? 'on' : 'off')}
+                  />    <label className="terms-label" for="terms-checkbox-37">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 200 200" className="checkbox-svg">
+                      <mask fill="white" id="path-1-inside-1_476_5-37">
+                        <rect height="200" width="200"></rect>
+                      </mask>
+                      <rect mask="url(#path-1-inside-1_476_5-37)" strokeWidth="40" className="checkbox-box" height="200" width="200"></rect>
+                      <path strokeWidth="15" d="M52 111.018L76.9867 136L149 64" className="checkbox-tick"></path>
+                    </svg>
+                    <span className="label-text">Display Items Remaining in Stock (  {quantityDisplay}  )</span>
+                  </label>
+                </div>
+
+
+
+
+            </div>
+            
+       
+    <div className="add-product-input-group">
+        <label>Date : </label><br/>
+        <input
+         className='input'
           type="date"
           required
           value={date}
           onChange={(e) => setDate(e.target.value)}
-        />
-
-      <label>Tags: </label>
-            <select
-              multiple
-              value={tags}
-              onChange={handleTagChange}
-              required
-                  >
-              <option value="homecover">Home Cover</option>
-              <option value="top5">Top 5</option>
-            </select>
+        /> </div>
 
 
-        <button disabled={saving}> Save painting</button>
+
+        <div className="add-product-input-group position-relative">
+          <label>Category: <button className='bg-transparent border-0' disabled data-title='Go to the General Settings Tab to add a new Category'> <i className="bi bi-question-circle-fill"></i> </button><br /></label>          
+          <div>
+        <select
+      className='input'
+      value={inputCategory}
+      onChange={handleCategoryInputChange}
+    >
+      <option value="">Select a category</option>
+      {matchingCategories.map((match, index) => (
+        <option key={index} value={match}>
+          {match}
+        </option>
+      ))}
+    </select>
+
+          </div>
+        </div>
+
+
+
+
+    <div className="add-product-input-group upload-image-input-group">
+            <label>Tags: 
+              <button disabled data-title='This Helps With SEO and also helps with search results ( Click to learn more )'> 
+                <i className="bi bi-question-circle-fill"></i> 
+              </button> 
+            </label><br/>
+            <input
+              type="text"
+              className='input'
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Type and press Enter"
+            />
+
+    
+       <div className="tagpills-container d-flex">
+         {tags.map((tag, index) => (
+          <div key={index} className="tag-pill rounded-pill bg-primary" onClick={() => handleTagClick(tag)}>
+            {tag} <i className="bi bi-x"></i>
+          </div>
+        ))}  <div></div>      </div>
+      </div>
+
+
+        <button className="btn mt-3" disabled={saving}> Save painting</button>
         {saving && <p className="notification" >Saving {title}...</p>}
 
         {/* <!-- Delete trigger modal --> */}
-        <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" className="btn mt-3 ms-4 bg-danger btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Delete
       </button>
       </form>
@@ -194,7 +473,7 @@ const Editpaintings = () => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button className='btn btn-danger' onClick={handleDelete}>Delete painting</button>
+        <button className='btn btn-danger bg-danger' onClick={handleDelete}>Delete painting</button>
       </div>
     </div>
   </div>
@@ -205,12 +484,12 @@ const Editpaintings = () => {
     
     
     
-    
-    
-    
     </div>
+  
 
-
+  
+  
+  </div>  
   )
 };
 

@@ -2,31 +2,24 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { db } from '../../../backend/config/fire';
-import { doc, getDoc } from 'firebase/firestore';
-import './customerdetails.css'
+import { doc, getDoc } from 'firebase/firestore';  
 import axios from 'axios';
 
 
 
-const AdminCustomerDetails = () => {
+const AdminUserDetails = () => {
   const { id } = useParams();
 
-  // Get the admincustomerlist document reference
-  const admincustomerlistRef = doc(db, 'admincustomerlist', id);
+  // Get the adminuserlist document reference
+  const adminuserlistRef = doc(db, 'adminusers', id);
 
-  // Use the react-firebase-hooks to fetch the admincustomerlist document
-  const [admincustomerlistSnapshot, loading, error] = useDocument(admincustomerlistRef);
+  // Use the react-firebase-hooks to fetch the adminuserlist document
+  const [adminuserlistSnapshot, loading, error] = useDocument(adminuserlistRef);
 
-  // Extract admincustomerlist data from the snapshot
-  const admincustomerlist = admincustomerlistSnapshot?.data();
+  // Extract adminuserlist data from the snapshot
+  const adminuserlist = adminuserlistSnapshot?.data();
 
-
-  
-  function formatFirebaseTimestamp(timestamp) {
-    const dateObject = timestamp.toDate();
-    return dateObject.toLocaleDateString(); // Adjust format as needed
-  }
-
+ 
 
 
       // const [subject, setSubject] = useState('');
@@ -35,7 +28,7 @@ const AdminCustomerDetails = () => {
       // const sendEmail = () => {
       //   axios.post(
       //     'YOUR_CLOUD_FUNCTION_URL', 
-      //     { to: admincustomerlist.email, subject, text: message }
+      //     { to: adminuserlist.email, subject, text: message }
       //   )
       //   .then(response => {
       //     console.log(response.data);
@@ -51,7 +44,7 @@ const AdminCustomerDetails = () => {
 
   return (
     <div>
-     <Link style={{display:"flex", alignItems:"center"}} to="/admin/customers"> <i className="bi mb-2 fs-1 bi-caret-left-fill"></i><h3 style={{color:"aliceblue"}}> Customer Details</h3></Link> 
+     <Link style={{display:"flex", alignItems:"center"}} to="/admin/account/settings#admin-settings"> <i className="bi mb-2 fs-1 bi-caret-left-fill"></i><h3 style={{color:"aliceblue"}}> Admin Details</h3></Link> 
 
       {error && <div>{error.message}</div>}
 
@@ -59,12 +52,12 @@ const AdminCustomerDetails = () => {
       {loading && <div className='preloader'>...Loading</div>}
         <div className='admin-customer-details-container'>
     
-      {admincustomerlist && (
+      {adminuserlist && (
     <div className="admin-customer-details-container-inner"> 
-      <img src={admincustomerlist.img} alt={admincustomerlist.name} />
+      <img src={adminuserlist.img} alt={adminuserlist.name} />
       <div className="admin-customer-details-container-inner-description">
-        <h2>{admincustomerlist.name}</h2>
-         <p>{admincustomerlist.email}</p>
+        <h2>{adminuserlist.name}</h2>
+         <p>{adminuserlist.email}</p>
             </div>
              <button title="Send a mail to the users Email address">Send a Mail <i className="bi bi-envelope-at-fill"></i> </button> 
             </div> 
@@ -86,12 +79,11 @@ const AdminCustomerDetails = () => {
 
         <div className="tab-content p-4" id="nav-tabContent">
 
-            {admincustomerlist && (
+            {adminuserlist && (
             <div className="tab-pane  admin-customer-more-details-tab fade show pt-4 active" id="more-customer-details" role="tabpanel" aria-labelledby="more-customer-details-tab" tabIndex="0">
-                 <span> <h6> Phone Number :</h6> <p> {admincustomerlist.phonenumber} </p> </span>
-                 <span><h6>Address :</h6> <p>{admincustomerlist.location}</p> </span>
-                 <span> <h6> Total Amount Spent : </h6><p>${admincustomerlist.amountspent} </p> </span>
-                <span> <h6> Date Join : </h6><p>{formatFirebaseTimestamp(admincustomerlist.date)} </p> </span>
+                 <span> <h6> Phone Number :</h6> <p> {adminuserlist.phonenumber} </p> </span>
+                 <span><h6>Address :</h6> <p>{adminuserlist.location}</p> </span>
+                 <span> <h6> Total Amount Spent : </h6><p>${adminuserlist.amountspent} </p> </span> 
              </div>)} 
 
 
@@ -135,4 +127,4 @@ const AdminCustomerDetails = () => {
   );
 };
 
-export default AdminCustomerDetails;
+export default AdminUserDetails;

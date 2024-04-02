@@ -14,7 +14,7 @@ import Gallery from '../frontend/pages/galllery/gallery';
 const Public = () => {
 
     return (
-        <div>
+        <div className='bg-dark'>
 
             <Navbar/>
 

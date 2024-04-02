@@ -87,16 +87,14 @@ const Orders = () => {
     const filtered = allordersadmin.filter(ordersadmin => {
       const lowerCaseTerm = searchTerm.toLowerCase();
       return (
-        ordersadmin.name.toLowerCase().includes(lowerCaseTerm) ||
-        ordersadmin.email.toLowerCase().includes(lowerCaseTerm) ||
-        ordersadmin.itembought.toLowerCase().includes(lowerCaseTerm) || 
-        ordersadmin.address.toLowerCase().includes(lowerCaseTerm) || 
-        ordersadmin.status.toLowerCase().includes(lowerCaseTerm) || 
-        ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm) || 
-        ordersadmin.price.toLowerCase().includes(lowerCaseTerm) ||
-        ordersadmin.date.toString().toLowerCase().includes(lowerCaseTerm) 
-
-        // Add more checks as needed
+       ( ordersadmin.name && ordersadmin.name.toLowerCase().includes(lowerCaseTerm))||
+       ( ordersadmin.email && ordersadmin.email.toLowerCase().includes(lowerCaseTerm))||
+       ( ordersadmin.itembought && ordersadmin.itembought.toLowerCase().includes(lowerCaseTerm)) || 
+       ( ordersadmin.address && ordersadmin.address.toLowerCase().includes(lowerCaseTerm)) || 
+        ( ordersadmin.status && ordersadmin.status.toLowerCase().includes(lowerCaseTerm)) || 
+       ( ordersadmin.phonenumber && ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+        ( ordersadmin.price && ordersadmin.price.toLowerCase().includes(lowerCaseTerm)) ||
+       ( ordersadmin.date && ordersadmin.date.toString().toLowerCase().includes(lowerCaseTerm)) 
       );
     });
     setFilteredAllordersadmin(filtered);
@@ -111,14 +109,14 @@ const handleInputChange = (e) => {
   const filtered = allordersadmin.filter(ordersadmin => {
     const lowerCaseTerm = term.toLowerCase();
     return (
-      ordersadmin.name.toLowerCase().includes(lowerCaseTerm) ||
-      ordersadmin.email.toLowerCase().includes(lowerCaseTerm) ||
-      ordersadmin.itembought.toLowerCase().includes(lowerCaseTerm) || 
-      ordersadmin.address.toLowerCase().includes(lowerCaseTerm) || 
-      ordersadmin.status.toLowerCase().includes(lowerCaseTerm) || 
-      ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm) || 
-      ordersadmin.price.toLowerCase().includes(lowerCaseTerm) ||
-      ordersadmin.date.toString().toLowerCase().includes(lowerCaseTerm) 
+     ( ordersadmin.name && ordersadmin.name.toLowerCase().includes(lowerCaseTerm)) ||
+     ( ordersadmin.email && ordersadmin.email.toLowerCase().includes(lowerCaseTerm)) ||
+     ( ordersadmin.itembought && ordersadmin.itembought.toLowerCase().includes(lowerCaseTerm)) || 
+     (ordersadmin.address &&  ordersadmin.address.toLowerCase().includes(lowerCaseTerm)) || 
+     ( ordersadmin.status && ordersadmin.status.toLowerCase().includes(lowerCaseTerm)) || 
+     ( ordersadmin.phonenumber && ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+      ( ordersadmin.price && ordersadmin.price.toLowerCase().includes(lowerCaseTerm)) ||
+     ( ordersadmin.date && ordersadmin.date.toString().toLowerCase().includes(lowerCaseTerm)) 
     );
   });
 

@@ -21,7 +21,7 @@ import { doc, getDoc, addDoc , setDoc, collection, onSnapshot , query, where, ge
 import { db, auth } from '../../config/fire';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import useFetch from '../../../assets/hooks/usefetch';
+// import useFetch from '../../../assets/hooks/usefetch';
 import './paintingdetails.css';
 import CurrencyAPI from '@everapi/currencyapi-js';  
 import CurrencyConverter from '../../currency/currency';
@@ -452,21 +452,10 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             modules={[Navigation, Scrollbar]}
            className="mySwiper2"
            >
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
+             {painting.img.map((image, index) => 
+             <SwiperSlide>
+              <img src={image} />
+            </SwiperSlide>)} 
           </Swiper>  )}
          
         
@@ -484,21 +473,10 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
               '--swiper-pagination-color': 'rgb(250, 254, 36,0.2)',
             }}
           >
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={painting.img} />
-            </SwiperSlide>
+            {painting.img.map((image, index) => 
+             <SwiperSlide>
+              <img src={image} />
+            </SwiperSlide>)} 
           </Swiper>
          
           </div>  

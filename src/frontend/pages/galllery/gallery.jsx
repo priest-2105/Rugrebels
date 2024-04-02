@@ -18,10 +18,6 @@ const Gallery = () => {
    
 
     
-
-
-    
-    
     useEffect(() => {
         
             let mouseX = 0;

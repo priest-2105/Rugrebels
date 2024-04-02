@@ -104,7 +104,7 @@ const PaintingList = (props) => {
               <button onClick={() => setIsAdded(false)}>Close</button>
             </div>
           )}
-          <Link to={`/paintings/${painting.id}`} className="view-button">
+          <Link to={`/publicpath/paintings/${painting.id}`} className="view-button">
             Preview
           </Link>  
           <h5>Artist : {painting.artist}</h5>

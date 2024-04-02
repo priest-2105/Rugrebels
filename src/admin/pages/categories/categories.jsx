@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import './adminpaintinglist.css';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../../backend/config/fire'; 
 import { Link } from 'react-router-dom';
-import { collection, getDocs, deleteDoc } from 'firebase/firestore'; // Import necessary Firestore functions
-import { db } from '../../../backend/config/fire'; // Import the Firestore instance from your Firebase configuration
-import TotalRevenuesAreaChart from '../../components/productrevnue/productrevenue';
-import TrafficImpressionChart from '../../components/trafficimpressions/trafficimpressions';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 
 
-const Adminpaintinglist = () => {
+
+
+const PaintingsByCategory = () => {
+  const { category } = useParams();
   const [paintings, setPaintings] = useState([]);
   const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
   const months = [
@@ -25,47 +24,25 @@ const Adminpaintinglist = () => {
   
 
 
-  
 
-  
-  const handleChangeMonth = (event) => {
-      setSelectedMonth(event.target.value);
-  }
-
-
-  // Fetch paintings from Firestore on component mount
   useEffect(() => {
-    const fetchPaintings = async () => {
+    const fetchPaintingsByCategory = async () => {
       try {
-        const paintingsCollection = collection(db, 'paintings');
-        const snapshot = await getDocs(paintingsCollection);
-        const paintingData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const paintingsRef = collection(db, 'paintings');
+        const q = query(paintingsRef, where('category', '==', category));
+        const querySnapshot = await getDocs(q);
+        const paintingData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setPaintings(paintingData);
       } catch (error) {
         console.error('Error fetching paintings:', error);
       }
     };
 
-    fetchPaintings(); 
+    fetchPaintingsByCategory();
+  }, [category]);
+
+
   
-  }, []);   
-
-  const handleDelete = async (id) => {
-    try {
-      const paintingRef = doc(db, 'paintings', id);
-      await deleteDoc(paintingRef);
-      console.log('Painting deleted');
-      // Refresh the list of paintings after deletion
-      const updatedPaintings = paintings.filter((painting) => painting.id !== id);
-      setPaintings(updatedPaintings);
-     
-    } catch (error) {
-      console.error('Error deleting painting:', error);
-    }
-  };
-
-
-
 
   useEffect(() => {
       const filtered = paintings.filter(painting => {
@@ -229,52 +206,15 @@ const handleStatusChange = (statusType) => {
     setFilteredPaintings(sortedPaintings);
   }, [paintings, sortOrder]);
  
-   
-  
+
+
 
   return (
-    <div> 
+    <div>
+      <h2>All Paintings in {category} Category</h2>
 
 
-
-          <div className="dashboard-arts-container">
-            
-
-            <div className="dashboard-top-art-info d-flex ">
-
-                <div>  <h3>Arts</h3>
-                <p>Explore Your Products Easily Manage Your arts, and keep your store Offerings Fresh and attractive </p>
-                    </div> 
-
-                    <div className="d-flex ms-auto me-2">
-
-                      <Link className='dashboard-arts-button' to="/admin/addPainting"> Add New Painting <i className="bi bi-brush-fill text-dark"></i></Link>
-              
-                    </div>
-            </div>
-
-
-
-          <div className="product-dashboard-charts">
-             
-          <div className="product-total-revenue-charts">
-              <TotalRevenuesAreaChart />
-          </div>
-          
-          <div className='product-traffic-impressions'>
-            <TrafficImpressionChart/>
-          </div>
-
-          </div>
-          
-
-
-
-
-
-
-
-          <ul className="nav nav-pills  mt-4" id="pills-tab" role="tablist">
+      <ul className="nav nav-pills  mt-4" id="pills-tab" role="tablist">
   <li className="nav-item" role="presentation">
     <button className="nav-link dashboard-customer-display-type-button active" id="pills-list-tab" data-bs-toggle="pill" data-bs-target="#pills-list" type="button" role="tab" aria-controls="pills-list" aria-selected="true"> <i className="bi fs-2 bi-list-ul"></i> </button>
   </li>
@@ -329,26 +269,7 @@ const handleStatusChange = (statusType) => {
           </div>
 
 
-          <select 
-          onChange={handleChangeMonth} 
-          style={{
-          marginLeft: "40px",
-          paddingLeft:"10px",
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }}
-          >         
-          <option defaultValue >Month</option>
-          {monthsToShow.map((month, index) => (
-          <option   style={{
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }} key={index} value={index}>{month}</option>
-          ))}
-          </select>
-
+     
           </div>
 
           <table>
@@ -446,25 +367,7 @@ const handleStatusChange = (statusType) => {
           </div>
 
 
-          <select 
-          onChange={handleChangeMonth} 
-          style={{
-          marginLeft: "40px",
-          paddingLeft:"10px",
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }}
-          >         
-          <option defaultValue >Month</option>
-          {monthsToShow.map((month, index) => (
-          <option   style={{
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }} key={index} value={index}>{month}</option>
-          ))}
-          </select>
+       
 
           </div>
 
@@ -497,63 +400,6 @@ const handleStatusChange = (statusType) => {
       
       
       </div>
- </div>
-
-
-
-     {/* Modal */}
-
-
-          <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div className="modal-dialog">
-          <div className="modal-content">
-          <div className="modal-header">
-          <h1 className="modal-title fs-5" id="exampleModalLabel">Filter</h1>
-          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div className="modal-body">
-          <div className="modal-body">
-              <h5>Date Range</h5>
-              <DatePicker
-                selected={filterOptions.dateRange.startDate}
-                onChange={date => handleDateRangeChange(date, filterOptions.dateRange.endDate)}
-                startDate={filterOptions.dateRange.startDate}
-                endDate={filterOptions.dateRange.endDate}
-                selectsRange
-              />
-              <h5>Price Range</h5>
-              <input
-                type="number"
-                value={filterOptions.priceRange.minPrice}
-                onChange={e => handlePriceRangeChange(e.target.value, filterOptions.priceRange.maxPrice)}
-              />
-              <input
-                type="number"
-                value={filterOptions.priceRange.maxPrice}
-                onChange={e => handlePriceRangeChange(filterOptions.priceRange.minPrice, e.target.value)}
-              />
-              <h5>Status</h5>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={filterOptions.status.inStock}
-                  onChange={() => handleStatusChange('inStock')}
-                />
-                In Stock
-              </label>
-              {/* Add similar inputs for outOfStock and notActive */}
-            </div>
-
-          </div>
-          <div className="modal-footer">
-          <button type="button" className="bg-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" className="bg-primary" onClick={handleFilter}>Save Changes</button>
-          </div>
-          </div>
-          </div>
-          </div>
-
-          {/* modal  */}
 
 
 
@@ -561,6 +407,6 @@ const handleStatusChange = (statusType) => {
 
     </div>
   );
-}
+};
 
-export default Adminpaintinglist;
+export default PaintingsByCategory;

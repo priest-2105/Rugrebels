@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './admindashboard.css';
 import { db } from '../../../backend/config/fire';  
-import PaintingsStatistics from '../../components/paitings-statistics/paintings-statistics';
+import { collection, getDocs, query, orderBy,limit } from 'firebase/firestore';
 import Totalcustomerchart from '../../components/cusomterschart/totalcustomerchart';
-import Totalmonhtprofit from '../../components/monthprofit/totalmonhtprofit';
 import RecentOrders from '../orders/recentorders';
+import TotalRevenuesAreaChart from '../../components/productrevnue/productrevenue';
 
 
 
@@ -69,6 +69,27 @@ import RecentOrders from '../orders/recentorders';
 
 
 
+
+   const [topSoldPaintings, setTopSoldPaintings] = useState([]);
+
+  useEffect(() => {
+    const fetchTopSoldPaintings = async () => {
+      try {
+        const paintingsCollection = collection(db, 'paintings');
+        const q = query(paintingsCollection, orderBy('sold', 'desc'), limit(4));
+        const snapshot = await getDocs(q);
+        const paintingData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setTopSoldPaintings(paintingData);
+      } catch (error) {
+        console.error('Error fetching top sold paintings:', error);
+      }
+    };
+
+    fetchTopSoldPaintings();
+  }, []);
+
+
+
     return (
 
               <div style={{color:"aliceblue"}}>
@@ -89,7 +110,7 @@ import RecentOrders from '../orders/recentorders';
            
            <div className="dashboard-total-charts total-revenue-chart">
             <h4>Total Revenue</h4>
-           <PaintingsStatistics />
+           <TotalRevenuesAreaChart/>
               </div> 
 
 
@@ -98,18 +119,7 @@ import RecentOrders from '../orders/recentorders';
            <Totalcustomerchart />
               </div> 
           
-
-              <div className="dashboard-total-charts total-sessions-chart">
-            <h4>Total Sessions</h4>
-             <PaintingsStatistics />
-              </div> 
-
-              
-              <div className="dashboard-total-charts total-months-profit-chart">
-            <h4>Total Months Profit</h4>
-             <Totalmonhtprofit />
-              </div> 
-      
+ 
         
                </div>
 
@@ -122,47 +132,33 @@ import RecentOrders from '../orders/recentorders';
             <div className="dashboard-top-products-header d-flex mb-5">
             <h3>Top Products</h3>
 
-              <div className="ms-auto"></div>
-              <select 
-        onChange={handleChangeMonth} 
-        style={{
-          paddingLeft:"10px",
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-        }}
-        >         
-         <option defaultValue >Month</option>
-         {monthsToShow.map((month, index) => (
-          <option   style={{
-            backgroundColor: "transparent",
-            color: "aliceblue",
-            borderRadius: "6px"
-          }} key={index} value={index}>{month}</option>
-        ))}
-        </select>
+       
 
           </div>
+                  {topSoldPaintings 
+                    .sort((a, b) => b.sold - a.sold) 
+                  .map((painting) => {
+          const target = 5000; // Set your target value here
+          const percentage = (painting.sold / target) * 100;
+          const progressStyle = { width: `${percentage}%` };
 
-          <div className="most-sold-items-each">
-                <div className="most-sold-items-each-top"> <h6>Mona Lisa</h6><span>$340,000</span></div><div className="most-sold-items-each-progress"><div className="most-sold-items-each-progress-inner"></div> </div>
+          return (
+            <div key={painting.id}>
+              <div className="most-sold-items-each">  
+                <div className="most-sold-items-each-top">
+                  <h6 className="d-flex align-items-baseline">
+                    {painting.title}
+                    <p className="ms-2">{painting.sold} Sold</p>
+                  </h6>
+                  <span>$ {painting.sold * painting.price}</span>
+                </div>
+                <div className="most-sold-items-each-progress">
+                  <div className="most-sold-items-each-progress-inner" style={progressStyle}></div>
+                </div>
               </div>
-
-              <div className="most-sold-items-each">
-                <div className="most-sold-items-each-top"> <h6>Mona Lisa</h6><span>$340,000</span></div><div className="most-sold-items-each-progress"><div className="most-sold-items-each-progress-inner"></div> </div>
-              </div>
-
-              <div className="most-sold-items-each">
-                <div className="most-sold-items-each-top"> <h6>Mona Lisa</h6><span>$340,000</span></div><div className="most-sold-items-each-progress"><div className="most-sold-items-each-progress-inner"></div> </div>
-              </div>
-
-              <div className="most-sold-items-each">
-                <div className="most-sold-items-each-top"> <h6>Mona Lisa</h6><span>$340,000</span></div><div className="most-sold-items-each-progress"><div className="most-sold-items-each-progress-inner"></div> </div>
-              </div>
-
-              <div className="most-sold-items-each">
-                <div className="most-sold-items-each-top"> <h6>Mona Lisa</h6><span>$340,000</span></div><div className="most-sold-items-each-progress"><div className="most-sold-items-each-progress-inner"></div> </div>
-              </div>
+            </div>
+          );
+        })}
 
 
             </div>

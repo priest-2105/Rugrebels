@@ -90,12 +90,12 @@ useEffect(() => {
   const filtered = admincustomerlist.filter(customerlist => {
     const lowerCaseTerm = searchTerm.toLowerCase();
     return (
-      customerlist.name.toLowerCase().includes(lowerCaseTerm) ||
-      customerlist.email.toLowerCase().includes(lowerCaseTerm) ||
-      customerlist.location.toLowerCase().includes(lowerCaseTerm) || 
-      customerlist.amountspent.toLowerCase().includes(lowerCaseTerm) || 
-      customerlist.phonenumber.toLowerCase().includes(lowerCaseTerm) || 
-      customerlist.date.toString().toLowerCase().includes(lowerCaseTerm) 
+     ( customerlist.name && customerlist.name.toLowerCase().includes(lowerCaseTerm)) ||
+     ( customerlist.email && customerlist.email.toLowerCase().includes(lowerCaseTerm)) ||
+     ( customerlist.location && customerlist.location.toLowerCase().includes(lowerCaseTerm)) || 
+     ( customerlist.amountspent && customerlist.amountspent.toLowerCase().includes(lowerCaseTerm)) || 
+     ( customerlist.phonenumber && customerlist.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+     ( customerlist.date && customerlist.date.toString().toLowerCase().includes(lowerCaseTerm)) 
 
       // Add more checks as needed
     );
@@ -112,12 +112,12 @@ setSearchTerm(term);
 const filtered = admincustomerlist.filter(customerlist => {
   const lowerCaseTerm = term.toLowerCase();
   return (
-    customerlist.name.toLowerCase().includes(lowerCaseTerm) ||
-    customerlist.email.toLowerCase().includes(lowerCaseTerm) ||
-    customerlist.location.toLowerCase().includes(lowerCaseTerm) || 
-    customerlist.amountspent.toLowerCase().includes(lowerCaseTerm) || 
-    customerlist.phonenumber.toLowerCase().includes(lowerCaseTerm) || 
-    customerlist.date.toString().toLowerCase().includes(lowerCaseTerm) 
+   ( customerlist.name && customerlist.name.toLowerCase().includes(lowerCaseTerm)) ||
+   ( customerlist.email && customerlist.email.toLowerCase().includes(lowerCaseTerm)) ||
+   ( customerlist.location && customerlist.location.toLowerCase().includes(lowerCaseTerm)) || 
+   ( customerlist.amountspent && customerlist.amountspent.toLowerCase().includes(lowerCaseTerm)) || 
+   ( customerlist.phonenumber && customerlist.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+   ( customerlist.date && customerlist.date.toString().toLowerCase().includes(lowerCaseTerm)) 
   );
 });
 

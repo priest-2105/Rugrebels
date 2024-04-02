@@ -71,11 +71,11 @@ const Feedback = () => {
     const filtered = messages.filter(message => {
       const lowerCaseTerm = searchTerm.toLowerCase();
       return (
-        message.name.toLowerCase().includes(lowerCaseTerm) ||
-        message.email.toLowerCase().includes(lowerCaseTerm) ||
-        message.subject.toLowerCase().includes(lowerCaseTerm) || 
-        message.message.toString().toLowerCase().includes(lowerCaseTerm) ||
-        message.date.toString().toLowerCase().includes(lowerCaseTerm) 
+        ( message.name && message.name.toLowerCase().includes(lowerCaseTerm))||
+        ( message.email && message.email.toLowerCase().includes(lowerCaseTerm))||
+        ( message.subject && message.subject.toLowerCase().includes(lowerCaseTerm))|| 
+        ( message.message && message.message.toString().toLowerCase().includes(lowerCaseTerm))||
+        ( message.date && message.date.toString().toLowerCase().includes(lowerCaseTerm))
 
         // Add more checks as needed
       );
@@ -92,11 +92,11 @@ const handleInputChange = (e) => {
   const filtered = messages.filter(message => {
     const lowerCaseTerm = term.toLowerCase();
     return (
-      message.name.toLowerCase().includes(lowerCaseTerm) ||
-      message.email.toLowerCase().includes(lowerCaseTerm) ||
-      message.subject.toLowerCase().includes(lowerCaseTerm) || 
-      message.message.toString().toLowerCase().includes(lowerCaseTerm) ||
-      message.date.toString().toLowerCase().includes(lowerCaseTerm)   
+      ( message.name && message.name.toLowerCase().includes(lowerCaseTerm)) ||
+      ( message.email && message.email.toLowerCase().includes(lowerCaseTerm)) ||
+      ( message.subject && message.subject.toLowerCase().includes(lowerCaseTerm)) || 
+      ( message.message && message.message.toString().toLowerCase().includes(lowerCaseTerm)) ||
+      ( message.date && message.date.toString().toLowerCase().includes(lowerCaseTerm))   
       // Add more checks as needed
     );
   });
