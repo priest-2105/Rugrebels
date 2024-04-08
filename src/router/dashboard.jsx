@@ -1,35 +1,84 @@
-import {Route, Link, useParams } from 'react-router-dom';  
-import { Routes } from 'react-router-dom';
-import AddPainting from '../admin/pages/addPainting/addPainting';
+import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Admindashboard from '../admin/pages/admindashboard/admindashboard';
-import Adminpaintinglist from '../admin/pages/adminpaintinglist/adminpaintinglist';
-import Editpaintings from '../admin/pages/editpaintings/editpaintings';
-import '../admin/admin-styles.css'
-import Settings from '../admin/pages/adminsettings/settings';
-import Notification from '../admin/pages/notification/notification';
-import Customers from '../admin/pages/customers/customers';
+import EditPaintings from '../admin/pages/editPaintings/editpaintings';
 import Feedback from '../admin/pages/feedback/feedback';
-import { signOut} from 'firebase/auth';
-import { auth, db } from '../backend/config/fire';
-import { useEffect, useState } from 'react';
-import Orders from '../admin/pages/orders/orders';
-import AdminCustomerDetails from '../admin/pages/customers/customerdetails';
-import AdminOrderDetails from '../admin/pages/orderdetails/orderdetails';
 import AdminFeedbackDetails from '../admin/pages/feedback/feedbackdetails';
-import TodayDate from '../backend/component/date/todaysdate'
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import RecentOrders from '../admin/pages/orders/recentorders';
+import Orders from '../admin/pages/orders/orders';
+import Notification from '../admin/pages/notification/notification';
+import AdminOrderDetails from '../admin/pages/orderdetails/orderdetails';
+import Customers from '../admin/pages/customers/customers';
+import AdminCustomerDetails from '../admin/pages/customers/customerdetails';
+import AddPainting from '../admin/pages/addPainting/addPainting';
+import Settings from '../admin/pages/adminsettings/settings';
+import Forgotpassword from '../admin/auth/forgotpassword/forgotpassword';
 import AdminUserDetails from '../admin/pages/adminuserdetails/adminuserdetails';
-import PaintingsByCategory from '../admin/pages/categories/categories';
+import { useAuth } from './useauth';
+import { auth, db } from '../backend/config/fire';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { useEffect, useState, useParams } from 'react';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import PreviewPainting from '../admin/pages/previewPainting/previewPainting';
+import Editpaintings from '../admin/pages/editPaintings/editpaintings';
+import { useDocument } from 'react-firebase-hooks/firestore';
+import TodayDate from '../backend/component/date/todaysdate'
+import '../admin/admin-styles.css';
+import Adminpaintinglist from '../admin/pages/adminPaintinglist/adminpaintinglist';
 
+
+
+
+
+const ProtectedRoute = ({ element, ...props }) => {
+    const [isAdmin, setIsAdmin] = useState(null);
+
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          try {
+            // Check if the user document exists in the 'admins' collection
+            const adminDocRef = doc(db, 'admins', user.uid);
+            const adminDocSnapshot = await getDoc(adminDocRef);
+  
+            if (adminDocSnapshot.exists()) {
+              setIsAdmin(true);
+            } else {
+              setIsAdmin(false);
+            }
+          } catch (error) {
+            console.error('Error fetching admin data:', error.message);
+            setIsAdmin(false);
+          }
+        } else {
+          // No user is logged in
+          setIsAdmin(false);
+        }
+      });
+  
+      return () => unsubscribe();
+    }, []);
+  
+    if (isAdmin === null) {
+      // Still checking if user is admin, return loading or null
+      return null;
+    }
+  
+    return isAdmin ? (
+     element
+    ) : (
+      <Navigate to="/adminauth/login" replace />
+    );
+  };
 
 
 
 
 const Dashboard = () => {
 
+  const history = useNavigate();
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
-  const { category } = useParams();
+//   const { category } = useParams();
 
 
 
@@ -37,34 +86,36 @@ const Dashboard = () => {
         await signOut(auth);
       };
   
-
+ 
         useEffect(() => {
-            const unsubscribe = auth.onAuthStateChanged((user) => {
-            setUser(user);
-            });
-            return unsubscribe;
-        }, []);
-
-        useEffect(() => {
-          if (user) {
-            const userRef = doc(db, 'adminusers', user.uid);
+            const unsubscribe = onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                setUser(user);
         
-            const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
-              if (docSnapshot.exists()) {
-                const userData = docSnapshot.data();
-                setUserData(userData);
-              } else {
-                console.error('User document does not exist');
+                try {
+                  // Check if the user document exists in the 'admins' collection
+                  const adminDocRef = db.collection('admins').doc(user.uid);
+                  const adminDocSnapshot = await adminDocRef.get();
+        
+                  if (adminDocSnapshot.exists) {
+                    // Admin document exists, get the user's name from the document
+                    const adminData = adminDocSnapshot.data();
+                    console.log('Admin Data:', adminData);
+        
+                    // Here, you can access the user's name using adminData.name or a relevant property
+                    // For example, if the name is stored in the 'name' field, you can use adminData.name
+                  } else {
+                    // The user is not an admin
+                    console.log('User is not an admin');
+                  }
+                } catch (error) {
+                  console.error('Error fetching admin data:', error.message);
+                }
               }
-            }, (error) => {
-              console.error('Error fetching user data:', error.message);
-              setError('An error occurred while deleting your account. Please try again later.');
             });
         
-            // Cleanup the listener when the component is unmounted or when user changes
             return () => unsubscribe();
-          }
-        }, [user]);
+          }, []);
         
 
     return (
@@ -113,13 +164,13 @@ const Dashboard = () => {
                           
             <div className="dropdown header-profile2">
                 <Link className="nav-link">
-                   {user && userData ? ( 
+                   {user && user ? ( 
                      <div className="header-info2 d-flex align-items-center">
-                    <img className='rounded'  src={userData.img} alt={userData.name} height="40px" width="45px" />     
+                    <img className='rounded'  src={user.img} alt={user.name} height="40px" width="45px" />     
                         <div className="d-flex align-items-center sidebar-info">
                             <div>
-                                <h5 style={{fontWeight:"700",lineHeight:"4px"}} className="ms-2 mt-4 font-w400 d-block">{userData.name}</h5>
-                                <p style={{fontSize:"10px"}} className="ms-2 d-block">{userData.email}</p>
+                                <h5 style={{fontWeight:"700",lineHeight:"4px"}} className="ms-2 mt-4 font-w400 d-block">{user.name}</h5>
+                                <p style={{fontSize:"10px"}} className="ms-2 d-block">{user.email}</p>
                                 {/* <small className="text-end font-w400">Superadmin</small> */}  
                             </div>	
                         </div>  
@@ -132,7 +183,7 @@ const Dashboard = () => {
 
 
                     <li className="mt-2 dropdown notification_dropdown">
-                        <h5 style={{fontWeight:"900", fontSize:"13px", color:"aliceblue"}}><TodayDate /> </h5>
+                        <h5 style={{fontWeight:"900", fontSize:"13px", color:"aliceblue"}}><TodayDate/> </h5>
                         </li>	
                         
 
@@ -167,7 +218,7 @@ const Dashboard = () => {
                                         </div>
                                         <Link className="timeline-panel text-muted" to="#">
                                             <span>30 minutes ago</span>
-                                            <h6 className="mb-0">john just buy your product <strong className="text-warning">Sell $250</strong></h6>
+                                            <h6 className="mb-0">john just buy your Painting <strong className="text-warning">Sell $250</strong></h6>
                                         </Link>
                                     </li>
                                     <li>
@@ -202,8 +253,8 @@ const Dashboard = () => {
                         </li>
                         <li className="dropdown header-profile">
                             <Link className="nav-link" to="/admin/account/profile" role="button" data-bs-toggle="dropdown">
-                            {user && userData ? (<div>
-                         <img className='rounded'  src={userData.img} alt={userData.name} height="40px" width="45px" />
+                            {user && user ? (<div>
+                         <img className='rounded'  src={user.img} alt={user.name} height="40px" width="45px" />
                             </div>) : ( <p>You are not logged in</p>)}
                             </Link>
                             <div className="dropdown-menu dropdown-menu-end" style={{backgroundColor:"#0f0f13"}}>
@@ -258,7 +309,7 @@ const Dashboard = () => {
                         <span className="nav-text">Customers</span>
                     </Link>
                 </li>
-                <li><Link className="has-arrow mb-2" to="/admin/adminpaintinglist" aria-expanded="false">
+                <li><Link className="has-arrow mb-2" to="/admin/paintings" aria-expanded="false">
                 <i className="bi bi-folder-fill"></i>
                         <span className="nav-text">Arts</span>
                     </Link>
@@ -309,61 +360,55 @@ const Dashboard = () => {
         <Routes>
 
 
-
-                <Route exact path="/addPainting" element={<AddPainting/>} />
-                
-                
-                {  /* <Route exact path="/paintings/:id" element={<Paintingdetails/>} /> */}
-                
-                
-                <Route exact path="/admindashboard" element={<Admindashboard/>} />
-                
-             
-                <Route exact path="/adminpaintinglist" element={<Adminpaintinglist/>} />
+                <Route exact path="/dashboard" element={<ProtectedRoute element={<Admindashboard/>} />} />
 
 
-                <Route exact path="/adminpaintingpreview/:id" element={<Editpaintings/>} />
-                
-                
-                <Route exact path="/admincustomerdetails/:id" element={<AdminCustomerDetails/>} />
+                <Route exact path="/paintings" element={<ProtectedRoute element={<Adminpaintinglist/>} />} />
 
 
-                <Route exact path="/adminuserdetails/:id" element={<AdminUserDetails/>} />
+                <Route exact path="/previewpainting/:id" element={<ProtectedRoute element={<PreviewPainting/>} />} />
 
 
-                <Route exact path="/adminorderdetails/:id" element={<AdminOrderDetails/>} />
+                <Route exact path="/addpainting" element={<ProtectedRoute element={<AddPainting/>} />} />
 
 
-                <Route exact path="/adminfeedbackdetails/:id" element={<AdminFeedbackDetails/>} />
+                <Route exact path="/customers" element={<ProtectedRoute element={<Customers/>} />} />
 
 
-                <Route exact path="/paintingcategory/:category" element={<PaintingsByCategory/>} />
+                <Route exact path="/customers/:id" element={<ProtectedRoute element={<AdminCustomerDetails/>} />} />
 
 
-                <Route exact path="/orders" element={<Orders/>} />
+                <Route exact path="/editpainting/:id" element={<ProtectedRoute element={<Editpaintings/>} />} />
 
 
-                <Route exact path="/messages" element={<Feedback/>} />
+                <Route exact path="/notification" element={<ProtectedRoute element={<Notification/>} />} />
 
 
-                <Route exact path="/customers" element={<Customers />} />
-               
-               
-                <Route exact path="/notifications" element={<Notification/>} />
-               
+                <Route exact path="/orders" element={<ProtectedRoute element={<Orders/>} />} />
 
 
-                <Route exact path="/account/settings" element={<Settings/>} />
+                <Route exact path="/:customerId/orderdetails/:id" element={<ProtectedRoute element={<AdminOrderDetails/>} />} />
 
 
-               
+                <Route exact path="/recentorders" element={<ProtectedRoute element={<RecentOrders/>} />} />
+
+                    
+                <Route exact path="/feedback" element={<ProtectedRoute element={<Feedback/>} />} />
 
 
+                <Route exact path="/feedback/:id" element={<ProtectedRoute element={<AdminFeedbackDetails/>} />} />
+
+
+                <Route exact path="/settings" element={<ProtectedRoute element={<Settings/>} />} />
+
+
+                <Route exact path="/adminuserdetails/:id" element={<ProtectedRoute element={<AdminUserDetails/>} />} />
+
+
+                <Route path="*" element={<Navigate to="/admin/dashboard" />} />
 
 
                 </Routes>
-
-
 
 
 

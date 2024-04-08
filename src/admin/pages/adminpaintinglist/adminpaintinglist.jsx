@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import './adminpaintinglist.css';
-import { Link } from 'react-router-dom';
-import { collection, getDocs, deleteDoc } from 'firebase/firestore'; // Import necessary Firestore functions
-import { db } from '../../../backend/config/fire'; // Import the Firestore instance from your Firebase configuration
+import  { useEffect, useState } from 'react'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore'; 
+import { db } from '../../../backend/config/fire'; 
 import TotalRevenuesAreaChart from '../../components/productrevnue/productrevenue';
 import TrafficImpressionChart from '../../components/trafficimpressions/trafficimpressions';
 import DatePicker from 'react-datepicker';
@@ -10,97 +10,77 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 
 
+
 const Adminpaintinglist = () => {
-  const [paintings, setPaintings] = useState([]);
-  const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
-  const months = [
-    "January", "February", "March", "April", "May", "June", 
-    "July", "August", "September", "October", "November", "December"
-  ];
-  const monthsToShow = months.slice(Math.max(currentMonth - 3, 0), currentMonth);  
+
+  
+
+  const navigate = useNavigate();
+
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredPaintings, setFilteredPaintings] = useState([]);
+  const [filteredproducts, setFilteredproducts] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [sortField, setSortField] = useState(null);
-  
-
 
   
 
-  
-  const handleChangeMonth = (event) => {
-      setSelectedMonth(event.target.value);
-  }
 
-
-  // Fetch paintings from Firestore on component mount
+  // Fetch products from Firestore on component mount
   useEffect(() => {
-    const fetchPaintings = async () => {
+    const fetchproducts = async () => {
       try {
-        const paintingsCollection = collection(db, 'paintings');
-        const snapshot = await getDocs(paintingsCollection);
-        const paintingData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        setPaintings(paintingData);
+        const productsCollection = collection(db, 'products');
+        const snapshot = await getDocs(productsCollection);
+        const productData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setProducts(productData);
       } catch (error) {
-        console.error('Error fetching paintings:', error);
+        console.error('Error fetching products:', error);
       }
     };
 
-    fetchPaintings(); 
+    fetchproducts(); 
   
   }, []);   
 
-  const handleDelete = async (id) => {
-    try {
-      const paintingRef = doc(db, 'paintings', id);
-      await deleteDoc(paintingRef);
-      console.log('Painting deleted');
-      // Refresh the list of paintings after deletion
-      const updatedPaintings = paintings.filter((painting) => painting.id !== id);
-      setPaintings(updatedPaintings);
-     
-    } catch (error) {
-      console.error('Error deleting painting:', error);
-    }
-  };
 
 
 
 
   useEffect(() => {
-      const filtered = paintings.filter(painting => {
+      const filtered = products.filter(product => {
         const lowerCaseTerm = searchTerm ? searchTerm.toLowerCase() : '';
 
         return (
-          (painting.artist && painting.artist.toLowerCase().includes(lowerCaseTerm)) ||
-          (painting.title && painting.title.toLowerCase().includes(lowerCaseTerm)) ||
-          (painting.stockNumber && painting.stockNumber.toString().toLowerCase().includes(lowerCaseTerm)) || 
-          (painting.price && painting.price.toString().toLowerCase().includes(lowerCaseTerm)) ||          
-          (painting.date && painting.date.toString().toLowerCase().includes(lowerCaseTerm))   
+          (product.artist && product.artist.toLowerCase().includes(lowerCaseTerm)) ||
+          (product.title && product.title.toLowerCase().includes(lowerCaseTerm)) ||
+          (product.stockNumber && product.stockNumber.toString().toLowerCase().includes(lowerCaseTerm)) || 
+          (product.price && product.price.toString().toLowerCase().includes(lowerCaseTerm)) ||          
+          (product.date && product.date.toString().toLowerCase().includes(lowerCaseTerm))   
         );
       });
-      setFilteredPaintings(filtered);
+      setFilteredproducts(filtered);
       setShowResults(true);  
-  }, [searchTerm, paintings]);
+  }, [searchTerm, products]);
   
 
   const handleInputChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
   
-    const filtered = paintings.filter(painting => {
+    const filtered = products.filter(product => {
       const lowerCaseTerm = term.toLowerCase();
       return (
-        (painting.artist && painting.artist.toLowerCase().includes(lowerCaseTerm)) ||
-        (painting.title && painting.title.toLowerCase().includes(lowerCaseTerm)) ||
-        (painting.stockNumber && painting.stockNumber.toString().toLowerCase().includes(lowerCaseTerm)) || 
-        (painting.price && painting.price.toString().toLowerCase().includes(lowerCaseTerm)) ||          
-        (painting.date && painting.date.toString().toLowerCase().includes(lowerCaseTerm))   
+        (product.artist && product.artist.toLowerCase().includes(lowerCaseTerm)) ||
+        (product.title && product.title.toLowerCase().includes(lowerCaseTerm)) ||
+        (product.stockNumber && product.stockNumber.toString().toLowerCase().includes(lowerCaseTerm)) || 
+        (product.price && product.price.toString().toLowerCase().includes(lowerCaseTerm)) ||          
+        (product.date && product.date.toString().toLowerCase().includes(lowerCaseTerm))   
      
        );
     });
   
-    setFilteredPaintings(filtered);
+    setFilteredproducts(filtered);
     setShowResults(true);  
   };
   
@@ -120,10 +100,10 @@ const Adminpaintinglist = () => {
 
 
 const handleFilter = () => {
-  const filteredPaintings = paintings.filter(painting => {
+  const filteredproducts = products.filter(product => {
     // Apply your filtering logic using filterOptions
   });
-  setFilteredPaintings(filteredPaintings);
+  setFilteredproducts(filteredproducts);
   setShowResults(true);
 };
 
@@ -188,7 +168,7 @@ const handleStatusChange = (statusType) => {
       }
       setSortConfig({ field, order });
     
-      const sortedPaintings = [...filteredPaintings].sort((a, b) => {
+      const sortedproducts = [...filteredproducts].sort((a, b) => {
         if (field === 'name') {
           return a.title.localeCompare(b.title);
         } else if (field === 'price') {
@@ -200,10 +180,10 @@ const handleStatusChange = (statusType) => {
       });
     
       if (order === 'desc') {
-        sortedPaintings.reverse();
+        sortedproducts.reverse();
       }
     
-      setFilteredPaintings(sortedPaintings);
+      setFilteredproducts(sortedproducts);
     };
     
   
@@ -212,7 +192,7 @@ const handleStatusChange = (statusType) => {
   
   useEffect(() => {
     // Sorting logic based on sortOrder
-    const sortedPaintings = [...paintings].sort((a, b) => {
+    const sortedproducts = [...products].sort((a, b) => {
       if (sortOrder.name) {
         return sortOrder.name === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
       }
@@ -226,10 +206,10 @@ const handleStatusChange = (statusType) => {
       return 0; // No sorting applied
     });
 
-    setFilteredPaintings(sortedPaintings);
-  }, [paintings, sortOrder]);
- 
-   
+    setFilteredproducts(sortedproducts);
+  }, [products, sortOrder]);
+
+  
   
 
   return (
@@ -355,7 +335,7 @@ const handleStatusChange = (statusType) => {
 
           <thead>
           <th className='ps-2'> <button onClick={() => handleSort('name')}>
-            Art Name <i className="bi bi-arrow-down-up"></i></button></th>
+            Art  <i className="bi bi-arrow-down-up"></i></button></th>
           <th> Stock Number </th>
           <th>  <button onClick={() => handleSort('price')}>Price   <i className="bi-arrow-down-up"></i></button></th>
           <th> <button onClick={() => handleSort('date')}> Date <i className="bi-arrow-down-up"></i></button> </th>
@@ -367,12 +347,12 @@ const handleStatusChange = (statusType) => {
           <tbody>
 
       
-            {filteredPaintings.length === 0 && showResults && (
+            {filteredproducts.length === 0 && showResults && (
             <tr>
               <td colSpan="9" className="text-center">No results found</td>
             </tr>
           ) }
-         {filteredPaintings.map((painting) => (
+         {filteredproducts.map((painting) => (
   <tr key={painting.id}>
     <td>
       {painting.img && painting.img[0] && (
@@ -469,12 +449,12 @@ const handleStatusChange = (statusType) => {
           </div>
 
     <div className="painting-grid">
-          {filteredPaintings.length === 0 && showResults && (
+          {filteredproducts.length === 0 && showResults && (
             <tr>
               <td colSpan="9" className="text-center">No results found</td>
             </tr>
           ) }
-            {filteredPaintings.map((painting) => (
+            {filteredproducts.map((painting) => (
               <div className="painting-container" key={painting.id} style={{backgroundImage: `url(${painting.img[0]})`}}>
             <div className="admin-painting-preview rounded" >
             <Link className='edit-button' to={`/admin/editpaintings/${painting.id}`}>  Edit<i className="bi ms-2 bi-pencil-fill"></i></Link>

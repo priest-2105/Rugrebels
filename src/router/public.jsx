@@ -11,7 +11,25 @@ import Paintingdetails from '../backend/component/paintingdetails/paintingdetail
 import Gallery from '../frontend/pages/galllery/gallery';
 
 
+const ProtectedRoute = ({ element, ...props }) => {
+    const { user, loading } = useAuth();
+  
+    if (loading) {
+      return null;
+    }
+  
+    return user ? (
+      element
+    ) : (
+      <Navigate to="/auth/login" replace />
+    );
+  };
+  
+
 const Public = () => {
+
+
+
 
     return (
         <div className='bg-dark'>

@@ -1,0 +1,315 @@
+.signup-container{
+    display:flex;
+    margin: 0;
+    padding: 0;
+    /* height: 100vh; */
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: space-around;
+    align-items: center;
+    /* position: relative; */
+}
+
+.signup-illustrations{
+    width: 60%;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    position: relative;
+
+}
+
+.mySwiper-container{
+
+    align-items: center;
+    height: 75vh;
+    position:fixed;
+    width: 55%;
+    top:10%;
+    left: 0%;
+
+}
+
+.myswiper-slide{
+    margin-bottom: 80px;
+}
+
+
+.signup-illustrations img{
+    height: 450px;
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signup-form-container{
+    width: 45%;
+    display: block;
+    align-items: center; 
+    margin-left: auto;
+}
+
+
+.signup-form {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signup-form h6 b{
+    color: rgba(128, 128, 128, 0.72);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+
+.signup-form h6{
+    color: rgba(11, 10, 10, 0.919);
+    font-size: 28px;
+    margin-bottom: 50px;
+}
+
+
+.signup-form label{
+    font-weight: 600;
+    font-size:18px;
+    color: rgb(77, 74, 74);
+}
+
+.signup-form input{
+    padding: 5px 10px 5px 10px;
+    height: 40px;
+    width:100%;
+    border: 3px solid #10101179;
+    border-radius: 5px;
+    display: block;
+    margin-bottom:30px;
+}
+
+
+.signup-option{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.signup-option div{
+    width: 45%;
+    height: 3px;
+    background-color: rgba(45, 45, 45, 0.22);
+}
+
+.signup-option-buttons{    
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-evenly;  
+}
+
+
+.signup-option-buttons button{    
+    border: 2px solid #13131479;
+    /* font-size: 16px; */
+}
+
+.signup-option-buttons button:hover{
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    scale: 1.1;
+ }
+
+
+ 
+.phonenumberinput{
+    display: flex;
+    border: 3px solid #10101179;
+    height: 40px;
+    margin-bottom: 50px;
+    padding-left: 10px;
+    align-items: center;
+}
+.PhoneInputInput{
+    margin-top: 30px;
+    border-radius: 5px;
+    /* max-width: 400px !important; */
+    height: 29px !important;
+    border:2px solid transparent;
+    outline: none !important;
+    width: 450px !important;
+    background-color: transparent;
+}
+
+.PhoneInputInput{border: 0px solid #7b047b !important;}
+.PhoneInputInput::after{border: 0px solid #7b047b !important;}
+.PhoneInputInput::before{border: 0px solid #7b047b !important;}
+
+
+.phonenumberinput PhoneInput{
+    margin-bottom: 40px;
+}
+
+
+.whatsapp_no_radio label{
+    font-size: 16px;
+    margin-left: 15px;
+}
+
+.whatsapp_no_radio input[type="radio"] {
+    margin-top:2px;
+    margin-left: 10px;
+    width: 20px;  
+    height: 20px; 
+  }
+  
+.whatsapp_no_radio input:checked {
+    accent-color: #7b047b!important;
+  }
+
+  
+
+.account_type_radio .d-flex label{
+    font-size: 18px;
+    margin-left: 20px;
+    font-weight: 580;
+}
+.account_type_radio .d-flex {
+    margin-top:10px;
+}
+
+
+.account_type_radio label:nth-child(2){
+    margin-left: 45px;
+}
+
+.account_type_radio input[type="radio"]{ 
+    width: 5rem;
+    margin-top: -4px;
+    margin-left: 10px;
+  }
+  
+.account_type_radio input:checked {
+    accent-color: #7b047b!important;
+  }
+
+  .signup-successmessage{
+    position: fixed;
+    top: 0%;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f297f2e1;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+
+  .signup-successmessage p{
+    max-width: 450px;
+    min-height: 100px;
+    color: azure;
+    background-color:#1c1c1c9a;
+    padding: 25px 30px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    margin-top: 30vh;
+  }
+
+  .signup-successmessage a{
+    color: #f9d005;
+  }
+
+  @media only screen and (max-width:1100px) {
+
+
+    .signup-illustrations{
+        width: 60%;
+    }
+    
+    .mySwiper-container{
+        width:45%;
+    }
+
+    signup-form-container{
+        width:55%; 
+    }
+ 
+  }
+
+@media only screen and (max-width:991px) {
+    .signup-illustrations{
+        display: none;
+        width: 0%;
+    }    
+    .mySwiper-container{
+    display: none;
+    width: 0%;
+    }
+    .PhoneInputInput{
+        width: 100% !important;
+    }
+
+
+    
+.signup-form-container{
+    width: 95%;
+    padding: 30px 40px 20px 10px;
+    display: block;
+    align-items: start; 
+    margin-left: auto;
+    margin-left: auto;
+}
+
+
+.signup-form {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.signup-form h6 b{
+    color: rgba(128, 128, 128, 0.72);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+
+.signup-form input{
+    width:100%;
+}
+
+
+
+}    
+
+
+  @media only screen and (max-width:512px) {
+
+       
+.signup-form-container{
+    width: 95%;
+    padding: 30px 40px 20px 10px;
+    display: block;
+    align-items: start; 
+    margin-left: auto;
+    margin-left: auto;
+}
+
+
+.signup-form {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.signup-form h6 b{
+    color: rgba(128, 128, 128, 0.72);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+
+.signup-form input{
+    width:100%;
+}
+
+    
+  }

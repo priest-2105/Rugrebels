@@ -1,25 +1,95 @@
 import React, { useState } from 'react';
 import './addPainting.css';
 import { useNavigate } from 'react-router-dom';
-import { db, storage } from '../../../backend/config/fire'; // Import the Firestore and Storage instances from your Firebase configuration
-import { doc, setDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import necessary Storage functions
+import { db, storage } from '../../../backend/config/fire'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
 import { collection, addDoc } from 'firebase/firestore';
+import { Editor } from '@tinymce/tinymce-react';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-thumbnail.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Scrollbar } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+
 
 
 const AddPainting = () => {
+  
+  
+
   const [title, setTitle] = useState('');
-  const [about, setAbout] = useState('');
-  const [artist, setArtist] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [dateAdded, setDateAdded] = useState(new Date().toISOString().slice(0, 10));
+  const [pricePerUnit, setPricePerUnit] = useState(0);
+  const [pricePerWeight, setPricePerWeight] = useState(0);
   const [compareAtPrice, setCompareAtPrice] = useState(0);
   const [img, setImg] = useState([]);
-  const [tags, setTags] = useState([]);
+  const [availability, setAvailability] = useState('true');
   const [adding, setAdding] = useState(false);
- 
-  
+  const [priceType, setPriceType] = useState('weight');
+  const [weightType, setWeightType] = useState('');
+  const [remaining, setRemaining] = useState('');
+  const [status, setStatus] = useState('');
+  const [category, setCategory] = useState('');
+  const [tags, setTags] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [showQuantity, setShowQuantity] = useState(false);
+  const [custom, setCustom] = useState(false);
+  const [stripelink, setStripelink] = useState("")
+  const [textInscribed, setTextInscribed] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+  const [amountsold, setAmountsold] = useState(0);
+
+
+
+
+  const handleCheckboxChange = (e) => {
+    setShowQuantity(e.target.checked);
+  }
+
+  const handleCustomChange = (e) => {
+    setCustom(e.target.checked);
+  }
+
+  const handletextInscribedChange = (e) => {
+    setTextInscribed(e.target.checked);
+  }
+
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleAddTag = () => {
+    if (inputValue.trim() !== '') {
+      setTags([...tags, inputValue.trim()]);
+      setInputValue('');
+    }
+  };
+
+  const handleRemoveTag = (index) => {
+    const updatedTags = [...tags];
+    updatedTags.splice(index, 1);
+    setTags(updatedTags);
+  };
+
   const history = useNavigate();
+
+
+  
+
+// swiper js 
+const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+
 
     const generateStockNumber = () => {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -32,33 +102,46 @@ const AddPainting = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const stockNumber = document.getElementById('stockNumber').value;
-  
-    const painting = {
+    
+    const product = {
       title,
-      about,
-      artist,
-      date,
+      description,
+      dateAdded,
       compareAtPrice,
       img, 
-      price,
+      pricePerUnit,
+      pricePerWeight,
       tags,
-      stockNumber
+      priceType,
+      availability,
+      stockNumber,
+      weightType,
+      category,
+      showQuantity,
+      amountsold,
+      status : "Active",
+      remaining : quantity,
+      custom,
+      stripelink,
+      textInscribed,
     };
   
     setAdding(true);
   
     try {
-      const paintingsCollection = collection(db, 'paintings');
-      await addDoc(paintingsCollection, painting);
+      const productsCollection = collection(db, 'products');
+      await addDoc(productsCollection, product);
   
-      console.log('New painting added to Firestore');
+      console.log('New product added to Firestore');
       setAdding(false);
-      history.push('/admindashboard');
-    } catch (error) {
-      console.error('Error adding painting:', error);
+      setShowModal(false);
+      history(`/admin/products/`);} catch (error) {
+      console.error('Error adding product:', error);
       setAdding(false);
     }
+   
   };
+
   
  const handleRegenerateStockNumber = () => {
     setStockNumber(generateStockNumber());
@@ -130,28 +213,63 @@ const AddPainting = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Parse the price input value as a number
-    if (name === 'price') {
-      setPrice(parseInt(value));
+    if (name === 'pricePerUnit' || name === 'pricePerWeight') {
+      setPricePerUnit(parseInt(value));
+      setPricePerWeight(parseInt(value));
     } else {
       // For other input fields, set the value directly
       switch (name) {
         case 'title':
           setTitle(value);
           break;
-        case 'about':
-          setAbout(value);
+        case 'description':
+          setDescription(value);
           break;
-        case 'artist':
-          setArtist(value);
+        case 'quantity':
+          setQuantity(value);
           break;
-        case 'date':
-          setDate(value);  
+        case 'pricePerUnit':
+          setPricePerUnit(value);
+          break;
+        case 'pricePerWeight':
+            setPricePerWeight(value);
+            break;
+        case 'tags':
+          setTags(value);
+          break;
+        case 'dateAdded':
+          setDateAdded(value);  
           break;
         case 'compareAtPrice':
           setCompareAtPrice(value);
-        default:
+           break;     
+        case 'availability':
+          setAvailability(value);
+           break;
+        case 'category':
+          setCategory(value);
+           break;
+        case 'weightType':
+        setWeightType(value);
+          break;
+          case 'remaining':
+          setRemaining(value);
+            break;
+        case 'showQuantity':
+          setShowQuantity(value);
+            break;
+            case 'custom':
+          setCustom(value);
+            break;
+            case 'textInscribed':
+          setTextInscribed(value);
+            break;
+            case 'stripelink':
+          setStripelink(value);
+            break;
+            
+              
+          default:
           break;
       }
     }
@@ -162,7 +280,9 @@ const AddPainting = () => {
     const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
     setTags(selectedTags);}
     
-  
+
+
+
 
   return (
     <div>
@@ -191,14 +311,38 @@ const AddPainting = () => {
         
         <div className="add-product-input-group-price-each">
          <label> Painting Description: <button disabled data-title='Drag textarea to increase height, if you have a longer product description'> <i className="bi bi-question-circle-fill"></i> </button>  </label><br/>
-        <textarea
-          placeholder='Important details about the product'
-        className='input'
-          required
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
-        />
+         <Editor
+            className='input form-control bg-transparent'
+              required
+              onChange={(e) => setDescription(e.target.getContent())}
+              value={description}        
+              apiKey='50aoyrxoc701ofyxj41a40y78q5y6ph1l3le8060iz5xcdx7'
+              init={{
+                plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'Author name',
+                mergetags_list: [
+                  { value: 'product.title', title: 'Product name' },
+                  { value: 'product.price', title: 'product price' },
+                ],
+                ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+              }}
+              initialValue="Please input Important details about the product"
+            />
       </div>  </div>
+
+      <div className="add-product-input-group  mb-4">
+        <label className='mt-5 fs-5 fw-bold mb-3'>Stripe Link:  </label><br/>
+        <input
+        className='input form-control bg-transparent bg-transparent'
+          type="text"
+          value={stripelink}
+          onChange={(e) => setStripelink(e.target.value)}
+          // placeholder=''
+          required
+        /> <br/></div>
+
 
 
     <div className="add-product-input-group upload-image-input-group">  
@@ -243,63 +387,173 @@ const AddPainting = () => {
     </div>
 
 
-    <div className="add-product-input-group d-flex">
-    <div className="add-product-input-group-price-each">
-      <label>Price : </label><br/>
-        <input
-        className='input'
-          required
-          value={price}
-          type="number"
-          onChange={(e) => setPrice(e.target.value)}
-        /></div>
+   
+    <div className="form-group d-block">
+  <label className='mt-5 fs-5 fw-bold mb-3' htmlFor="Price">Price</label>
+  <div className="form-group-price-type">
+    <label className='me-2' htmlFor='pricetypeunit'>Per Unit</label><br/>
+    <input
+      type="radio"
+      name="priceType"
+      value="unit"
+      id='pricetypeunit'
+      className='d-block me-4'
+      checked={priceType === 'unit'}
+      onChange={() => {
+        setPriceType('unit');
+        setPricePerUnit(''); 
+        setWeightType('')
         
-        <div className="add-product-input-group-price-each">
-        <label>Compare at Price : <button disabled data-title='To display a markdown, enter a value higher than your price. Often shown with a strikethrough (e.g. $̶2̶5̶.0̶0̶).'> <i className="bi bi-question-circle-fill"></i> </button>  </label><br/>
-        <input
-        className='input'
-          value={compareAtPrice}
-          type="number"
-          onChange={(e) => setCompareAtPrice(e.target.value)}
-        /></div>
-        
+      }}
+    />
+    <label className='me-2' htmlFor="pricetypeweight">Per Weight</label><br/>
+    <input
+      type="radio"
+      name="priceType"
+      className='d-block'
+      id='pricetypeweight'
+      value="weight"
+      checked={priceType === 'weight'}
+      onChange={() => {
+        setPriceType('weight');
+        setPricePerWeight('');
+      }}
+    />
+  </div>
+</div>
+
+
+
+
+    <div className="d-flex">
+    
+      {priceType === 'unit' && (
+        <div className="form-group-price-each">
+          <label>Unit Price : </label><br/>
+          <input
+            className='input form-control bg-transparent'
+            required
+            value={pricePerUnit}
+            type="number"
+            onChange={(e) => setPricePerUnit(e.target.value)}
+          />
         </div>
+      )}
+
+      {priceType === 'weight' && (
+        <div className="form-group form-group-price-each mb-3">
+          <label >Price Per Weight</label><br/>
+          <input
+            className='input form-control bg-transparent'
+            required
+            type="number"
+            value={pricePerWeight}
+            onChange={(e) => setPricePerWeight(e.target.value)}
+          />
+          <select
+          name="productweight"
+          id="productweight"
+          value={weightType}
+          onChange={(e) => setWeightType(e.target.value)}
+        > 
+          <option value="" >Select a weight</option>
+          <option value="KG">KG</option>
+          <option value="gramme">Gramme</option>
+          <option value="ounce">Ounce</option>
+          <option value="pound">Pound</option>
+        </select>     
+      </div>  
+      )}
 
 
-      <div className="add-product-input-group">
-        <label>Artist : </label><br/>
+        <div className="form-group ms-5 mb-5">
+          <div className="form-group-price-each">
+                <label>Compare at Price : <button disabled data-title='To display a markdown, enter a value higher than your price. Often shown with a strikethrough (e.g. $̶2̶5̶.0̶0̶).'> <i className="bi bi-question-circle-fill"></i> </button>  </label><br/>
+                <input
+                className='input form-control bg-transparent'
+                  value={compareAtPrice}
+                  type="number"
+                  onChange={(e) => setCompareAtPrice(e.target.value)}
+                /></div>
+        </div>      
+        </div>  
+
+      <div className="form-group form-group-price-each mb-3">
+        <label  className='mt-3 fs-5 fw-bold mb-3'>Quantity : {pricePerUnit && ' ' +  'in Units'} {weightType &&  'In'} {weightType} </label><br/>
         <input
-        className='input'
+        className='input form-control bg-transparent'
           required
-          type="text"
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-        /></div>
+          type="number"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+        /></div>  
+        <div>
+        <label htmlFor="showquantity">Show Quantity</label>
+        <input
+        className='ms-2 mt-1'
+          type="checkbox"
+          name="showquantity"
+          id="showquantity"
+          checked={showQuantity}
+          onChange={handleCheckboxChange}
+        />
+        <div>
+          {/* {showQuantity ? 'Yes' : 'No'} */}
+        </div>
+      </div>
 
 
-      <div className="d-none add-product-input-group">
+
+
+
+      <div className="d-none form-group">
         <label>Date : </label><br/>
         <input
-        className='input'
+        className='input form-control bg-transparent'
           type="date"
           required
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={dateAdded}
+          onChange={(e) => setDateAdded(e.target.value)}
         />
     </div>
 
 
+    <div className="form-group form-group-price-each mb-3">
+        <label  className='mt-3 fs-5 fw-bold mb-3'>Product Category : </label><br/>
+                  <select
+          name="productcategory"
+          id="productcategory"
+          className="text-light bg-transparent"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        > 
+          <option  className="text-light bg-transparent" value="" selected disabled>Select a category</option>
+          <option  className="text-light bg-transparent" value="family">family</option>
+          <option  className="text-light bg-transparent" value="pets">pets</option>
+          <option  className="text-light bg-transparent" value="lovers">lovers</option>
+          
+        </select>     
+      </div>
+
+
     <div className="add-product-input-group">
-      <label>Tags: </label><br/>
-            <select
-              multiple
-              value={tags}
-              onChange={handleTagChange}
-              required
-                  >
-              <option value="homecover">Home Cover</option>
-              <option value="top5">Top 5</option>
-            </select>
+    <div  className="form-group">
+          <input
+            type="text"
+            value={inputValue}
+        className='input form-control bg-transparent'
+            onChange={handleInputChange}
+          />
+          <button type="button" className="btn-dark btn-sm" onClick={handleAddTag}>Add Tag</button>
+        </div>
+        <div className='d-flex mt-3 mt-3' style={{flexWrap:"wrap"}}>
+          {tags.map((tag, index) => (
+            <div key={index} className="add-produt-tag rounded-pill me-2 mb-3 bg-secondary btn-sm">
+               <div onClick={() => handleRemoveTag(index)}> {tag} <i className="text-danger bi bi-x-lg"></i>
+           </div>
+            </div>
+          ))}
+        </div>
      
      
          <input
@@ -308,31 +562,138 @@ const AddPainting = () => {
         value={generateStockNumber()} 
       />
       </div>
-      <button type="button" onClick={handleRegenerateStockNumber}>
-  Generate New Stock Number
-</button>
+   
 
-
-        <button disabled={adding}> Add Painting</button> {/* disable the button while the painting is being added */}
-        {adding && <p className="notification" >Adding {title}...</p>} {/* display a message while the painting is being added */}
+<button  type="button" className="mt-4 ms-auto btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" > Preview</button> 
+   {adding && <p className="notification" >Adding {title}...</p>} {/* display a message while the painting is being added */}
       </form>
     </div>
    
 
-      <p> {title}</p>
-      <p> {artist}</p>
-      <p> {about}</p>
-      <p> {date}</p>
-      <p>{price}</p>
-      <p>{tags}</p>
-      {img.map((image, index) => (
-    <div key={index}>
-         <img src={image} alt="" /> 
-      </div> ))}
 
 
     </div>
-    
+
+
+
+
+
+
+
+
+
+   {/* <!-- Modal --> */}
+   {showModal && (
+    <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal-dialog modal-lg modal-dialog-scrollable">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h1 className="modal-title fs-5" id="exampleModalLabel">Preview Product</h1>
+          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div className="modal-body" >
+        
+          
+        <div className="image-swiper-container add-product-image-preview-modal">
+          {thumbsSwiper && ( <Swiper
+              style={{
+                '--swiper-navigation-color': 'rgb(250, 254, 36,0.5)',
+                '--swiper-pagination-color': 'rgb(250, 254, 36,0.5)',
+              }}
+              loop={true}
+              spaceBetween={0}
+              navigation={true}
+              scrollbar={{ draggable: true }}
+              thumbs={{ swiper: thumbsSwiper }}
+              onSwiper={setThumbsSwiper}
+              slidesPerView={1}
+              freeMode={true}
+              watchSlidesProgress={true}
+              modules={[Navigation, Scrollbar]}
+              className="mySwiper2 add-product-image-preview-modal"
+              >
+                {img.map((image, index) => 
+                <SwiperSlide key={image.id} >
+                <img src={image} />
+              </SwiperSlide>)} 
+            </Swiper>  )}
+            
+          
+          {/* <Swiper
+              onSwiper={setThumbsSwiper}
+              loop={true}
+              spaceBetween={10}
+              slidesPerView={4}
+              freeMode={true}
+              modules={[Navigation,Pagination, Scrollbar, A11y]} 
+              navigation
+              className="mySwiper"
+              style={{
+                '--swiper-navigation-color': 'rgb(250, 254, 36,0.2)',
+                '--swiper-pagination-color': 'rgb(250, 254, 36,0.2)',
+              }}
+            >
+              {img.map((image, index) => 
+                <SwiperSlide key={image.id}>
+                <img src={image} />
+              </SwiperSlide>)} 
+            </Swiper> */}
+            
+            </div>  
+            
+            
+
+          
+          <div className="add-product-preview-container">
+                <h5>Product Title</h5>
+            <p> {title} {category}</p>
+                </div>
+
+
+          <div className="add-product-preview-container">
+                <h5>Product Description</h5>
+                <div dangerouslySetInnerHTML={{ __html: description }}></div>
+                </div>
+
+          <div className="add-product-preview-container">
+                <h5>Product Remaining in Stock</h5>
+            <p> {quantity} {weightType}</p>
+                </div>
+
+            <div className="add-product-preview-container">
+                <h5>Product Price</h5>
+              <p>{pricePerUnit || pricePerWeight} {weightType && 'per'} {weightType}</p>
+                </div>
+
+                  <div className="add-product-preview-container" style={{flexWrap:"wrap", overflow:"hidden"}}>
+                <h5>Product Tags</h5>
+                <div className='d-flex mt-3 col-12 row' style={{flexWrap:"wrap"}}>
+            {tags.map((tag, index) => (
+              <div key={index} style={{width:"fit-content"}} className="add-produt-tag rounded-pill me-2 mb-2 btn-success btn btn-sm">
+                {tag} 
+              </div>
+            ))}
+          </div>
+                </div>
+
+
+        </div>
+        <div className="modal-footer d-flex">
+            <div className="me-auto">
+                <h5>Stock Number</h5>
+              <p>{stockNumber} 
+          <button type="button" className='btn-info btn-sm btn ms-2 rounded-pill' onClick={handleRegenerateStockNumber}>Generate New Stock Number</button>
+              </p> </div>
+          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button onClick={handleSubmit} className='btn btn-primary' data-bs-dismiss="modal"  disabled={adding}> Add product</button> 
+          </div>
+      </div>
+    </div>
+    </div>)}
+
+
+
+
     
     
     </div>

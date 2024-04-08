@@ -1,0 +1,114 @@
+.login-container{
+    display:flex;
+    /* height: 100vh; */
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: space-around;
+    align-items: center;
+    /* position: relative; */
+}
+
+.login-illustrations{
+    width: 55%;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    position: relative;
+
+}
+
+.mySwiper-container{
+
+    align-items: center;
+    height: 75vh;
+    position:fixed;
+    /* width: 60%; */
+    top:10%;
+    left: 0%;
+
+}
+
+.myswiper-slide{
+    margin-bottom: 80px;
+}
+
+
+.login-illustrations img{
+    height: 450px;
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-form-container{
+    display: block;
+    align-items: center;
+    width:45%; 
+    margin-left: auto;
+}
+
+
+.login-form {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-form h6 b{
+    color: rgba(128, 128, 128, 0.72);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+
+.login-form h6{
+    color: rgba(11, 10, 10, 0.919);
+    font-size: 28px;
+    margin-bottom: 50px;
+}
+
+
+.login-form label{
+    font-weight: 600;
+    font-size:18px;
+    color: rgb(77, 74, 74);
+}
+
+.login-form input{
+    padding: 5px 10px 5px 10px;
+    height: 40px;
+    width:100%;
+    border: 3px solid #10101179;
+    display: block;
+    margin-bottom:30px;
+}
+
+
+.login-option{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.login-option div{
+    width: 45%;
+    height: 3px;
+    background-color: rgba(45, 45, 45, 0.22);
+}
+
+.login-option-buttons{    
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-evenly;  
+}
+
+
+.login-option-buttons button{    
+
+    border: 2px solid #13131479;
+    /* font-size: 16px; */
+
+}

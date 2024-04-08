@@ -34,6 +34,12 @@
 
 }
 
+
+.form-group-price-type{
+    display: flex;
+  }
+ 
+
 .add-product-input-group input{
     width: 60%;
     margin-bottom: 30px;

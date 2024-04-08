@@ -4,6 +4,7 @@ import Auth from './backend/auth/auth/auth';
 import Dashboard from './router/dashboard';
 import Public from './router/public';
 import { Routes} from 'react-router-dom';
+import Dashboardauth from './router/dashboardauth';
 
 
  
@@ -104,6 +105,9 @@ function App() {
 
       {/* Dashboard ROUTE */}
       <Route exact path="/admin/*" element={<Dashboard/>}/>
+
+
+      <Route exact path="/adminauth/*" element={<Dashboardauth/>}/>
 
 
     </Routes>
