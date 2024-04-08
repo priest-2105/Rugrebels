@@ -1,21 +1,18 @@
-painting-details{
+.product-details{
   position: relative;
 }
 
 
-.painting-detail-container{
-  
+.product-detail-container{
     margin-top: 5%;
     width: 95%;
     height: fit-content;
-    padding: 30px 70px 30px 70px;
-    background-color: rgba(255, 250, 250, 0.1);
-    box-shadow: inset 2px 2px 10px rgb(0, 0, 0),
-    inset -1px -1px 5px rgba(255, 255, 255, 0.3);
+    padding: 30px 70px 30px 70px; 
     border-radius: 10px;
     margin-left: auto;
     display: block;
     margin-right: auto;
+
 }
 
 .backlinks a{
@@ -31,11 +28,11 @@ painting-details{
     margin-top: 20px;
     margin-bottom: 40px;
     font-size: 55px;
-    color:rgb(240, 248, 255); 
+    color:rgb(14, 15, 15); 
 
 }
 
-.painting-detail{
+.product-detail{
     margin-top: 50px;
     display: flex;
     width: 100%;
@@ -55,85 +52,82 @@ painting-details{
   height:fit-content;
 }
 
-.swiper {
+.product-detail-container .swiper {
   width: 100%;
   height: 100%;
   display: block;
   
 }
 
-.swiper-slide {
+.product-detail-container .swiper-slide {
   text-align: center;
   font-size: 18px;
   display: block;
   height: fit-content;
-  /* justify-content: center; */
-  /* align-items: center; */
 }
 
-.swiper-slide img {
+
+.product-detail-container .swiper-slide img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   margin-left: auto;
   margin-right: auto;
 }
 
 
 
-.mySwiper2 {
+.product-detail-container .mySwiper2 {
   height: 500px;
   width: 100%;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
 
-.mySwiper {
+.product-detail-image-each{
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+.product-detail-container .mySwiper {
   height: 80px;
   /* box-sizing: border-box;        */
 }
 
-.mySwiper .swiper-slide {
+.product-detail-container .mySwiper .swiper-slide {
   width: 100%;
   height: 100%;
   opacity: 0.4;
 }
 
-.mySwiper .swiper-slide-thumb-active {
+.product-detail-container .mySwiper .swiper-slide-thumb-active {
   opacity: 1;
 }
 
 
 
 
-.buttons{ 
+.product-detail-container .buttons{ 
     width: 100%;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    /* margin-top: 20px; */
+    /* margin-bottom: 30px; */
 }
 
-.buttons button{
+.product-detail-container .buttons button{
     margin-left: 20px;
-    margin-top: 40px;
+    /* margin-top: 40px; */
 }
 
 .product-description h2{
-  color: #b3cf11;  
-  background: linear-gradient(
-    -225deg,
-      #fafe24 0%,
-      rgb(167, 213, 15) 29%,
-        rgb(88, 101, 25) 80%,
-      rgb(255, 255, 255) 90%
-  );
-  background-position: auto auto;
-  background-size: auto auto;
-  background-clip: text;
   font-weight: 600;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textclip 5s linear reverse;
 }
   
 @keyframes textclip {
@@ -143,12 +137,13 @@ painting-details{
 }
 
 .product-description h5{
-    color: rgb(240, 248, 255, 0.2);
+    color: #e2dbdb;
 }
 
 
 .product-description h4{
-    color: rgb(240, 248, 255);
+  color: #ede2e2;
+
 }
 
 .product-description-price {
@@ -158,62 +153,27 @@ painting-details{
 
 .product-description-price h3{
   margin-left: 15px;
-  text-decoration: line-through;
-  color: rgb(240, 248, 255, 0.2);
+    color: #eee6e6;
+  text-decoration: line-through
 }
 
 .product-description span{
     font-size: 20px;
-    color: rgb(240, 248, 255, 0.5);
+    color: #efecec;
     font-weight: 600;
 
 }
 
-.painting-description-currency{
+.product-description-currency{
 
   align-items: center;
   display: flex;
 
 }
 
-
-.btn,.select-input  {
-    padding: 10px 35px;
-    cursor: pointer;
-    background-color: #212121;
-
-    border-radius: 6px;
-    border: 2px solid #212121;
-    box-shadow: 6px 6px 10px rgba(0,0,0,1),
-    1px 1px 10px rgba(255, 255, 255, 0.6);
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    transition: 0.35s;
-  }
-  
-  .btn,.select-input :hover {
-    transform: scale(1.05);
-    color: rgb(240, 255, 255,0.6);
-    box-shadow: 6px 6px 10px rgba(0,0,0,1),
-    1px 1px 10px rgba(255, 255, 255, 0.6),
-    inset 2px 2px 10px rgba(0,0,0,1),
-    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
-    border: none !important;
-  }
-  
-  .btn,.select-input :focus {
-    transform: scale(1.05);
-    color: rgb(240, 255, 255,0.6);
-    box-shadow: 6px 6px 10px rgba(0,0,0,1),
-    1px 1px 10px rgba(255, 255, 255, 0.6),
-    inset 2px 2px 10px rgba(0,0,0,1),
-    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
-  }
-  
   .quantity h6{
 
-    color: aliceblue;
+    color: #ebe7e7;
    font-weight: 700;
     font-size: 18;
   }
@@ -230,27 +190,26 @@ painting-details{
   width: 95%;
   height: fit-content;
   padding: 30px 70px 30px 70px;
-  background-color: rgba(255, 250, 250, 0.1);
-  box-shadow: inset 2px 2px 10px rgb(0, 0, 0),
-  inset -1px -1px 5px rgba(255, 255, 255, 0.3);
+  /* box-shadow: inset 2px 2px 10px rgb(82, 79, 79), */
+  /* inset -1px -1px 5px rgba(255, 255, 255, 0.3); */
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.bottom-product-details h3{
-  color: #b3cf11;  
+.bottom-product-details h3{ 
   background: linear-gradient(
     -225deg,
-      #fafe24 0%,
-      rgb(167, 213, 15) 29%,
-        rgb(88, 101, 25) 80%,
-      rgb(255, 255, 255) 90%
+    rgb(179, 219, 5)0%,
+    rgba(198, 220, 4, 0.64) 29%,
+    rgba(215, 230, 6, 0.295)80%,
+    rgba(207, 214, 4, 0.84)
   );
   background-position: auto auto;
   background-size: auto auto;
   background-clip: text;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 800;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: textclip 5s linear reverse;
@@ -264,21 +223,25 @@ painting-details{
   
 
 
-.bottom-product-details-tab-content{
-  color: #fff;
+.bottom-product-details-tab-content{ 
   font-weight: 700;
   padding: 30px 30px;
 }
-
-.bottom-product-details-nav-tabs li{
-
-  margin-left: 10px;
-
+.bottom-product-details .nav.nav-tabs {
+  border-color: rgba(255, 255, 0, 0.627);
+  border-width: 3px;
+}
+ 
+.bottom-product-details .nav.nav-tabs h3{
+  margin-top: -0px;
 }
 
 
-
-
+.product-description-tab div{
+  word-wrap: break-word;
+  color:white !important;
+  overflow: visible;
+}
 
 
 
@@ -290,31 +253,17 @@ painting-details{
     width:60%;
   }
 
-                    
+
+ .user-info .bi-star-fill{
+    color:yellow;
+  }
+
 .review_name {
   font-size: 18px;
-  color: #b3cf11;  
-  background: linear-gradient(
-    -225deg,
-      rgb(250, 254, 36) 0%,
-      rgb(167, 213, 15) 29%,
-        rgb(88, 101, 25) 80%,
-      rgb(255, 255, 255) 90%
-  );
-  background-position: auto auto;
-  background-size: auto auto;
-  background-clip: text;
-  font-weight: 600;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textclip 5s linear reverse;
-}
-  
-@keyframes textclip {
-  to {
-    background-position: 200% center;
-  }
-}
+  font-weight: 700;
+  color: #f0f013d2;
+ 
+} 
 
 .review_image {
   width: 50px;
@@ -333,7 +282,7 @@ painting-details{
 }
 
 
-.btn.review-report {
+.product-detail-container .btn.review-report {
   /* width: 150px; */
   /* color: #204d74; */
   font-weight: 500;
@@ -345,7 +294,7 @@ painting-details{
 
 .review_name {
   font-size: 18px;
-  color: yellow;
+  /* color: #bbd71b; */
   font-weight: 500;
 }
 
@@ -379,19 +328,16 @@ painting-details{
 .client_review_star .progress_bar {
   height: 25px;
   border-radius: 16px;
-  background-color: #b3cf11;  
+  background-color: #b2c50f;  
   background: linear-gradient(
     -225deg,
-      #fafe24 0%,
-      rgb(167, 213, 15) 29%,
-        rgb(88, 101, 25) 80%,
-      rgb(255, 255, 255) 90%
+    #c7c70b1a 0%,
+    #a7c8055c 29%,
+    #b9bf0ac4 80%,
+    #c2c20afa 90%
   );
   background-position: auto auto;
   background-size: auto auto;
-  /* background-clip: text; */
-  /* -webkit-background-clip: text; */
-  /* -webkit-text-fill-color: transparent; */
   animation: textclip 5s linear reverse;
 }
 
@@ -403,28 +349,13 @@ painting-details{
 
 
 
-.client_review_star .progress_bar.five {
-  width: 70%;
-}
-
-.client_review_star .progress_bar.four {
-  width: 60%;
-}
-
-.client_review_star .progress_bar.three {
-  width: 50%;
-}
-
-.client_review_star .progress_bar.two {
-  width: 30%;
-}
-
-.client_review_star .progress_bar.one {
-  width: 10%;
+.client_review_star .progress_bar {
+  width: 100%;
 }
 
 .client_review_star i {
-  color: #204d74;
+  
+  color: rgb(185, 203, 22);
   font-size: 14px;
 }
 
@@ -548,15 +479,7 @@ painting-details{
 
 
 
-
-
-
-
-
-
-
-
-
+ 
 .review-input {
   width: 290px;
   min-height: 45px;
@@ -564,11 +487,6 @@ painting-details{
   outline: none;
   transition: 0.35s;
   padding: 0px 7px;
-  background-color: #212121;
-  border-radius: 6px;
-  border: 2px solid #212121 !important;
-  box-shadow: 6px 6px 10px rgba(0,0,0,1),
-  1px 1px 10px rgba(255, 255, 255, 0.6);
 }
 
 .review-input::placeholder {
@@ -583,11 +501,6 @@ painting-details{
 
 .review-input:focus {
   transform: scale(1.05);
-  box-shadow: 6px 6px 10px rgba(0,0,0,1),
-  1px 1px 10px rgba(255, 255, 255, 0.6),
-  inset 2px 2px 10px rgba(0,0,0,1),
-  inset -1px -1px 5px rgba(255, 255, 255, 0.6);
-  background-color: #212121;
 }
 
 .review-input:-webkit-autofill,
@@ -605,18 +518,6 @@ painting-details{
 .review-input[data-autocompleted] {
     background-color: transparent !important;
 }
-.review-modal-bg{
-  background-color: rgb(33, 33, 33,0.9);
-}
-
-.review-modal{
-  background-color: rgba(240, 248, 255,0.4);
-  box-shadow: 6px 6px 10px rgb(255, 254, 254,0.3),
-  1px 1px 10px rgba(255, 255, 255, 0.6),
-  inset 2px 2px 10px rgba(0,0,0,0.2),
-  inset -1px -1px 5px rgba(255, 255, 255, 0.6);
-}
-
 .review-input-group{
   width:100% ;
   align-items: center;
@@ -665,7 +566,7 @@ painting-details{
 
 
 
-    .painting-detail-container{
+    .product-detail-container{
         width: 98%;
         height: fit-content;
         padding: 25px 50px 25px 50px; 
@@ -677,12 +578,12 @@ painting-details{
         display:block;
     }
     
-    .mySwiper {
+    .product-detail-container .mySwiper {
         height: 80px;
       }
       
     
-    .painting-detail{
+    .product-detail{
         margin-top: 50px;
         display: block;
         width: 100%;
@@ -704,20 +605,38 @@ painting-details{
 @media only screen and (max-width:768px) {
 
 
-    .painting-detail-container{
-        width: 98%;
+    .product-detail-container{
+        width: 100%;
         height: fit-content;
-        padding: 5px 25px 5px 15px; 
+        padding: 0px; 
+        padding-bottom: 50px;
     }
 
-    
-    .painting-detail img{ 
-        height: 400px;
+    .product-detail{
+      width: 100%;
+    }
+
+  
+
+      .product-detail-container .swiper-slide img {
+        display: block;
+        width: 100%;
+        object-fit: contain;
+        height: 100%;
       }
-
-
+      
+      
+      
+      .product-detail-container .mySwiper2 {
+        height: 450px;
+        object-fit: contain;
+        width: 100%;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+      
           
-      /* .painting-add-to-cart-animation{
+      /* .product-add-to-cart-animation{
         height: 30px;
         width: 30px;
         display: none;
@@ -734,8 +653,8 @@ painting-details{
         transition-timing-function: ease-in-out;
       }
 
-      /* .painting-increament:active img{ */
-        .painting-add-to-cart-animation{
+      /* .product-increament:active img{ */
+        .product-add-to-cart-animation{
         position: relative;
         display: none;
       }
@@ -744,23 +663,23 @@ painting-details{
 
 
       .mobile-cart-button{
-        background-color: rgba(255, 250, 250, 0.1);
-        box-shadow: inset 2px 2px 10px rgb(0, 0, 0),
-        inset -1px -1px 5px rgba(255, 255, 255, 0.3);
-        width: 100%;  
+        box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.325);
+        width: 100vw;  
         display: block;
         height:fit-content;
         position:fixed;
         bottom: 0%;
+        left: 0;
         z-index: 5000;
-        background-color: #212121;
+        background-color: #ffffff;
 
       }
 
       .mobile-cart-button h4{
         font-size: 14px;
         font-weight: 700;
-        color: rgb(240, 248, 255);
+        color: rgb(30, 28, 28);  
+      
       }
 
       .mobile-cart-button span{
@@ -769,39 +688,20 @@ painting-details{
 
 
       .mobile-cart-button h2{
-        font-size: 15px;
-      color: #b3cf11;  
-      background: linear-gradient(
-        -225deg,
-          #fafe24 0%,
-          rgb(167, 213, 15) 29%,
-            rgb(88, 101, 25) 80%,
-          rgb(255, 255, 255) 90%
-      );
-      background-position: auto auto;
-      background-size: auto auto;
-      background-clip: text;
-      font-weight: 600;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: textclip 5s linear reverse;
-    }
-      
-    @keyframes textclip {
-      to {
-        background-position: 200% center;
-      }
+        font-size: 16px;
+      color: black;  
+      font-weight: 800;
     }
 
 
         
-    .btn-mobile{
+    .product-detail-container .btn-mobile{
       padding: 5px 15px;
       cursor: pointer;
-      background-color: #212121;
+      background-color: #c4d52e;
       border-radius: 6px;
-      border: 2px solid #212121;
-      box-shadow: 6px 6px 10px rgba(0,0,0,1),
+      border: 2px solid #d3d311;
+      box-shadow: 6px 6px 10px #777b0467,
       1px 1px 10px rgba(255, 255, 255, 0.6);
       color: #fff;
       font-size: 15px;
@@ -814,23 +714,31 @@ painting-details{
           
     .bottom-product-details{  
       margin-top: 5%;
-      width: 95%;
+      width: 100%;
       height: fit-content;
-      padding: 10px 20px 10px 20px;
-      background-color: rgba(255, 250, 250, 0.1);
-      box-shadow: inset 2px 2px 10px rgb(0, 0, 0),
-      inset -1px -1px 5px rgba(255, 255, 255, 0.3);
-      border-radius: 10px;
+      padding: 0px;
+      box-shadow: none;
+       border-radius: 10px;
       margin-left: auto;
       margin-right: auto;
+
     }  
 
+    .bottom-product-details .nav-tabs.nav{
+      display: flex;
+    }
+
     .bottom-product-details-tab-content{
-      color: #fff;
+      color: #1d1d1d;
       font-weight: 700;
-      padding: 20px 20px;
+      /* padding: 20px 20px; */
     }
 
 
+    .bottom-product-details h3{
+      font-size: 16px;
+     }
+      
+      
     
   }

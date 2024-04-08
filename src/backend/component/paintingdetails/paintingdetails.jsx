@@ -13,33 +13,35 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-
+import {  toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 // General 
 import { doc, getDoc, addDoc , setDoc, collection, onSnapshot , query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '../../config/fire';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 // import useFetch from '../../../assets/hooks/usefetch';
 import './paintingdetails.css';
-import CurrencyAPI from '@everapi/currencyapi-js';  
-import CurrencyConverter from '../../currency/currency';
+import SimilarProduct from '../similarproduct/similarproduct';
 
 
 
 
 const Paintingdetails = () => {
+
+
+
   const history = useNavigate();
   const { id } = useParams();
-  const [painting, setPainting] = useState(null);   
+  const [product, setProduct] = useState(null);   
   const [isAdded, setIsAdded] = useState(false);
-  const [rates, setRates] = useState({});
-  const [selectedCurrency, setSelectedCurrency] = useState("USD"); 
-  const baseCurrency = 'USD';
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [Adding, setAdding] = useState(false);
+  const [selectedQuantity, setSelectedQuantity] = useState(1); 
 
-    // Review init  
+
+    // Review init    
   const reviewId = useParams().reviewId;
   const [reviews, setReviews] = useState([]);
   const [numReviews, setNumReviews] = useState(0);
@@ -54,104 +56,56 @@ const Paintingdetails = () => {
   const [threeStarReviews, setThreeStarReviews] = useState([]);
   const [fourStarReviews, setFourStarReviews] = useState([]);
   const [fiveStarReviews, setFiveStarReviews] = useState([]);
-  const countsDocRef = doc(db, 'paintings', id, 'review', id);
+  const countsDocRef = doc(db, 'products', id, 'review', id);
   const [counts, setCounts] = useState({ likes: 0, dislikes: 0 });
+  const [unitquantity, setUnitquantity] = useState(1);
+  const [weightquantity, setWeightquantity] = useState(1);
+  const [inCart, setinCart] = useState(true);
+  const [similarCategory, setSimilarCategory] = useState("");
+  const [selectedCategory, setselectedCategory] = useState("");
 
 
 
+    const onInit = () => {
+      console.log('lightGallery has been initialized');
+    };
 
+    // swiper js 
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-
-
-  const currencyOptions = [
-    { value: 'AED', label: 'United Arab Emirates Dirham' },
-    { value: 'AFN', label: 'Afghan Afghani' },
-  ]
-
-
-
-
-        // Lightgallery inintilization 
-        const onInit = () => {
-          console.log('lightGallery has been initialized');
-      };
-
-      // swiper js 
-      const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
-          // Function to handle quantity selection changes
-        const handleQuantityChange = (e) => {
-          setSelectedQuantity(parseInt(e.target.value, 10));
-        };
-        const calculatedPrice = painting ? painting.price * selectedQuantity : 0;
-
-
-
-      // Currency io token initializtion and config 
-   useEffect(() => {
-    const currencyApi = new CurrencyAPI('cur_live_bW63J02Ob9PGvUZrQZiJNhlpENGdroQF0dfFHxzZ');
-    currencyApi.latest({
-      base_currency: baseCurrency,
-    }).then((response) => {
-      console.log('Exchange rate response:', 
-      // response.data
-      );
-      setRates(response.data);
-    }).catch((error) => {
-      console.error('Error fetching exchange rates:', error);
-      // Set default rates here if needed
-    });
-  }, []);
-
-  // console.log('Current rates:', rates);
-
-const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
-  try {
-    if (!rates || Object.keys(rates).length === 0 || !rates[targetCurrency]) {
-      return null; // Return early if rates are not available
-    }
-
-    const exchangeRate = rates[targetCurrency].value;
-
-    if (exchangeRate !== undefined) {
-      return (basePriceUSD * exchangeRate).toFixed(2);
-    } else {
-      throw new Error('Exchange rate not available');
-    }
-  } catch (error) {
-    console.error('Error calculating converted price:', error.message);
-    return null;
-  }
-};
-
-
-
-
-      // Paintings fetch 
-      useEffect(() => {
-        const paintingRef = doc(db, 'paintings', id);
-
-        // Fetch the document data
-        getDoc(paintingRef)
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              const data = snapshot.data();
-              setPainting(data);
-            } else {
-              console.log('Document does not exist');
-            }
       
-          })
-          .catch((error) => {
-            console.error('Error fetching document:', error.message);
-          });
-        
-      }, [id, db]);
+
+
+
+    useEffect(() => {
+      const productRef = doc(db, 'products', id);
+    
+      // Fetch the document data
+      getDoc(productRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.data();
+            setProduct(data);
+    
+            // Get and display the category field value
+            const categoryValue = data.category;
+            console.log('Category:', categoryValue);
+    
+            // Set similarCategory state to the category of the current product
+            setSimilarCategory(categoryValue);
+          } else {
+            console.log('Document does not exist');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching document:', error.message);
+        });
+    }, [id, db]);
 
 
       // fetching reviews 
       useEffect(() => {
-        const reviewRef = collection(db, 'paintings', id, 'review');
+        const reviewRef = collection(db, 'products', id, 'review');
       
         // Fetch the documents in the subcollection
         getDocs(reviewRef)
@@ -179,72 +133,63 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
       }, []);
 
 
-
-
-
-    // ADD to cart Function  
-  const handleAddToCart = async (painting) => {
-    if (auth.currentUser) {
-      const userId = auth.currentUser.uid;
-      const cartRef = collection(db, 'carts', userId, 'items');
-  
-      const q = query(cartRef, where('paintingId', '==', painting.id));
-      const querySnapshot = await getDocs(q);
-  
-      console.log('Fetched cart items:',
-      //  querySnapshot.docs.map(doc => doc.data())
-       );
-  
-      if (querySnapshot.empty) {
-        const basePriceUSD = painting.price;
-        const exchangeRate = rates[baseCurrency]?.value;
-  
-        if (exchangeRate !== undefined) {
-          const convertedPrice = calculateConvertedPrice(painting.price, selectedCurrency);
-  
+      const handleAddToCart = async (product, id) => {
+        console.log('Product Price Type:', product.priceType);
+          if (auth.currentUser) {
+          const userId = auth.currentUser.uid;
+          const cartRef = collection(db, 'customers', userId, 'cart');
+            
           try {
-            await setDoc(doc(cartRef), {
-              paintingId: painting.id,
-              paintingTitle: painting.title,
-              paintingImage: painting.img,
-              paintingdescription: painting.about,
-              paintingPrice: calculatedPrice,
-              targetCurrency: selectedCurrency,
-              paintingDate: painting.date,
-              paintingArtist: painting.artist
+            setAdding(true);
+            await setDoc(doc(cartRef, id), { 
+              productTitle: product.title,
+              productImage: product.img,
+              productdescription: product.description,
+              productPrice: product.pricePerWeight || product.pricePerUnit,
+              productWeightType: product.weightType,
+              weightquantity: product.priceType === 'weight' ? weightquantity : 0,
+              unitquantity: product.priceType === 'unit' ? unitquantity : 0,
+              productStockNumber: product.stockNumber,
+              inCart,
+              productPriceType : product.priceType,
+              productDate: product.dateAdded, 
+              totalAmount: selectedQuantity * (product.pricePerWeight || product.pricePerUnit)
             });
-  
-            console.log('Item added to cart:',
-            //  painting.id
-             );
+      
+            console.log('Item added to cart with product ID:', id);
             setIsAdded(true);
-  
+            setAdding(false);    
             setTimeout(() => {
               setIsAdded(false);
             }, 3000); // Reset after 3 seconds
+      
+            // Display success toast
+            toast.success('Item added to cart successfully.');
           } catch (error) {
             console.error('Error adding item to cart:', error.message);
+      
+            // Display error toast
+            toast.error('Error adding item to cart. Please try again later.');
           }
         } else {
-          console.error('Exchange rate not available');
+          console.log('User is not authenticated');
         }
-      } else {
-        console.log('Item is already in the cart');
-      }
-    } else {
-      console.log('User is not authenticated');
-    }
-  };
+      };
 
+
+
+ 
+      
+      
 
 
       // Add Review 
       const handleSubmit = async (e) => {
         e.preventDefault();
-    
+      
         try {
-          const reviewRef = collection(db, 'paintings', id, 'review');
-    
+          const reviewRef = collection(db, 'products', id, 'review');
+      
           await addDoc(reviewRef, {
             name,
             rating: parseInt(rating, 10),
@@ -253,7 +198,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             dislikes,
             date,
           });
-    
+      
           console.log('Review added successfully');
           // Clear form inputs after successful submission
           setName('');
@@ -262,22 +207,28 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
           setLikes('');
           setDislikes('');
           setDate('');
+      
+          // Display success toast
+          toast.success('Review added successfully.');
         } catch (error) {
           console.error('Error adding review: ', error);
+      
+          // Display error toast
+          toast.error('Error adding review. Please try again later.');
         }
       };
-
+      
     
       // Number of reviews 
       useEffect(() => {
         const getNumReviews = async () => {
-          const reviewRef = collection(db, 'paintings', id, 'review');
+          const reviewRef = collection(db, 'products', id, 'review');
           const querySnapshot = await getDocs(reviewRef);
           setNumReviews(querySnapshot.size);
         };
     
         const getFiveStarReviews = async () => {
-          const reviewRef = collection(db, 'paintings', id, 'review');
+          const reviewRef = collection(db, 'products', id, 'review');
           const q = query(reviewRef, where('rating', '==', 5));
           const querySnapshot = await getDocs(q);
     
@@ -286,7 +237,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
         };
 
         const getFourStarReviews = async () => {
-          const reviewRef = collection(db, 'paintings', id, 'review');
+          const reviewRef = collection(db, 'products', id, 'review');
           const q = query(reviewRef, where('rating', '==', 4));
           const querySnapshot = await getDocs(q);
     
@@ -295,7 +246,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
         };
 
         const getThreeStarReviews = async () => {
-          const reviewRef = collection(db, 'paintings', id, 'review');
+          const reviewRef = collection(db, 'products', id, 'review');
           const q = query(reviewRef, where('rating', '==', 3));
           const querySnapshot = await getDocs(q);
     
@@ -305,7 +256,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
 
 
         const getTwoStarReviews = async () => {
-          const reviewRef = collection(db, 'paintings', id, 'review');
+          const reviewRef = collection(db, 'products', id, 'review');
           const q = query(reviewRef, where('rating', '==', 2));
           const querySnapshot = await getDocs(q);
     
@@ -315,7 +266,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
 
 
         const getOneStarReviews = async () => {
-          const reviewRef = collection(db, 'paintings', id, 'review');
+          const reviewRef = collection(db, 'products', id, 'review');
           const q = query(reviewRef, where('rating', '==', 1));
           const querySnapshot = await getDocs(q);
     
@@ -349,7 +300,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
       
 
         const handleLike = async (reviewId) => {
-          const reviewDocRef = doc(db, 'paintings', id, 'review', reviewId);
+          const reviewDocRef = doc(db, 'products', id, 'review', reviewId);
         
           const reviewDocSnap = await getDoc(reviewDocRef);
         
@@ -366,7 +317,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
         };
         
         const handleDislike = async (reviewId) => {
-          const reviewDocRef = doc(db, 'paintings', id, 'review', reviewId);
+          const reviewDocRef = doc(db, 'products', id, 'review', reviewId);
         
           const reviewDocSnap = await getDoc(reviewDocRef);
         
@@ -393,13 +344,11 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
 
 
         useEffect(() => {
-        const reviewDocRef = doc(db, 'paintings', id, 'review', id);
+        const reviewDocRef = doc(db, 'products', id, 'review', id);
 
         const unsubscribe = onSnapshot(reviewDocRef, (doc) => {
           if (doc.exists()) {
             const reviewData = doc.data();
-            
-          } else {
           }
         });
 
@@ -418,27 +367,26 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
 
        
   return (
-    <div className='painting-details'>
-      <button className='prevbutton' onClick={prevbutton}><i className="bi bi-arrow-left-square-fill"></i></button> 
+    <div className='product-details bg-dark' style={{paddingTop:"200px"}}>
       {/* { error && <div>{ error }</div>} */}
-    { painting && (  <div className="backlinks">
+    { product && (  <div className="backlinks">
             <Link to='/'>Home</Link>
             /<Link to='/shop'>Shop</Link>  
-           /<Link className='disabled' to='/'>{painting.title}</Link>
+           /<Link className='disabled' to='/'>{product.title}</Link>
 
           </div>)}
       {/* { preloader && <div className='preloader'>...Loading </div> } */}
 
-      { painting && (
-        <div className='painting-detail-container'>
+      { product && (
+        <div className='product-detail-container bg-black'>
       
-          <div className='painting-detail'>
+          <div className='product-detail'>
           
         <div className="image-swiper-container">
        {thumbsSwiper && ( <Swiper
             style={{
-              '--swiper-navigation-color': 'rgb(250, 254, 36,0.5)',
-              '--swiper-pagination-color': 'rgb(250, 254, 36,0.5)',
+              '--swiper-navigation-color': 'rgb(185, 203, 22)',
+              '--swiper-pagination-color': 'rgb(185, 203, 22)',
             }}
             loop={true}
             spaceBetween={0}
@@ -452,9 +400,9 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             modules={[Navigation, Scrollbar]}
            className="mySwiper2"
            >
-             {painting.img.map((image, index) => 
-             <SwiperSlide>
-              <img src={image} />
+             {product.img.map((image, index) => 
+             <SwiperSlide key={image.id} >
+              <img className1="product-detail-image-each" src={image} />
             </SwiperSlide>)} 
           </Swiper>  )}
          
@@ -469,100 +417,85 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             navigation
             className="mySwiper"
             style={{
-              '--swiper-navigation-color': 'rgb(250, 254, 36,0.2)',
-              '--swiper-pagination-color': 'rgb(250, 254, 36,0.2)',
+              '--swiper-navigation-color': 'rgba(185, 203, 22,0.2)',
+              '--swiper-pagination-color': 'rgba(185, 203, 22,0.2)',
             }}
           >
-            {painting.img.map((image, index) => 
-             <SwiperSlide>
+            {product.img.map((image, index) => 
+             <SwiperSlide key={image.id}>
               <img src={image} />
             </SwiperSlide>)} 
           </Swiper>
          
           </div>  
-            {/* <img src={painting.img} alt="painting" /> */}
             <div className="product-description ms-4">
-              <h2>{painting.title}</h2> 
-          
-          {/* <div className="painting-description-currency"> */}
-             {/* <span>Convert</span> */}
-              {/* <select className='select-input col-6 ms-2' value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.target.value)}>
-                {currencyOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.value} - {option.label}
-                  </option>
-                ))}
-              </select> */}
-              {/* </div> */}
-
+              <h1 className="text-primary">{product.title}</h1> 
               <div className="product-description-price">
-                {/* {calculateConvertedPrice(painting.price, selectedCurrency)} {selectedCurrency} */}
-                  <h4>${calculatedPrice}</h4>
-                <h3>${calculatedPrice * 1.5}</h3>
-              </div>
+               {product.compareAtPrice * selectedQuantity > 0 && (<h4 style={{textDecoration:"line-through", opacity:"0.3"}}>${product.compareAtPrice * unitquantity}</h4>)}
+               <h4 className="ms-4"> ${(product.pricePerUnit || product.pricePerWeight) * (product.pricePerUnit ? unitquantity : weightquantity)}</h4>
+                 </div>     
+                    <h4> {product.weightType && ' Per '} {product.weightType}</h4> 
+                
 
-            <div className="buttons">
-              <div className="quantity d-flex align-items-end">
-                <h6>Quantity</h6>
-              <button className='btn  me-3 painting-decreament' onClick={() =>{
-                if (selectedQuantity > 0 ) {
-                setSelectedQuantity(selectedQuantity - 1)};
-              }}>-</button>
-               {/* <img src={painting.img} alt="" className="painting-add-to-cart-animation" /> */}
-              <h6>{selectedQuantity}</h6>
-              <button className='btn ms-3 painting-increament' onClick={() =>  setSelectedQuantity(selectedQuantity + 1)}>+</button>
-              {/* <img src={painting.img} alt="" className="painting-add-to-cart-animation" /> */}
-                {/* <select
-            className="select-input ms-2 pe-4 ps-4 pt-2 pb-2"
-            name="quantityselect"
-            id="quantityselect"
-            onChange={handleQuantityChange}
-            value={selectedQuantity}
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select> */}
-              </div>
-                <button className='btn' onClick={() => handleAddToCart(painting)}>Add to Cart</button>
-                <button className='btn'>Buy Now</button>
-              </div>
+              <div className="buttons">
+  <div className="quantity mb-3 d-flex align-items-center">
+    <h6>Quantity</h6>
+    {product.pricePerUnit ? (
+      <div className="d-flex align-items-center justify-content-center">
+        <button className='btn me-3 fs-3 product-decreament' onClick={() => setUnitquantity(unitquantity - 1)}>-</button>
+        <h6 className="mt-2 fs-5">{unitquantity}</h6>
+        <button className='btn ms-3 fs-3 product-increament' onClick={() => setUnitquantity(unitquantity + 1)}>+</button>
+      </div>  
+    ) : (
+      <div className="d-flex align-items-center justify-content-center">
+        <input
+          id=""
+          min="1"
+          name="quantity"
+          value={weightquantity} 
+          type="number"
+          className="ms-1 me-1 fw-bold form-control form-control-sm text-center"
+          onChange={(e) => setWeightquantity(e.target.value)}  
+        />
+        <span> {product.weightType}</span>
+      </div>
+    )}
+  </div>
+ 
+    {product && <a href={`${product.stripelink}`} className='btn btn-secondary btn-lg'> Buy Now </a>} 
 
-            
-                  
+      {/* {!product.custom && <div>{Adding ?  <button disabled className='btn btn-secondary btn-lg'>Adding</button> : <button className='btn  rounded-pill btn-secondary' onClick={() => handleAddToCart(product, id)}>Add to Cart</button>}</div>} 
+      {product.custom && <button type='button' className='btn btn-secondary btn-lg rounded-pill'  data-bs-toggle="modal" data-bs-target="#customproductmodal">Add to Cart</button>} */}
+
+</div>
            </div>
           </div>
 
-          {isAdded && (
-             <div className="popup">
-              Item added to cart!
-              <button onClick={() => setIsAdded(false)}>Close</button>
-            </div>
-          )}
         </div>
       )}
     
       
 
-         <div className="bottom-product-details">
+         
+    { product &&(
+    <div className="bottom-product-details">
             <ul className="nav nav-tabs" id="myTab" role="tablist">
-      <li className="nav-item bg-transparent" role="presentation">
-        <button className="nav-link active bg-transparent" id="productdescription-tab" data-bs-toggle="tab" data-bs-target="#productdescription-tab-pane" type="button" role="tab" aria-controls="productdescription-tab-pane" aria-selected="true">
-          <h3>Description</h3></button>
+      <li   className="nav-item bg-transparent" role="presentation">
+        <button className="nav-link active text-primary bg-transparent" id="productdescription-tab" data-bs-toggle="tab" data-bs-target="#productdescription-tab-pane" type="button" role="tab" aria-controls="productdescription-tab-pane" aria-selected="true">
+          <h3 className="text-primary">Description</h3></button>
       </li>
-      <li className="nav-item bg-transparent" role="presentation">
-        <button className="nav-link bg-transparent" id="Reviews-tab" data-bs-toggle="tab" data-bs-target="#Reviews-tab-pane" type="button" role="tab" aria-controls="Reviews-tab-pane" aria-selected="false">
-         <h3> Reviews</h3>
+      <li className="nav-item text-primary bg-transparent" role="presentation">
+        <button className="nav-link text-primary bg-transparent" id="Reviews-tab" data-bs-toggle="tab" data-bs-target="#Reviews-tab-pane" type="button" role="tab" aria-controls="Reviews-tab-pane" aria-selected="false">
+         <h3 className="text-primary"> Reviews</h3>
           </button>
       </li>
       </ul>
    
       
     <div className="tab-content bottom-product-details-tab-content" id="myTabContent">
-       { painting &&( <div className="tab-pane fade show active" id="productdescription-tab-pane" role="tabpanel" aria-labelledby="productdescription-tab" tabIndex="0">
-        {painting.about}
+   
+       { product &&( <div className="tab-pane fade product-description-tab show active" id="productdescription-tab-pane" role="tabpanel" aria-labelledby="productdescription-tab" tabIndex="0">
+       <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
         </div>)} 
 
 
@@ -572,11 +505,11 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
       <div className="row">
         <div className="col-12 col-lg-12 d-lg-flex  align-items-start">
           <div className="client_review mx-2 ">                        
-          <h2 className="pt-4 mb-3">Client Reviews</h2>           
+          <h1 className="text-primary pt-4 mb-3">Client Reviews</h1>           
             <p>{numReviews} Reviews</p>    
             <div className="mt-3"> 
-            <button type="button" data-bs-toggle="modal" data-bs-target="#addreview" className="btn review-report">
-              Create review
+            <button type="button"  data-bs-toggle="modal" data-bs-target="#addreview" className="btn btn-primary review-report">
+              Add review
             </button>
           </div>
           </div>
@@ -635,7 +568,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
           <span className="star_text">All Ratings</span>
             <i className="bi bi-star-fill ms-1"></i>
               </div></a>
-
+{/* 
           <a className="nav-link bg-transparent" id="five-star-rating-tab" data-bs-toggle="tab" data-bs-target="#five-star-rating-tab-pane" type="a" role="tab" aria-controls="five-star-rating-tab-pane" aria-selected="false">
           <div className="client_review_star mt-1 d-flex flex-row">              
           <span className="star_text">5</span>
@@ -668,7 +601,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             <span className="star_text">1&nbsp;</span>
             <i className="bi bi-star-fill ms-1"></i>
           </div>
-          </a>
+          </a> */}
 
           </ul>
 
@@ -784,7 +717,7 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
                   <i className="bi bi-share"></i>
                 </div> </div>
 
-              <div className="pt-3 pb-3 review_text">
+              <div className="pt-3 pb-3 review_text text-light">
                 <p>
                  {review.comments}
                    </p>
@@ -898,12 +831,12 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
                 <div className="py-2">
                   <div className="d-flex flex-row align-items-center">
                   <div className="user-info">
-                  <span className="review_name">{review.name}</span><br/>
+                  <span className="review_name text-primary">{review.name}</span><br/>
                   <span className="qualification mt-1">
                   {[...Array(5)].map((_, index) => (
                     <i
                       key={index}
-                      className={`bi ${index < review.rating ? 'bi-star-fill' : 'bi-star'}`}
+                      className={`bi ${index < review.rating ? 'bi-star-fill text-primary bg-primary' : 'bi-star'}`}
                     ></i>
                   ))} 
                     <span className="ps-2">{review.date}</span>
@@ -940,21 +873,22 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
             </div>
           </div>
           </div>
-      </div></div>
+      </div></div>)}
 
 
        
-        { painting &&(  
+        {/* { product &&(  
         <div className="mobile-cart-button p-3">
-             <h2>{painting.title}</h2>  
-             <h4>${calculatedPrice}</h4>
+             <h2>{product.title}</h2>  
+             <h4> ${product.pricePerWeight * selectedQuantity || product.pricePerUnit * selectedQuantity}</h4>
              <div className="mobile-qauntity-button align-items-center d-flex">
               <button className='btn-mobile ms-2' onClick={() => setSelectedQuantity(selectedQuantity + 1)}>-</button>
               <span className='ms-3'>{selectedQuantity}</span>
               <button className='btn-mobile ms-3' onClick={() =>  setSelectedQuantity(selectedQuantity + 1)}>+</button>
-                 <button className='btn-mobile ms-5' onClick={() => handleAddToCart(painting)}>Add to Cart</button>
+              <button className='btn btn-secondary' onClick={() => handleAddToCart(product, id)}>Add to Cart</button>
+
             </div> 
-             </div>)}
+             </div>)} */}
 
 
 
@@ -962,15 +896,15 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
 
 
         {/* Add  review modal */}
-        <div className="modal fade review-modal-bg" id="addreview" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="addreviewLabel" aria-hidden="true">
-        <div className="modal-dialog review-modal-bg modal-dialog-centered">
-          <div className="modal-content review-modal">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="addreviewLabel">Add Review</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div className="text-light modal fade review-modal-bg" id="addreview" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="addreviewLabel" aria-hidden="true">
+        <div className="text-light modal-dialog review-modal-bg modal-dialog-centered">
+          <div className="bg-dark border-primary text-light modal-content review-modal">
+            <div className="bg-dark border-primary text-light modal-header">
+              <h1 className="bg-dark border-primary text-primary modal-title text-primary rounded-pill fs-5" id="addreviewLabel">Add Review</h1>
+              <button type="button" className="text-light" data-bs-dismiss="modal" aria-label="Close"> <i className="bi  fs-4 text-light bi-x-lg"></i> </button>
             </div>
-             <form onSubmit={handleSubmit}>
-              <div className="modal-body">
+             <form>
+              <div className="bg-dark border-primary text-light modal-body">
            
 
             <div className="rating-container">
@@ -1112,17 +1046,17 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
       <div className='review-input-group'>
         <label htmlFor="name">Name:</label>
         <input
-          className='review-input'
+          className='review-input bg-transparent text-light border-primary'
           type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className='review-input-group'>
-        <label  className='mb-5' htmlFor="comments">Comments:</label>
+      <div className='review-input-group align-items-start'>
+        <label  style={{marginTop:"-50px"}} className='mb-5' htmlFor="comments">Comment:</label>
         <textarea
-          className='review-input'
+          className='review-input bg-transparent text-light border-primary'
           id="comments"
           value={comments}
           onChange={(e) => setComments(e.target.value)}
@@ -1159,13 +1093,58 @@ const calculateConvertedPrice = (basePriceUSD, targetCurrency) => {
       </div>
          </div>
             <div className="modal-footer">
-              <button className='btn' type="submit">Submit Review</button>
+              <button className='btn btn-primary'  onClick={handleSubmit} data-bs-dismiss="modal">Submit Review</button>
             </div>   </form>
           </div>
         </div>
         </div>
 
        
+        {/* <SimilarProduct similarCategory={similarCategory} /> */}
+
+
+
+
+
+
+
+
+
+
+
+              {/* custom product details  */}
+          {/* <!-- Modal --> */}
+          <div class="modal fade" id="customproductmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="customproductmodalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="bg-black border-0 text-light modal-content">
+                <div class="bg-black border-0 text-light modal-header">
+                  <h1 class="modal-title text-primary fs-5" id="customproductmodalLabel">Fill these:</h1>
+                  <button type="button" className='bg-transparent border-0 text-primary'  data-bs-dismiss="modal" aria-label="Close"><i className="bi fs-4 fw-bold bi-x-lg"></i></button>
+                </div>
+             {product &&<div class="bg-black border-0 text-light modal-body">
+           
+           
+              {product.textInscribed && <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label text-primary fw-bolder">Custom Text  ( max : 10 words)</label>
+                <input class="form-control bg-transparent border-primary text-light" id="exampleFormControlTextarea1" rows="3"/>
+              </div>}
+                
+
+              {product.custom && <div>
+                 <label class="form-label text-primary fw-bolder" for="inputGroupFile01">Upload Image</label>
+              <input type="file" class="form-control" id="inputGroupFile01"/>
+           </div> }
+
+
+
+                </div>}   
+                <div class="bg-black border-0 text-light modal-footer">
+              {Adding ?  <button disabled className='btn btn-secondary btn-lg'>Adding</button> : <button className='btn  rounded-pill btn-secondary' onClick={() => handleAddToCart(product, id)}>Add to Cart</button>}      
+                </div>
+              </div>
+            </div>
+          </div>
+
 
     </div>
   );

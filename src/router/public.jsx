@@ -1,14 +1,14 @@
 import React from 'react';
 import { Routes, Navigate } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import Navbar from '../frontend/layout/navbar/navbar';
-import Footer from '../frontend/layout/footer/footer';
-import Home from '../frontend/pages/homepage/home';
-import About from '../frontend/pages/about/about';
-import Shop from '../frontend/pages/shop/shop';
-import Contact from '../frontend/pages/contact/contact';
+import Navbar from '../public/layout/navbar/navbar';
+import Footer from '../public/layout/footer/footer';
+import Home from '../public/pages/homepage/home';
+import About from '../public/pages/about/about';
+import Shop from '../public/pages/shop/shop';
+import Contact from '../public/pages/contact/contact';
 import Paintingdetails from '../backend/component/paintingdetails/paintingdetails';
-import Gallery from '../frontend/pages/galllery/gallery';
+import Gallery from '../public/pages/galllery/gallery';
 
 
 
@@ -55,6 +55,8 @@ const Public = () => {
             <Route path="/paintings/:id" element={<Paintingdetails/>} />
           
             <Route path="/gallery" element={<Gallery/>} />
+
+
 
             {/* <Route path="/checkout" element={<Checkout/>} /> */}
             <Route path="*" element={<Navigate to="/publicpath/home" />} />

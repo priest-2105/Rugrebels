@@ -1,0 +1,64 @@
+.product-list-category{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+
+}
+.product-list-category-item a{
+
+} 
+
+
+.product-list-category-item{
+    border: none;
+    border-radius: 50%;
+    /* background-color: red; */
+    height: 280px;
+    width: 280px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.livestock-category{background-image: url('/assets/images/3D-Photo-Lamp-Personalized-Custom-Photo-And-Text-Customized-Valentine-s-Day-Wedding-Anniversary-Birthday-3D.jpg_640x640.jpg'); background-position: center;background-size: cover;}
+.frozen-category{background-image: url('/assets/images/Custom-3D-Pet-Photo-Night-Light-Cat-Dog-3D-Picture-Lamp-Pets-Memorial-Lamp-Bedroom-D.png'); background-position: center;background-size: cover;}
+.bundle-category{background-image: url('/assets/images/Photo-Custom-Wood-Photo-Frame-Laser-Engraved-For-Couple-Family-Portrait-Father-Day-Wedding-Anniversary-Birthday.jpg'); background-position: center;background-size: cover;}
+
+
+.product-item-title{
+    font-stretch:narrower !important;
+    letter-spacing:-1px ;
+}
+
+.product-item::after{
+    transition-duration: 0.5s;
+    display: block;
+    opacity: 0.9;
+}
+
+.product-search-filter label{
+    font-weight: 600;
+
+}
+
+.product-search-filter select{
+    border: 3px solid rgba(0, 0, 0, 0.302);
+
+}
+
+.product-search-filter InputRange{
+    background-color: brown !important;
+    color: brown !important;
+}
+
+@media only screen and (max-width:520px) {
+
+    .product-list-header h1{
+
+        font-size: 35px;
+    }
+
+    
+
+}

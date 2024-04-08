@@ -1,4 +1,3 @@
-import './Paintinglist.css';
 import { Link, useNavigate } from 'react-router-dom';
 import {  useEffect, useRef, useState } from 'react';
 import { db, auth } from '../../config/fire';  
@@ -10,12 +9,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"; 
 import React from "react";
 // import Slider from "react-slick";
-import Newproducts from '../newproducts/newproducts';
-import Topproduct from '../topproducts/topproduct';
 
 
-const PaintingList = () => {
+const Family = () => {
 
+  
   const navigate = useNavigate();
   const ref = useRef(null);
   const [products, setProducts] = useState([]);
@@ -29,7 +27,7 @@ const PaintingList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
   const [selectedQuantities, setSelectedQuantities] = useState({});
   const [productQuantities, setProductQuantities] = useState({});
   const [inCart, setinCart] = useState(true);
@@ -125,15 +123,7 @@ const PaintingList = () => {
             const productsCollection = collection(db, 'products');
             const snapshot = await getDocs(productsCollection);
             const productData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-            const today = new Date();
-            const productDate = new Date(productData.dateAdded);
     
-            const timeDifference = Math.abs(today - productDate);
-            const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-    
-            productData.isNew = daysDifference <= 7; 
-    
-
             setProducts(productData);
             setFilteredProducts(productData);
           } catch (error) {
@@ -196,6 +186,8 @@ const PaintingList = () => {
     
       const displayedProducts = filteredProducts.slice(0, displayedProductsCount);
     
+  
+  
   
 
     
@@ -304,13 +296,11 @@ const PaintingList = () => {
         productPrice: product.pricePerWeight || product.pricePerUnit,
         productWeightType: product.weightType,
         productDate: product.dateAdded,
-        productStockNumber: product.stockNumber,
         inCart,
         productPriceType: product.priceType,
         weightType: product.weightType,
         unitquantity: !product.weightType && (productQuantity || 1),
-        weightquantity: product.weightType && ( productQuantities[product.id] || 0.5),
-        totalAmount: selectedQuantity * (product.pricePerWeight || product.pricePerUnit)
+        weightquantity: product.weightType && ( productQuantities[product.id] || 0.5),        totalAmount: selectedQuantity * (product.pricePerWeight || product.pricePerUnit)
       };
       await setDoc(productDocRef, cartItem); // Use setDoc to set with custom doc ID
   
@@ -426,23 +416,27 @@ const PaintingList = () => {
 
   return (
 
-      <div className="container-xxl pt-3" style={{marginTop:"25px"}}>
+<div className="container-xxl py-5" style={{paddingTop:"150px"}}>
       
-          <div className="container">
-            
-         
-            <div className="section-header product-list-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style={{marginTop:"100px",maxWidth:"500px"}}>
-                        <h1 className="d-lg-display-5 text-primary mb-3">Our Products</h1>
-                                 <p>Get free gifts with every order you place. ( Terms and conditions may Apply )</p>
+          <div className="container" style={{marginTop:"150px"}}>
+
+      
+      
+        
+            <div className="section-header product-list-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style={{marginTop:"150px",maxWidth:"500px"}}>
+                        <h1 className="d-lg-display-5 text-primary mb-3">Our Custom Family Frames</h1>
+                                 <p>Get free gift to spice up your cooking with every order you place.</p>
 
                     </div>
   
+
+      
+      
                      <div className="row g-0 gx-5 align-items-start">
-                     <div className="col-lg-12 align-items-center">                
-                     <div className="dashboard-art-header align-items-baseline d-xs-block d-sm-block d-lg-flex d-xl-flex d-md-flex mb-5">
-          <Link className='text-primary' type="button" data-bs-toggle="offcanvas" to="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-          <h3 className='text-primary'>Filter <i className="bi bi-funnel"></i></h3></Link>
-             
+                     <div className="col-lg-12 mt-5">                
+                     <div className="dashboard-art-header d-xs-block d-sm-block d-lg-flex d-xl-flex d-md-flex mb-5">
+          
+           
               {/* <select
                 id="sortOrder"
                 name="sortOrder"
@@ -455,30 +449,28 @@ const PaintingList = () => {
                 <option value="desc">Highest to Lowest</option>
               </select> */}
 
-                <div
-                className='mt-sm-3 mt-xs-3'
-                style={{
+                <div style={{
                marginLeft:'auto',
                 position: 'relative',
                 display: 'inline-block'
                 }}>
                 <input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={handleInputChange}
-                style={{
-                padding: '8px 10px', 
-                borderRadius: '8px',
-                border: '2px solid yellow',
-                backgroundColor: 'transparent',
-                width: '250px',
-                color:'white',
-                boxSizing: 'border-box',
-                outline: 'none'
-                }}
+                    type="text"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    style={{
+                        padding: '8px 10px', 
+                        borderRadius: '8px',
+                        border: '2px solid black',
+                        backgroundColor: 'transparent',
+                        width: '250px',
+                        color:'white',
+                        boxSizing: 'border-box',
+                        outline: 'none'
+                    }}
                 />
-                <div style={{ position: 'absolute', top: '45%', right: '10px', transform: 'translateY(-50%)' }}>
+                <div className="text-primary" style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16" >
                         <path fillRule="evenodd"d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.027.045.055.088.086.13l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.087-.13zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                     </svg>
@@ -488,16 +480,18 @@ const PaintingList = () => {
           </div>
            
                 </div> 
-                 <div className="row g-4 col-lg-12 col-md-12 col-sm-12 col-xs-12 col bg-dark" style={{minHeight:"600px"}}>
+                 <div className="row g-4 col-lg-12 col-md-12 col-sm-12 col-xs-12 col bg-dark" style={{minHeight:"500px"}}>
                     {displayedProducts.length === 0 && showResults && (
                         <tr>
                         <td colSpan="9" className="text-center">No results found</td>
                         </tr>
                     ) }
-                    {displayedProducts.map((product) => {
-                      const productId = product.id;
-                      const productQuantity = selectedQuantities[productId] || 1;
-
+                    {displayedProducts
+                     .filter((product) => product.category === "family")
+                     .map((product) => {
+                       const productId = product.id;
+                       const productQuantity = selectedQuantities[productId] || 1;
+                   
                         return (
                           <div className="col-xl-4 col-lg-4 d-flex bg-dark  text-light  position-relative col-md-12 wow fadeInUp" data-wow-delay="0.1s" key={product.id}>                       
                           <div className="product-item bg-black ms-auto  me-auto each-product-container text-light" style={{height:"100%"}}>
@@ -594,15 +588,15 @@ const PaintingList = () => {
                       </div>   );
                         } 
                         )}
-                      <div className="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <button className="btn ms-auto me-auto btn-primary rounded-pill py-3 px-5" onClick={handleBrowseMoreProducts}>
+                      </div>
+                      <div className="col-12 mt-4 text-center wow fadeInUp" data-wow-delay="0.1s">
+                      {displayedProducts.filter((product) => product.category === "family").lengthh >= 1 &&
+                    <button className="btn btn-primary rounded-pill py-3 px-5" onClick={handleBrowseMoreProducts}>
                       Browse More Products
-                    </button>
+                    </button>}
                   </div>
-                        </div>
-                
-            </div></div>
-            
+        </div></div>
+        
 
 
 
@@ -620,7 +614,7 @@ const PaintingList = () => {
     <div className="offcanvas-body product-search-filter">
         <div className='p-2'>
             
-        <label htmlFor="categories">Categories</label><br />
+        {/* <label htmlFor="categories">Categories</label><br />
           <select
           id="categories"
           name="categories"
@@ -629,10 +623,10 @@ const PaintingList = () => {
           className="form-control col-11 mb-2 mt-2"
         >
           <option value="">All Categories</option>
-          <option value="pets">pets</option>
-          <option value="faimly">Faimly</option>
-          <option value="lovers">lovers</option>
-        </select><br />
+          <option value="livestock">Livestock</option>
+          <option value="family">family</option>
+          <option value="raw Product">Raw Product</option>
+        </select><br /> */}
 
 
         <label htmlFor="sortOrder" className="col-12 me-2">
@@ -652,13 +646,28 @@ const PaintingList = () => {
 
       
 
-       <div className="col-11">
+       {/* <div className="col-11">
          <label className="mt-5 mb-4" htmlFor="priceRange">Price Range</label>
-        </div>
+        <InputRange
+          maxValue={400000}
+          minValue={1000}
+          formatLabel={value => `$${value}`}
+          value={priceRange}
+          className="col-11"
+          onChange={handlePriceRangeChange}
+          onChangeComplete={handlePriceRangeChange}
+        />  </div>
        
        <div className="col-11">
        <label className="mt-5 mb-4" htmlFor="weightRange">Weight Range</label>
-       </div>
+        <InputRange
+          maxValue={8000}
+          minValue={500}
+          value={weightRange}
+          formatLabel={value => `${value} kg`}
+          onChange={handleWeightRangeChange}
+          onChangeComplete={handleWeightRangeChange}
+        /></div> */}
 
 
                     <div>
@@ -684,14 +693,7 @@ const PaintingList = () => {
 
 
 
-
-
-
-
-
-
-
-
+ 
 
 
 
@@ -699,4 +701,4 @@ const PaintingList = () => {
 );
 };
 
-export default PaintingList;
+export default Family;
