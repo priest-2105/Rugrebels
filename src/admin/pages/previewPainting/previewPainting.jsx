@@ -339,10 +339,10 @@ const Previewproduct = () => {
     <div>
         <Link style={{display:"flex", width:"fit-content",alignItems:"center"}} to="/tfghjkdyfrgehrtkmebvgc4k6lm54j3hgvfc46kl54m3jh2gfd3gh4jk5l6k5j4hb3gf2dfg3hj4k5l/admin/products"> <i className="bi mb-2 fs-1 bi-caret-left-fill"></i><h3 style={{color:"aliceblue"}}>Preview Product </h3></Link> 
 
-        <div className="admin-add-product-container">
+        <div className="admin-add-product-container text-light bg-transparent">
 
 
-      <div className="card p-4 pb-4">
+      <div className="card bg-transparent p-4 pb-4">
     
        <h2>Preview product</h2>
       {productDetails &&
@@ -352,7 +352,7 @@ const Previewproduct = () => {
           {productDetails.status === 'Active' && (
         <div className='ms-auto'>
           {!disabling && (
-            <button className='ms-auto' onClick={handleDisable} disabled={disabling}>
+            <button className='ms-auto btn-warning  btm-sm' onClick={handleDisable} disabled={disabling}>
               {disabling ? 'Disabling' : 'Disable'}
             </button>
           )}
@@ -362,7 +362,7 @@ const Previewproduct = () => {
       {productDetails.status === 'Inactive' && (
         <div className='ms-auto'>
           {!enabling && (
-            <button className='ms-auto' onClick={handleEnable} disabled={enabling}>
+            <button className='ms-auto btn-success btm-sm' onClick={handleEnable} disabled={enabling}>
               {enabling ? 'Enabling' : 'Enable'}
             </button>
           )}
@@ -516,7 +516,7 @@ const Previewproduct = () => {
       <form className='edit-product-form' onSubmit={handleSubmit}>
                   <div className="add-product-input-group upload-image-input-group">  
           <label htmlFor=""></label>
-          <label> Upload Media <button disabled data-title='Your Cover image will be the first and main picture of your product'> <i className="bi bi-question-circle-fill"></i> </button></label> <br/>
+          <label> Upload Media <button  disabled data-title='Your Cover image will be the first and main picture of your product'> <i className="bi bi-question-circle-fill"></i> </button></label> <br/>
         
               <input
             className='input add-img-product-input'

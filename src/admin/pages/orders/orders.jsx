@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import './orders.css';
+import { useEffect, useState } from 'react';
 import { db } from '../../../backend/config/fire';
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, updateDoc, doc, query, orderBy, where } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
+import './orders.css'
 
-7
+
+
 const Orders = () => {
 
   const [ allordersadmin, setAllordersadmin ] = useState([]);
@@ -18,6 +19,7 @@ const Orders = () => {
     const [filteredAllordersadmin, setFilteredAllordersadmin] = useState([]);
     const [showResults, setShowResults] = useState(false);
     const [sortField, setSortField] = useState(null);
+    const [deliveredOrdersCount, setDeliveredOrdersCount] = useState(0);
    
   
   
@@ -28,31 +30,61 @@ const Orders = () => {
 
 
 
-    function formatFirebaseTimestamp(timestamp) {
-        const dateObject = timestamp.toDate();
-        return dateObject.toLocaleDateString(); // Adjust format as needed
-      }
+
       
     
-        useEffect(() => {
-            const fetchallordersadmin = async () => {
-              const allordersadminCollection = collection(db, 'allordersadmin');
-              const snapshot = await getDocs(allordersadminCollection);
-              const allordersadminData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setAllordersadmin(allordersadminData);
-            };
+        // useEffect(() => {
+        //     const fetchallordersadmin = async () => {
+        //       const allordersadminCollection = collection(db, 'allordersadmin');
+        //       const snapshot = await getDocs(allordersadminCollection);
+        //       const allordersadminData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        //       setAllordersadmin(allordersadminData);
+        //     };
         
-            fetchallordersadmin();
-          }, []);
+        //     fetchallordersadmin();
+        //   }, []);
+
+        useEffect(() => {
+          const fetchAllOrdersAdmin = async () => {
+            try {
+              const customersCollectionRef = collection(db, 'customers');
+              const customersSnapshot = await getDocs(customersCollectionRef);
+        
+              const allOrders = [];
+        
+              for (const customerDoc of customersSnapshot.docs) {
+                const customerId = customerDoc.id;
+                const ordersCollectionRef = collection(customersCollectionRef, customerId, 'orders');
+                const ordersSnapshot = await getDocs(query(ordersCollectionRef));
+        
+                const ordersData = ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                allOrders.push(...ordersData);
+              }
+        
+              setAllordersadmin(allOrders);
+            } catch (error) {
+              console.error('Error fetching orders:', error);
+            }
+          };
+        
+          fetchAllOrdersAdmin();
+        }, []);
+    
+          
 
           
     
 
         //   for displaying timestamp 
-    function formatFirebaseTimestamp(timestamp) {
-        const dateObject = timestamp.toDate();
-        return dateObject.toLocaleDateString(); // Adjust format as needed
-    }
+        function formatFirebaseTimestamp(timestamp) {
+          if (!timestamp || !timestamp.toDate || typeof timestamp.toDate !== 'function') {
+            return "N/A"; // Or any default value you prefer
+          }
+        
+          const dateObject = timestamp.toDate();
+          return dateObject.toLocaleDateString(); // Adjust format as needed
+        }
+        
         
     const updateOrderStatus = async (orderId, newStatus) => {
         try {
@@ -87,19 +119,80 @@ const Orders = () => {
     const filtered = allordersadmin.filter(ordersadmin => {
       const lowerCaseTerm = searchTerm.toLowerCase();
       return (
-       ( ordersadmin.name && ordersadmin.name.toLowerCase().includes(lowerCaseTerm))||
+       ( ordersadmin.deliveryName && ordersadmin.deliveryName.toLowerCase().includes(lowerCaseTerm))||
        ( ordersadmin.email && ordersadmin.email.toLowerCase().includes(lowerCaseTerm))||
-       ( ordersadmin.itembought && ordersadmin.itembought.toLowerCase().includes(lowerCaseTerm)) || 
-       ( ordersadmin.address && ordersadmin.address.toLowerCase().includes(lowerCaseTerm)) || 
-        ( ordersadmin.status && ordersadmin.status.toLowerCase().includes(lowerCaseTerm)) || 
-       ( ordersadmin.phonenumber && ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+       ( ordersadmin.orderNumber && ordersadmin.orderNumber.toLowerCase().includes(lowerCaseTerm)) || 
+      //  ( ordersadmin.address && ordersadmin.address.toLowerCase().includes(lowerCaseTerm)) || 
+        ( ordersadmin.orderStatus && ordersadmin.orderStatus.toLowerCase().includes(lowerCaseTerm)) || 
+      //  ( ordersadmin.phonenumber && ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
         ( ordersadmin.price && ordersadmin.price.toLowerCase().includes(lowerCaseTerm)) ||
-       ( ordersadmin.date && ordersadmin.date.toString().toLowerCase().includes(lowerCaseTerm)) 
+       ( ordersadmin.orderDate && ordersadmin.orderDate.toString().toLowerCase().includes(lowerCaseTerm)) 
       );
     });
     setFilteredAllordersadmin(filtered);
     setShowResults(true); // Show results after initializing
 }, [searchTerm, allordersadmin]);
+const totalOrders = allordersadmin.length;
+
+
+const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
+
+
+useEffect(() => {
+  const fetchPendingOrdersCount = async () => {
+    try {
+      const customersCollectionRef = collection(db, 'customers');
+      const customersSnapshot = await getDocs(customersCollectionRef);
+
+      let pendingCount = 0;
+
+      for (const customerDoc of customersSnapshot.docs) {
+        const customerId = customerDoc.id;
+        const ordersCollectionRef = collection(customersCollectionRef, customerId, 'orders');
+        const pendingOrdersQuery = query(ordersCollectionRef, where('orderStatus', '==', 'pending'));
+
+        const pendingOrdersSnapshot = await getDocs(pendingOrdersQuery);
+        pendingCount += pendingOrdersSnapshot.size;
+      }
+
+      setPendingOrdersCount(pendingCount);
+    } catch (error) {
+      console.error('Error fetching pending orders count:', error);
+    }
+  };
+
+  fetchPendingOrdersCount();
+}, []);
+
+
+
+
+useEffect(() => {
+  const fetchDeliveredOrdersCount = async () => {
+    try {
+      const customersCollectionRef = collection(db, 'customers');
+      const customersSnapshot = await getDocs(customersCollectionRef);
+
+      let DeliveredCount = 0;
+
+      for (const customerDoc of customersSnapshot.docs) {
+        const customerId = customerDoc.id;
+        const ordersCollectionRef = collection(customersCollectionRef, customerId, 'orders');
+        const DeliveredOrdersQuery = query(ordersCollectionRef, where('orderStatus', '==', 'Approved'));
+
+        const DeliveredOrdersSnapshot = await getDocs(DeliveredOrdersQuery);
+        DeliveredCount += DeliveredOrdersSnapshot.size;
+      }
+
+      setDeliveredOrdersCount(DeliveredCount);
+    } catch (error) {
+      console.error('Error fetching Delivered orders count:', error);
+    }
+  };
+
+  fetchDeliveredOrdersCount();
+}, []);
+
 
 
 const handleInputChange = (e) => {
@@ -109,14 +202,14 @@ const handleInputChange = (e) => {
   const filtered = allordersadmin.filter(ordersadmin => {
     const lowerCaseTerm = term.toLowerCase();
     return (
-     ( ordersadmin.name && ordersadmin.name.toLowerCase().includes(lowerCaseTerm)) ||
+     ( ordersadmin.deliveryName && ordersadmin.deliveryName.toLowerCase().includes(lowerCaseTerm)) ||
      ( ordersadmin.email && ordersadmin.email.toLowerCase().includes(lowerCaseTerm)) ||
-     ( ordersadmin.itembought && ordersadmin.itembought.toLowerCase().includes(lowerCaseTerm)) || 
-     (ordersadmin.address &&  ordersadmin.address.toLowerCase().includes(lowerCaseTerm)) || 
-     ( ordersadmin.status && ordersadmin.status.toLowerCase().includes(lowerCaseTerm)) || 
-     ( ordersadmin.phonenumber && ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+     ( ordersadmin.orderNumber && ordersadmin.orderNumber.toLowerCase().includes(lowerCaseTerm)) || 
+    //  (ordersadmin.address &&  ordersadmin.address.toLowerCase().includes(lowerCaseTerm)) || 
+     ( ordersadmin.orderStatus && ordersadmin.orderStatus.toLowerCase().includes(lowerCaseTerm)) || 
+    //  ( ordersadmin.phonenumber && ordersadmin.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
       ( ordersadmin.price && ordersadmin.price.toLowerCase().includes(lowerCaseTerm)) ||
-     ( ordersadmin.date && ordersadmin.date.toString().toLowerCase().includes(lowerCaseTerm)) 
+     ( ordersadmin.orderDate && ordersadmin.orderDate.toString().toLowerCase().includes(lowerCaseTerm)) 
     );
   });
 
@@ -201,10 +294,6 @@ const handleInputChange = (e) => {
    
 
 
-      // end of table sorting config 
-
-
-
 
 
 
@@ -222,7 +311,7 @@ const handleInputChange = (e) => {
                             <div className="dashboard-top-customer-info-points">
                                 <span><i className="bi bi-people-fill"></i></span>
                                 <div>
-                                    <h6>137,000</h6>
+                                    <h6>{totalOrders}</h6>
                                     <p>Total Orders</p>
                                 </div>
                             </div>
@@ -232,7 +321,7 @@ const handleInputChange = (e) => {
                             <div className="dashboard-top-customer-info-points">
                                 <span><i className="bi bi-person-fill-add"></i></span>
                                 <div>
-                                    <h6>137,000  <i className="ms-1 bi bi-graph-up-arrow"></i> </h6>
+                                    <h6>{deliveredOrdersCount}  <i className="ms-1 bi bi-graph-up-arrow"></i> </h6>
                                     <p className="mb-3">Order Delivered</p>
                                   
                                 </div>
@@ -244,7 +333,7 @@ const handleInputChange = (e) => {
                             <div className="dashboard-top-customer-info-points">
                                 <span><i className="bi bi-door-open-fill"></i></span>
                                 <div>
-                                    <h6>1,000
+                                    <h6>{pendingOrdersCount}
                                     </h6>
                                     <p className="mb-3">Orders Pending </p>
                                 </div>
@@ -349,14 +438,13 @@ const handleInputChange = (e) => {
            
            <table>
 
-            <tr>
-            <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
-            <th> <button onClick={() => handleSort('name')}> Item Bought <i className="bi-arrow-down-up"></i></button></th>
-            <th> <button onClick={() => handleSort('name')}>Satus <i className="bi-arrow-down-up"></i></button>  </th>
-            <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
-            <th> <button onClick={() => handleSort('price')}> Amount<i className="bi-arrow-down-up"></i></button> </th>  
-            <th>Actions </th>
-         </tr>
+            <tr>         <th> <button onClick={() => handleSort('name')}> Order No <i className="bi-arrow-down-up"></i></button></th>
+                 <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
+                   <th> <button onClick={() => handleSort('name')}>Status <i className="bi-arrow-down-up"></i></button>  </th>
+                    <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
+                   {/* ddice')}> Amount<i className="bi-arrow-down-up"></i></button> </th>   */}
+                    <th>Actions </th>
+                   </tr>
 
                
         <tbody>
@@ -364,17 +452,17 @@ const handleInputChange = (e) => {
             <tr>
               <td colSpan="9" className="text-center">No results found</td>
             </tr>
-          )} {filteredAllordersadmin.map((ordersadmin) => (        <tr>
-                <td><img src={ordersadmin.userimage} className='rounded me-2' height="30px" width="30px" alt="" />{ordersadmin.name}</td>
-                <td>{ordersadmin.itembought} </td>
-                <td> {ordersadmin.status === 'Pending' ? (
-                                <span className='rounded-pill pending'>{ordersadmin.status}</span>
+          )}  {filteredAllordersadmin.map((ordersadmin) => (        
+          <tr key={ordersadmin.id}>
+                   <td>{ordersadmin.orderNumber} </td>
+                   <td>{ordersadmin.deliveryName}</td>
+                 <td> {ordersadmin.orderStatus === 'Pending' ? (
+                                <span className='rounded-pill pending'>{ordersadmin.orderStatus}</span>
                               ) : (
-                                <span className='rounded-pill success'>{ordersadmin.status}</span>
+                                <span className='rounded-pill success'>{ordersadmin.orderStatus}</span>
                               )} </td>
-                 <td>{formatFirebaseTimestamp(ordersadmin.date)}</td> 
-               <td> {ordersadmin.price} </td>
-                    <td>  <Link to={`/admin/adminorderdetails/${ordersadmin.id}`}> View Info</Link></td>
+                <td>{formatFirebaseTimestamp(ordersadmin.orderDate)}</td> 
+            <td> <Link to={`/admin/adminorderdetails/${ordersadmin.id}`}> View Info</Link></td>
             </tr> ))} </tbody>
 
              </table>
@@ -389,28 +477,28 @@ const handleInputChange = (e) => {
                        
                    <div className="tab-pane fade pt-4" id="orders-delivered-tab-pane" role="tabpanel" aria-labelledby="orders-delivered-tab" tabindex="0">
                         <table>
-                            <tr>
-                            <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('name')}> Item Bought <i className="bi-arrow-down-up"></i></button></th>
-                          <th> <button onClick={() => handleSort('name')}>Satus <i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('price')}> Amount<i className="bi-arrow-down-up"></i></button> </th>  
-                          <th>Actions </th>
-                            </tr>
+                        <tr>
+                      <th> <button onClick={() => handleSort('name')}> Order No <i className="bi-arrow-down-up"></i></button></th>
+                     <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
+                    <th> <button onClick={() => handleSort('name')}>Status <i className="bi-arrow-down-up"></i></button>  </th>
+                    <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
+                   {/* ddice')}> Amount<i className="bi-arrow-down-up"></i></button> </th>   */}
+                    <th>Actions </th>
+                    </tr>
                         {filteredAllordersadmin.length === 0 && showResults && (
                         <tr>
                           <td colSpan="9" className="text-center">No results found</td>
                         </tr>
                       ) }{filteredAllordersadmin
                     .filter(order => order.status === 'Delivered')
-                    .map((ordersadmin) => ( <tr>
-                            <td><img src={ordersadmin.userimage} className='rounded me-2' height="30px" width="30px" alt="" />{ordersadmin.name}</td>
-                            <td>{ordersadmin.itembought} </td>
-                            <td> <span className='rounded-pill success'>{ordersadmin.status}</span>
+                    .map((ordersadmin) => (
+                      <tr key={ordersadmin.id}>
+                            <td>{ordersadmin.deliveryName}</td>
+                            <td>{ordersadmin.orderNumber} </td>
+                            <td> <span className='rounded-pill success'>{ordersadmin.orderStatus}</span>
                             </td>
-                            <td>{formatFirebaseTimestamp(ordersadmin.date)}</td>
-                            <td> {ordersadmin.price} </td>
-                            <td>
+                            <td>{formatFirebaseTimestamp(ordersadmin.orderDate)}</td>
+                               <td>
                                 <Link to={`/admin/adminorderdetails/${ordersadmin.id}`}> View Info</Link>
                             </td>
                             </tr>  ))
@@ -425,14 +513,14 @@ const handleInputChange = (e) => {
             {/* pending orders  */}
                   <div className="tab-pane fade pt-4" id="pending-orders-tab-pane" role="tabpanel" aria-labelledby="pending-orders-tab" tabindex="0">      
                         <table>
-                            <tr>
-                            <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('name')}> Item Bought <i className="bi-arrow-down-up"></i></button></th>
-                          <th> <button onClick={() => handleSort('name')}>Satus <i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('price')}> Amount<i className="bi-arrow-down-up"></i></button> </th>  
-                          <th>Actions </th>
-                            </tr>
+                        <tr>
+                     <th> <button onClick={() => handleSort('name')}> Order No <i className="bi-arrow-down-up"></i></button></th>
+                     <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
+                    <th> <button onClick={() => handleSort('name')}>Status <i className="bi-arrow-down-up"></i></button>  </th>
+                    <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
+                   {/* ddice')}> Amount<i className="bi-arrow-down-up"></i></button> </th>   */}
+                    <th>Actions </th>
+                    </tr>
                         {filteredAllordersadmin.length === 0 && showResults && (
                         <tr>
                           <td colSpan="9" className="text-center">No results found</td>
@@ -440,16 +528,16 @@ const handleInputChange = (e) => {
                       ) }{filteredAllordersadmin
                     .filter(order => order.status === 'Pending')
                     .map((ordersadmin) => (
-                    <tr>
-                            <td><img src={ordersadmin.userimage} className='rounded me-2' height="30px" width="30px" alt="" />{ordersadmin.name}</td>
-                            <td>{ordersadmin.itembought} </td>
-                            <td><span className='rounded-pill pending'>{ordersadmin.status}</span> </td>
-                            <td>{formatFirebaseTimestamp(ordersadmin.date)}</td>
-                            <td> {ordersadmin.price} </td>
-                            <td>
-                                <Link to={`/admin/adminorderdetails/${ordersadmin.id}`}> View Info</Link>
-                            </td>
-                            </tr> ))
+                      <tr key={ordersadmin.id}>
+                      <td>{ordersadmin.deliveryName}</td>
+                      <td>{ordersadmin.orderNumber} </td>
+                      <td><span className='rounded-pill pending'>{ordersadmin.orderStatus}</span> </td>
+                      <td>{formatFirebaseTimestamp(ordersadmin.orderDate)}</td>
+                      {/* <td> {ordersadmin.price} </td> */}
+                      <td>
+                          <Link to={`/admin/${ordersadmin.customerId}/orderdetails/${ordersadmin.id}`}> View Info</Link>
+                      </td>
+                      </tr> ))
                     }
                         </table>
                         </div>
@@ -463,33 +551,29 @@ const handleInputChange = (e) => {
 
                        <div className="tab-pane fade pt-4" id="orders-history-tab-pane" role="tabpanel" aria-labelledby="orders-history-tab" tabindex="0">      
                         <table>
-                            <tr>
-                            <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('name')}> Item Bought <i className="bi-arrow-down-up"></i></button></th>
-                          <th> <button onClick={() => handleSort('name')}>Satus <i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
-                          <th> <button onClick={() => handleSort('price')}> Amount<i className="bi-arrow-down-up"></i></button> </th>  
-                          <th>Actions </th>
-                            </tr>
+                        <tr>
+                        <th> <button onClick={() => handleSort('name')}> Order No <i className="bi-arrow-down-up"></i></button></th>
+                 <th> <button onClick={() => handleSort('name')}> Reciever <i className="bi-arrow-down-up"></i></button>  </th>
+              <th> <button onClick={() => handleSort('name')}>Status <i className="bi-arrow-down-up"></i></button>  </th>
+                    <th> <button onClick={() => handleSort('date')}> Date<i className="bi-arrow-down-up"></i></button>  </th>
+                   {/* ddice')}> Amount<i className="bi-arrow-down-up"></i></button> </th>   */}
+                    <th>Actions </th>
+                    </tr>
                                    {filteredAllordersadmin.length === 0 && showResults && (
             <tr>
               <td colSpan="9" className="text-center">No results found</td>
             </tr>
           ) } {filteredAllordersadmin.map((ordersadmin) => (
-                       <tr>
-                            <td><img src={ordersadmin.userimage} className='rounded me-2' height="30px" width="30px" alt="" />{ordersadmin.name}</td>
-                            <td>{ordersadmin.itembought} </td>
-                            <td> {ordersadmin.status === 'Pending' ? (
-                                <span className='rounded-pill pending'>{ordersadmin.status}</span>
-                              ) : (
-                                <span className='rounded-pill success'>{ordersadmin.status}</span>
-                              )}</td>
-                            <td>{formatFirebaseTimestamp(ordersadmin.date)}</td>
-                            <td> {ordersadmin.price} </td>
-                            <td>
-                                <Link to={`/admin/adminorderdetails/${ordersadmin.id}`}> View Info</Link>
-                            </td>
-                            </tr> ))
+            <tr key={ordersadmin.id}>
+            <td>{ordersadmin.deliveryName}</td>
+            <td>{ordersadmin.orderNumber} </td>
+            <td><span className='rounded-pill pending'>{ordersadmin.orderStatus}</span> </td>
+            <td>{formatFirebaseTimestamp(ordersadmin.orderDate)}</td>
+            {/* <td> {ordersadmin.price} </td> */}
+            <td>
+                <Link to={`/admin/${ordersadmin.customerId}/orderdetails/${ordersadmin.id}`}> View Info</Link>
+            </td>
+            </tr>))
                     }
                         </table>
                         </div>

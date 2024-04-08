@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { sendPasswordResetEmail, updateEmail, deleteUser } from 'firebase/auth';
-import './settings.css';
+import  { useState, useEffect } from 'react';
+import { sendPasswordResetEmail, updateEmail, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../backend/config/fire';
 import {collection, doc, getDoc, setDoc,addDoc, getDocs, updateDoc } from 'firebase/firestore';
 import {getStorage, ref, listAll, getDownloadURL, uploadBytes } from 'firebase/storage';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 
@@ -12,63 +12,27 @@ import { Link } from 'react-router-dom';
  
 
 const Settings = () => {
+
+
+  const history = useNavigate();
   const [user, setUser] = useState(null);
   const [newEmail, setNewEmail] = useState('');
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState(null);
-  const [profileImages, setProfileImages] = useState([]);
   const storage = getStorage();
+  const [savechangesLoading, setSavechangesLoading] = useState(false);
   const storageRef = ref(storage, 'users');
-  const [selectedImage, setSelectedImage] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState('');
+  const [resetemailloading, setResetemailLoading] = useState(false);
+  const [resetpasswordloading, setResetpasswordLoading] = useState(false);
+  // const [businessName, setBusinessName] = useState('');
+  // const [businessPhoneNumber, setBusinessPhoneNumber] = useState('');
+  // const [businessWhatsappNumber, setBusinessWhatsappNumber] = useState('');
+  // const [businessEmail, setBusinessEmail] = useState('');
+  // const [businessAddress, setBusinessAddress] = useState('');
+  // const [facebookLink, setFacebookLink] = useState('');
+  // const [instagramLink, setInstagramLink] = useState('');
+  // const [youtubeLink, setYoutubeLink] = useState('');
 
-
-  const handleAddCategory = async () => {
-    if (newCategory.trim() !== '') {
-      const categoryDocRef = doc(db, 'paintingcategories', 'productcategorydoc');
-      const categoryDocSnap = await getDoc(categoryDocRef);
-
-      if (categoryDocSnap.exists()) {
-        const existingData = categoryDocSnap.data();
-        const updatedCategories = [...existingData.categories, newCategory.trim()];
-        await updateDoc(categoryDocRef, { categories: updatedCategories });
-      } else {
-        // If the document doesn't exist, create it
-        const initialData = { categories: [newCategory.trim()] };
-        await setDoc(categoryDocRef, initialData);
-      }
-    }
-  };
-
-
-  const getCategoryData = async () => {
-    try {
-      const categoryDocRef = doc(db, 'paintingcategories', 'productcategorydoc');
-      const categoryDocSnap = await getDoc(categoryDocRef);
-  
-      if (categoryDocSnap.exists()) {
-        const categoryData = categoryDocSnap.data();
-        const categories = categoryData.categories;
-        return categories;
-      } else {
-        console.log('Document does not exist');
-        return [];
-      }
-    } catch (error) {
-      console.error('Error fetching category data:', error);
-      return [];
-    }
-  };
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const categoryData = await getCategoryData();
-      setCategories(categoryData);
-    };
-
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -79,7 +43,7 @@ const Settings = () => {
 
   useEffect(() => {
     if (user) {
-      const userRef = doc(db, 'adminusers', user.uid);
+      const userRef = doc(db, 'admins', user.uid);
 
       getDoc(userRef)
         .then((docSnapshot) => {
@@ -92,7 +56,7 @@ const Settings = () => {
         })
         .catch((error) => {
           console.error('Error fetching user data:', error.message);
-          setError('An error occurred while deleting your account. Please try again later.');
+          toast.error('An error occurred while deleting your account. Please try again later.');
         });
     }
   }, [user]);
@@ -100,100 +64,87 @@ const Settings = () => {
   const handleChangeEmail = async () => {
     try {
       await updateEmail(user, newEmail);
-      const userRef = doc(db, 'adminusers', user.uid);
+      const userRef = doc(db, 'admins', user.uid);
       await updateDoc(userRef, { email: newEmail });
       setUserData({ ...userData, email: newEmail });
       setIsEditing(false);
-      alert('Email address updated successfully.');
+      toast.success('Email address updated successfully.');
     } catch (error) {
       console.error('Error updating email address:', error.message);
-      alert('An error occurred while updating the email address. Please try again later.');
+      toast.error('An error occurred while updating the email address. Please try again later.');
     }
   };
 
   const handleSaveChanges = async () => {
     try {
-      const userRef = doc(db, 'adminusers', user.uid);
+      setSavechangesLoading(true);
+      const userRef = doc(db, 'admins', user.uid);
       await updateDoc(userRef, userData);
       setIsEditing(false);
-      alert('Changes saved successfully.');
+      toast.success('Changes saved successfully.');
     } catch (error) {
-      console.error('Error saving changes:', error.message);
-      alert('An error occurred while saving changes. Please try again later.');
-      setError('An error occurred while deleting your account. Please try again later.');
-    }
+      console.error('Error saving changes:', error.message);    
+      setTimeout(() => {
+         toast.error('An error occurred while saving changes. Please try again later.');
+     }, 3000); 
+    }finally {
+      setSavechangesLoading(false);
+    }  
   };
 
   const handleResetPassword = async () => {
     try {
       await sendPasswordResetEmail(auth, user.email);
-      alert('Password reset email sent. Please check your Email.');
+      toast.success('Password reset email sent. Please check your Email.');
     } catch (error) {
       console.log('Error sending password reset email:', error.message);
-      alert('An error occurred while sending the password reset email. Please try again later.');
+      toast.error('An error occurred while sending the password reset email. Please try again later.');
     }
   };
 
+
+
+  
+  const [password, setPassword] = useState('');
 
   const handleDeleteAccount = async () => {
-    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      try {
-        await deleteUser(user);
-        alert('Your account has been deleted successfully.');
-      } catch (error) {
-        console.log('Error deleting account:', error.message);
-        setError('An error occurred while deleting your account. Please try again later.');
+    try {
+      const user = auth.currentUser;
+
+      if (!user) {
+        console.error('User not logged in.');
+        return;
       }
+
+      // Reauthenticate the user with their current password
+      const credential = EmailAuthProvider.credential(user.email, password);
+      await reauthenticateWithCredential(user, credential);
+
+      // If reauthentication is successful, proceed with account deletion
+      await deleteUser(user);
+
+      // Delete the corresponding document in the "admins" collection
+      const adminDocRef = doc(db, 'admins', user.uid);
+      await deleteDoc(adminDocRef);
+
+      console.log('Account deleted successfully!');
+      toast.success('Account deleted successfully!');
+      // You may want to redirect the user to a different page or show a success message
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      toast.error('Incorrect password. Please try again.');
     }
   };
-
 
 
  
 
-
-const handleUpdateImageSelection = async (imageUrl) => {
-  try {
-    const userRef = doc(db, 'adminusers', user.uid);
-
-    // Upload the image to Firebase Storage
-    const storage = getStorage();
-    const storageRef = ref(storage, `users/${user.uid}/profile.jpg`);
-    await uploadBytes(storageRef, await (await fetch(imageUrl)).blob());
-
-    // Get the download URL of the uploaded image
-    const downloadURL = await getDownloadURL(storageRef);
-
-    // Update the user document in Firestore with the new image URL
-    await updateDoc(userRef, { img: downloadURL });
-
-    // Update the local state
-    setUserData({ ...userData, img: downloadURL });
-    setIsEditing(false);
-  } catch (error) {
-    console.error('Error updating profile image:', error.message);
-  }
-};
-
-
   
 
-
-
-  const handleImageSelection = (imageUrl) => {
-    setSelectedImage(imageUrl);
-  };
-  
-
-
-
-
-
-
-
+ 
+ 
 
         // Admin Settings config 
-
 
 
          
@@ -208,7 +159,7 @@ const handleUpdateImageSelection = async (imageUrl) => {
   
       useEffect(() => {
           const fetchadminuserlist = async () => {
-            const adminuserlistCollection = collection(db, 'adminusers');
+            const adminuserlistCollection = collection(db, 'admins');
             const snapshot = await getDocs(adminuserlistCollection);
             const adminuserlistData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setAdminuserlist(adminuserlistData);
@@ -218,36 +169,6 @@ const handleUpdateImageSelection = async (imageUrl) => {
         }, []);
 
         
-  
-      
-  const updateOrderStatus = async (orderId, newStatus) => {
-      try {
-        const orderRef = doc(db, 'adminusers', orderId);
-        await updateDoc(orderRef, {
-          status: newStatus,
-        });
-      } catch (error) {
-        console.error('Error updating order status:', error);
-      }
-    };
-    
-  
-  const handleApproveOrder = async (orderId) => {
-      try {
-        await updateOrderStatus(orderId, 'Delivered');
-        // Update the state with the new data after the status change
-        setAdminuserlist(prevOrders => 
-          prevOrders.map(order => 
-            order.id === orderId ? {...order, status: 'Delivered'} : order
-          )
-        );
-      } catch (error) {
-        console.error('Error approving order:', error);
-      }
-    };
-    
-
-
 
 useEffect(() => {
   const filtered = adminuserlist.filter(userlist => {
@@ -347,39 +268,81 @@ const [filterOptions, setFilterOptions] = useState({
  
 
 
-useEffect(() => {
-  // Sorting logic based on sortOrder
-  const sortedAdminuserlist = [...adminuserlist].sort((a, b) => {
-    if (sortOrder.name) {
-      return sortOrder.name === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
-    }
-    if (sortOrder.date) {
-      return sortOrder.date === 'asc' ? Date.parse(a.date) - Date.parse(b.date) : Date.parse(b.date) - Date.parse(a.date);
-    }      
-    return 0; // No sorting applied
-  });
+      useEffect(() => {
+        // Sorting logic based on sortOrder
+        const sortedAdminuserlist = [...adminuserlist].sort((a, b) => {
+          if (sortOrder.name) {
+            return sortOrder.name === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+          }
+          if (sortOrder.date) {
+            return sortOrder.date === 'asc' ? Date.parse(a.date) - Date.parse(b.date) : Date.parse(b.date) - Date.parse(a.date);
+          }      
+          return 0; // No sorting applied
+        });
 
-  setFilteredAdminuserlist(sortedAdminuserlist);
-}, [adminuserlist, sortOrder]);
-
+        setFilteredAdminuserlist(sortedAdminuserlist);
+      }, [adminuserlist, sortOrder]);
  
-
-
     // end of table sorting config 
-
-
-
-
-        // end of admin settings config 
-
-
-
+ 
+ 
+ 
+ 
+    const [businessInfo, setBusinessInfo] = useState({
+        businessName: '',
+        businessPhoneNumber: '',
+        businessWhatsappNumber: '',
+        businessEmail: '',
+        businessAddress: '',
+        facebookLink: '',
+        instagramLink: '',
+        youtubeLink: '',
+        xLink: '',
+        privacyPolicy: '',
+        termsOfService: '',
+      });
+    
+      useEffect(() => {
+        const fetchBusinessInfo = async () => {
+          try {
+            const businessInfoCollectionRef = collection(db, 'businessInfo');
+            const querySnapshot = await getDocs(businessInfoCollectionRef);
+    
+            // Assuming you want to get the first document
+            const firstDocument = querySnapshot.docs[0];
+    
+            if (firstDocument) {
+              setBusinessInfo(firstDocument.data());
+            }
+          } catch (error) {
+            console.error('Error fetching business information:', error);
+          }
+        };
+    
+        fetchBusinessInfo();
+      }, []);
+    
+      const updateBusinessInfo = async () => {
+        try {
+          // Use a specific document reference to update the existing document
+          const businessInfoDocRef = doc(db, 'businessInfo', 'businessInfo');
+          await setDoc(businessInfoDocRef, businessInfo);
+    
+          console.log('Business information updated successfully!');
+          toast.success('Business information updated successfully!');
+        } catch (error) {
+          console.error('Error updating business information:', error);
+          toast.error('Error updating business information');
+        }
+      };
+    
 
   return (
+
         <div> 
              
      
-        <div className="admin-dashboard-profile">
+        <div className="admin-dashboard-profile bg-transparent">
 
            
      
@@ -398,204 +361,338 @@ useEffect(() => {
 
 
 
-    <div className="tab-content pt-5" id="myTabContent">
-
-
+    <div className="tab-content  bg-transparent pt-5" id="myTabContent">
 
           {/* general setting tab container  */}
-      <div className="tab-pane fade show active" id="general-settings-pane" role="tabpanel" aria-labelledby="general-settings" tabindex="0">
-
-
-
-   
-      <div className="general-settings-tab-input-group d-block">
-      <h5>Dark Mode</h5>
-      <br />
-    
-    </div>
-
-
-
-
-      <div className="general-settings-tab-input-group d-block">
-      <h5>Add New Categories</h5>
-      <br />
-      <input
-        className='input'
-        type="text"
-        value={newCategory}
-        onChange={(e) => setNewCategory(e.target.value)}
-      />
-      <button className='btn ms-4' onClick={handleAddCategory}>Add Category</button>
-       <ul>
-        {categories.map((category, index) => (
-          <li key={index}>
-            <Link to={`/admin/paintingcategory/${category}`}>{category}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-
-
+      <div className="tab-pane fade show active" id="general-settings-pane" role="tabpanel" aria-labelledby="general-settings" tabIndex="0">
+      <div className="col-xl-12 bg-transparent col-lg-12 col-md-12 col-sm-12 col-12">
+            <div className="card bg-transparent">
+              <h5 className="card-header">General Settings</h5>
       
-        
-              </div>
+              <div className="general-settings-tab-input-group text-light d-block">
+             
+              <h5 className="text-light fw-bold pt-3">Business Name</h5>
+        <br />
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.businessName}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, businessName: e.target.value })}
+            />
+        </div></div>
 
+
+      <div className="general-settings-tab-input-group text-light d-block">
+        <h5 className="text-light fw-bold pt-3">Business Phone Number</h5>
+        <br />
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.businessPhoneNumber}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, businessPhoneNumber: e.target.value })}
+            />
+        </div>
+      </div>
+
+      <div className="general-settings-tab-input-group text-light d-block">
+        <h5 className="text-light fw-bold pt-3">Business Whatsapp Number</h5>
+        <br />
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.businessWhatsappNumber}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, businessWhatsappNumber: e.target.value })}
+            />
+        </div></div>
+
+
+        <div className="general-settings-tab-input-group text-light d-block">
+        <h5 className="text-light fw-bold pt-3">Business Email</h5>
+        <br />
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.businessEmail}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, businessEmail: e.target.value })}
+            />
+        </div>
+      </div>
+
+      <div className="general-settings-tab-input-group text-light d-block">
+        <h5 className="text-light fw-bold pt-3">Business Address</h5>
+        <br />
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.businessAddress}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, businessAddress: e.target.value })}
+            />
+      
+        </div>
+      </div>
+
+      <div className="general-settings-tab-input-group text-light d-block">
+        <h5 className="text-light fw-bold pt-3">Social Media links</h5>
+        <br />
+        <label className='mt-2' htmlFor="">Facebook</label>
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.facebookLink}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, facebookLink: e.target.value })}
+            />  
+      </div>
+
+        <label className='mt-2' htmlFor="">Instagram</label>
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.instagramLink}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, instagramLink: e.target.value })}
+            />
+        </div>
+
+        <label className='mt-2' htmlFor="">X</label>
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.xLink}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, xLink: e.target.value })}
+            />
+        </div>
+  
+  
+  
+        <label className='mt-2' htmlFor="">Youtube</label>
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.youtubeLink}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, xLink: e.target.value })}
+            />
+       
+      </div>
+
+      <div className="general-settings-tab-input-group text-light d-block">
+        <label className='mt-2' htmlFor="">Privacy Policy</label>
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.privacyPolicy}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, xLink: e.target.value })}
+            />
+        </div>
+  
+  
+        <label className='mt-2' htmlFor="">Terms of Service</label>
+        <div className='form-group d-flex'>
+          <input
+            className='form-control col-lg-4 col-md-8 text-light bg-transparent col-sm-10 input mb-2'
+            type="text"
+            value={businessInfo.termsOfService}
+           onChange={(e) => setBusinessInfo({ ...businessInfo, xLink: e.target.value })}
+            />
+        </div>
+        <button className='btn col-11 btn-primary ms-4 mt-5 justify-self-center' onClick={updateBusinessInfo}>Update</button>
+        </div>
+
+       
+    </div>
+    
+
+              </div>
+      </div>
+  </div>
 
 
 
 
           {/* profile tab container  */}
-          <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">    <div className="admin-dashboard-profile-container">
+          <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex="0">    <div className="admin-dashboard-profile-container">
+    <div className='card bg-transparent text-light pt-4 pb-5'>
+          {user && userData ? (
+                <>  
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div className="user-profile-container col-12">
       
-          
-                <h3>Profile Information</h3>
-
-                <h6> <i className="bi bi-exclamation-circle"></i> This account was created 11-09-2022</h6>
-                  {user && userData ? (
-        
-                <div className="dashboard-profile-pic-change">
-                  
-                  <h4>Profile Picture Change</h4>
-
-                  <img src={userData.img} alt={userData.name} /> 
-
-                  <button  
-                  type="button"
-                className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#changeprofileimagemodal">Change</button>
-              </div>) : ( <p>You are not logged in</p>)}
                 
+            <h3 className='card-header'>Profile Information</h3>    
 
-              {user && userData ? (
-                <> <div className="dashboard-profile-account-information">
+            <button type="button" className="text-end d-none btn btn-danger logout-button ms-auto"  data-bs-toggle="modal" data-bs-target="#exampleModal">Logout </button>
+                    
 
-              <h4>Profile Information</h4>
+            <div className="user-profile-account-information d-block">
+          
+                <h6> <i className="bi bi-exclamation-circle"></i> This account was created {userData.dateJoined}</h6>
 
-              <div className="dashboard-profile-account-information-input-group">
+          <div className="user-profile-account-information-input-group">
+            <div className="profile-input-each"> 
+              
+                  <label htmlFor="Ful Name"> Full Name</label><br/>
+                
             <input
               type="text"
+              className='col-sm-12 input'
               name="FullName"
               value={userData?.name || ''}
-          className='input'
-          placeholder='Full Name'
-          id="FullName"
-          disabled={!isEditing}
-          onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-        />
-        <input
-          type="email"
-          name="email"
-          value={userData.email}
-          className='input'
-          placeholder='Email Address'
-          id="email"
-          disabled
-        />
-      </div>
+              placeholder='Full Name'
+              id="FullName"
+              disabled={!isEditing}
+              onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+            /></div>
 
 
-        <div className="dashboard-profile-account-information-input-group">
+          <div className="profile-input-each"> 
+          <label htmlFor="userName"> Username</label><br/> 
+                <input
+                  autoComplete='on'
+                    required
+                    className='col-sm-12'
+                    type="text"
+                    name="userName"
+                    id="userName"
+                    value={userData?.userName || ''}
+                    onChange={(e) => setUserData({ ...userData, userName: e.target.value })}
+              disabled={!isEditing}
+                  
+                  />    </div>
+              </div>
 
-        <input
-          type="text"
-          name="phonenumber"
-          value={userData?.phonenumber || ''}
-          className='input'
-          placeholder='Phone Number'
-          id="phonenumber"
-          disabled={!isEditing}
-          onChange={(e) => setUserData({ ...userData, phonenumber: e.target.value })}
-        />
-        <input
-          type="date"
-          name="dateofbirth"
-          value={userData?.dateofbirth || ''}
-          className='input'
-          id="dateofbirth"
-          disabled={!isEditing}
-          onChange={(e) => setUserData({ ...userData, dateofbirth: e.target.value })}
-        />
-         
+              <div className="user-profile-account-information-input-group">
+          
+          <div className="profile-input-each">
+              <label htmlFor="">Phone Number</label><br/> 
+
+              <div className="profile-phonenumberinput">
+            {/* <PhoneInput
+              international
+              countryCallingCodeEditable={true}
+              defaultCountry="NG"
+              className='col-sm-12'
+              value={userData?.phoneNumber || ''}
+              name="Phone_Number"
+              onChange={(value) => setUserData({ ...userData, phoneNumber: value })}
+              readOnly={!isEditing}   
+              />  */}
+          </div></div>
+
+
+          <div className="profile-input-each"> 
+          <label htmlFor="Whatsapp_Number">Whatsapp Number</label><br/>
+          <div className="profile-phonenumberinput">
+          
+                {/* <PhoneInput
+                international
+              className='col-sm-12'
+                countryCallingCodeEditable={true}
+              defaultCountry="NG"
+              value={userData?.whatsappNumber || ''}
+              name="Whatsapp_Number"
+              onChange={(value) => setUserData({ ...userData, whatsappNumber: value })}
+              readOnly={!isEditing}
+                />  */}
+                </div>
+        </div>
+            </div>
+        
+      
+
+          <div className="user-profile-account-information-input-group">
+            {isEditing && (
+          <div className="user-profile-account-information-input-group">
+            <button onClick={handleSaveChanges} disabled={savechangesLoading}>
+                  {savechangesLoading && (
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            )}Save Changes
+                  </button>
+                </div>
+              )}
+
+              <div className="ms-3 user-profile-account-information-input-group">
+              <button onClick={() => setIsEditing(!isEditing)}>
+              {isEditing ? 'Cancel Editing' : 'Edit Details'}
+            </button></div>
           </div>
 
 
-          
-          <div className="dashboard-profile-account-information-input-group">
-          {isEditing && (
-        <div className="dashboard-profile-account-information-input-group">
-          <button onClick={handleSaveChanges}>Save Changes</button>
-        </div>
-      )}
-
-      <div className="ms-3 dashboard-profile-account-information-input-group">
-      <button onClick={() => setIsEditing(!isEditing)}>
-        {isEditing ? 'Cancel Editing' : 'Edit Details'}
-      </button></div>
-      </div>
-
-          </div>  </> ) : (
-            <p>You are not logged in</p>
-          )}
 
 
-        <div className="dashboard-profile-account-security">
+          <div className="user-profile-account-security">
         
         <h4>Account Security</h4>
 
-        <div className="dashboard-profile-account-security-inner d-block">
-          {user ? (
-            <>
-             <div>
-               <form> <input
+        <div className="user-profile-account-security-inner d-block">
+             <div className='d-flex'>
+        
+           <input
                   type="email"
                   value={newEmail}
-                  className='input'
                   required
+                  className='form-control col-3'
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder="Enter new email"
+                  disabled={resetemailloading}
                 />
-                <button type="button" className='dashboard-change-email-adress pt-3 pb-3 ms-2' onClick={handleChangeEmail}>
-                  Change Email Address
+                <button type="button" className='btn-sm ms-2' onClick={handleChangeEmail}>
+                    {resetemailloading && (
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            )}
+            Send Verification Email
                 </button>
-                {error && <div>{error}</div>}
-              </form></div>
+          </div>
+
         <div className="d-flex mt-5">
               
-               <button type="button" className='bg-success' onClick={handleResetPassword}>
-                Reset Password
-              </button>
+        <button
+        type="button"
+        className="btn btn-primary"
+        onClick={handleResetPassword}
+        disabled={resetpasswordloading}
+      >
+        {resetpasswordloading && (
+          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        )}
+        Reset Password
+      </button>
               
-              <button type="button" className='bg-danger ms-auto' data-bs-toggle="modal" data-bs-target="#delete-account-modal">
+              <button type="button" className='ms-auto' style={{backgroundColor:"red"}} data-bs-toggle="modal" data-bs-target="#delete-account-modal">
                 Delete Account
               </button> 
               </div>
+            </div> 
+            </div>
+              </div>
+                </div>
+                </div>
+                </>) : (<div> </div>)}
+                </div>
+                </div>
+                </div>
 
 
-
-
-            </>
-          ) : (
-            <p>You are not logged in</p>
-          )}
-        </div>
-              
-        </div>
-        </div>
-    
-         </div>
-
-
-
-       <div className="tab-pane fade" id="admin-settings-pane" role="tabpanel" aria-labelledby="admin-settings" tabindex="0">
+       <div className="tab-pane fade" id="admin-settings-pane" role="tabpanel" aria-labelledby="admin-settings" tabIndex="0">
         
-                <div className="dashboard-customers-container">
+       <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div className="card bg-transparent text-light p-3">
+              <h2 className="card-header">Admin Settings</h2>
+        
+      
+                <div className="dashboard-customers-container mt-4">
            
           <div className="dashboard-customers" style={{backgroundColor:"transparent"}}>
 
-          <div className="dashboard-customers-header d-flex mb-5">
-          <h3>Admin List</h3>
+          <div className="dashboard-customers-header d-flex text-light mb-5">
+          <h5 className="text-light fw-bold pt-3">Admin List</h5>
 
           <div style={{
           marginLeft:'auto',
@@ -610,10 +707,10 @@ useEffect(() => {
             style={{
                 padding: '8px 10px', 
                 borderRadius: '8px',
-                border: '2px solid aliceblue',
+                border: '2px solid black',
                 backgroundColor: 'transparent',
-                width: '200px',
-                color:'aliceblue',
+                width: '300px',
+                color:'black',
                 boxSizing: 'border-box',
                 outline: 'none'
             }}
@@ -654,7 +751,8 @@ useEffect(() => {
           </div>
           </div>
 
-
+                </div>
+                </div>
 
 
 
@@ -664,88 +762,38 @@ useEffect(() => {
        </div>
        
              
-        
-
-
-
-                    {/* Delete Account modal  */}
+            {/* Delete Account modal  */}
                       
-
-                    <div className="modal fade delete-account-modal" id="delete-account-modal" tabindex="-1" aria-labelledby="delete-account-modalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5" id="delete-account-modalLabel">Are You Sure You Want to Delete Account ?</h1>
-                      <button type="button" className="btn-close" data-bs-dismiss="delete-account-modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body">
-                        <p> Input your password to delete you Account </p>
-                        <input type="text" name="textpwd" id="textpwd" />
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn-light" data-bs-dismiss="delete-account-modal">Close</button>
-                      <button  type="button" className="bg-danger"  onClick={handleDeleteAccount}>Delete</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                                      
+            <div className="modal fade delete-account-modal" id="delete-account-modal" tabIndex="-1" aria-labelledby="delete-account-modalLabel" aria-hidden="true">
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id="delete-account-modalLabel">Are You Sure You Want to Delete Account?</h1>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            <p>Input your password to delete your account</p>
+            <input
+              type="password" // Use password type for sensitive input
+              name="textpwd"
+              id="textpwd"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn-light" data-bs-dismiss="modal">Close</button>
+            <button type="button" className="bg-danger" data-bs-dismiss="modal" onClick={handleDeleteAccount}>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div> 
                 
                     {/* end of Delete Account modal */}
     
 
+ 
 
-
-                {/* change profile image modal  */}
-  
-            
-
-      {/* <!-- Modal --> */}
-      <div className="modal fade" id="changeprofileimagemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changeprofileimagemodalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-lg">
-          <div className="modal-content profile-image-modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="changeprofileimagemodalLabel">Select Profile Image</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-                <div className="modal-body">
-                <div className='profile-image-modal-selected-image'> <img src={selectedImage} alt=""/>
-              <h5>Current Image</h5> </div>
-      
-                 <h1 className="modal-title mt-5 fs-5" id="changeprofileimagemodalLabel">Select Profile Image</h1>
-                <div className="profile-images-modal">
-                <button onClick={() => handleImageSelection("/images/avatar/acistbear.png")}> <img src="/images/avatar/acistbear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/bear on red dress.png")}> <img src="/images/avatar/bear on red dress.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/cheeatah bear.png")}> <img src="/images/avatar/cheeatah bear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/coolking bear.png")}> <img src="/images/avatar/coolking bear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/dragonbear.png")}> <img src="/images/avatar/dragonbear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/eerbear.png")}> <img src="/images/avatar/eerbear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/explorerbear.png")}> <img src="/images/avatar/explorerbear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/garfeild bear.png")}> <img src="/images/avatar/garfeild bear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/gaybear.png")}> <img src="/images/avatar/gaybear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/jewel bear.png")}> <img src="/images/avatar/jewel bear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/koalabear.png")}> <img src="/images/avatar/koalabear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avataroriginal-3e9d42fc813402fcccb4f37a547f5fc8.png/")}> <img src="/images/avatar/original-3e9d42fc813402fcccb4f37a547f5fc8.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/original-6b26043042bdaa3281a54ffba25525d3.png")}> <img src="/images/avatar/original-6b26043042bdaa3281a54ffba25525d3.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/original-ad501e6b4a103b0ab335611317724356.png")}> <img src="/images/avatar/original-ad501e6b4a103b0ab335611317724356.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/pervbear.png")}> <img src="/images/avatar/pervbear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/purg bear.png")}> <img src="/images/avatar/purg bear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/purgbear2.png")}> <img src="/images/avatar/purgbear2.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/samuraibear.png")}> <img src="/images/avatar/samuraibear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/sandwich.png")}> <img src="/images/avatar/sandwich.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/tattoo bear.png")}> <img src="/images/avatar/tattoo bear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/tiger.png")}> <img src="/images/avatar/tiger.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/wig bear.png")}> <img src="/images/avatar/wig bear.png" alt=""/> </button>
-                <button onClick={() => handleImageSelection("/images/avatar/sherrif bear.png")}> <img src="/images/avatar/sherrif bear.png" alt=""/> </button>
-              </div>
-            </div>
-              <div className="modal-footer">
-              <button type="button" className="btn btn-secondary me-3" data-bs-dismiss="modal">Close</button>
-              <button  onClick={() =>  handleUpdateImageSelection(selectedImage)} className="btn">Update</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div>
 </div>

@@ -235,7 +235,7 @@ const handleStatusChange = (statusType) => {
 
 
 
-          <div className="product-dashboard-charts">
+          {/* <div className="product-dashboard-charts">
              
           <div className="product-total-revenue-charts">
               <TotalRevenuesAreaChart />
@@ -245,7 +245,7 @@ const handleStatusChange = (statusType) => {
             <TrafficImpressionChart/>
           </div>
 
-          </div>
+          </div> */}
           
 
 
@@ -275,62 +275,19 @@ const handleStatusChange = (statusType) => {
         <div className="tab-pane fade show active" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab" tabIndex="0">
 
           <div className="dashboard-arts">
+          {/* <div className="dashboard-top-art-info d-flex ">
 
-          <div className="dashboard-art-header d-flex mb-5">
-          <Link to="#" type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal">
-          <h3>Filter <i className="bi bi-funnel"></i></h3></Link>
+          <div>  <h3>Arts</h3>
+          <p>Explore Your Products Easily Manage Your arts, and keep your store Offerings Fresh and attractive </p>
+              </div> 
 
-          <div style={{
-          marginLeft:'auto',
-          position: 'relative',
-          display: 'inline-block'
-          }}>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={handleInputChange}
-            style={{
-                padding: '8px 10px', 
-                borderRadius: '8px',
-                border: '2px solid aliceblue',
-                backgroundColor: 'transparent',
-                width: '200px',
-                color:'aliceblue',
-                boxSizing: 'border-box',
-                outline: 'none'
-            }}
-          />
-          <div style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16" >
-                <path fillRule="evenodd"d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.027.045.055.088.086.13l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.087-.13zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-            </svg>
+              <div className="d-flex ms-auto me-2">
+
+                <Link className='dashboard-arts-button' to="/admin/addPainting"> Add New Painting <i className="bi bi-brush-fill text-dark"></i></Link>
+
+              </div>
           </div>
-          </div>
-
-
-          <select 
-          onChange={handleChangeMonth} 
-          style={{
-          marginLeft: "40px",
-          paddingLeft:"10px",
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }}
-          >         
-          <option defaultValue >Month</option>
-          {monthsToShow.map((month, index) => (
-          <option   style={{
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }} key={index} value={index}>{month}</option>
-          ))}
-          </select>
-
-          </div>
-
+               */}
           <table>
 
           <thead>
@@ -372,7 +329,7 @@ const handleStatusChange = (statusType) => {
     </td>
     <td>$20,900</td>
     <td>
-    <td><Link to={`/admin/adminpaintingpreview/${painting.id}`}>  View</Link> </td>
+    <td><Link to={`/admin/previewpainting/${painting.id}`}>  View</Link> </td>
     </td>
   </tr>
 ))}
@@ -425,27 +382,7 @@ const handleStatusChange = (statusType) => {
           </div>
           </div>
 
-
-          <select 
-          onChange={handleChangeMonth} 
-          style={{
-          marginLeft: "40px",
-          paddingLeft:"10px",
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }}
-          >         
-          <option defaultValue >Month</option>
-          {monthsToShow.map((month, index) => (
-          <option   style={{
-          backgroundColor: "transparent",
-          color: "aliceblue",
-          borderRadius: "6px"
-          }} key={index} value={index}>{month}</option>
-          ))}
-          </select>
-
+ 
           </div>
 
     <div className="painting-grid">
@@ -458,7 +395,7 @@ const handleStatusChange = (statusType) => {
               <div className="painting-container" key={painting.id} style={{backgroundImage: `url(${painting.img[0]})`}}>
             <div className="admin-painting-preview rounded" >
             <Link className='edit-button' to={`/admin/editpaintings/${painting.id}`}>  Edit<i className="bi ms-2 bi-pencil-fill"></i></Link>
-                {/* <Link to={`/Adminpaintingpreview/${painting.id}`}> */}
+                {/* <Link to={`/previewpainting/${painting.id}`}> */}
                 <img src={painting.img} alt=""/>
                 {/* <img src={painting.imageUrl} alt={painting.title} /> */}
               <div className="admin-preview-details">

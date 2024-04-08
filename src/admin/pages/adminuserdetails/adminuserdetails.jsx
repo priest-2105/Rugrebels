@@ -1,9 +1,8 @@
-import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { db } from '../../../backend/config/fire';
 import { doc, getDoc } from 'firebase/firestore';  
-import axios from 'axios';
+// import axios from 'axios';
 
 
 
@@ -11,7 +10,7 @@ const AdminUserDetails = () => {
   const { id } = useParams();
 
   // Get the adminuserlist document reference
-  const adminuserlistRef = doc(db, 'adminusers', id);
+  const adminuserlistRef = doc(db, 'admins', id);
 
   // Use the react-firebase-hooks to fetch the adminuserlist document
   const [adminuserlistSnapshot, loading, error] = useDocument(adminuserlistRef);
@@ -44,7 +43,7 @@ const AdminUserDetails = () => {
 
   return (
     <div>
-     <Link style={{display:"flex", alignItems:"center"}} to="/admin/account/settings#admin-settings"> <i className="bi mb-2 fs-1 bi-caret-left-fill"></i><h3 style={{color:"aliceblue"}}> Admin Details</h3></Link> 
+     <Link style={{display:"flex", alignItems:"center"}} to="/admin/settings"> <i className="bi mb-2 fs-1 bi-caret-left-fill"></i><h3 style={{color:"aliceblue"}}> Admin Details</h3></Link> 
 
       {error && <div>{error.message}</div>}
 
@@ -81,15 +80,16 @@ const AdminUserDetails = () => {
 
             {adminuserlist && (
             <div className="tab-pane  admin-customer-more-details-tab fade show pt-4 active" id="more-customer-details" role="tabpanel" aria-labelledby="more-customer-details-tab" tabIndex="0">
-                 <span> <h6> Phone Number :</h6> <p> {adminuserlist.phonenumber} </p> </span>
-                 <span><h6>Address :</h6> <p>{adminuserlist.location}</p> </span>
-                 <span> <h6> Total Amount Spent : </h6><p>${adminuserlist.amountspent} </p> </span> 
+               {adminuserlist.phonenumber &&  <span> <h6> Phone Number :</h6> <p> {adminuserlist.phonenumber} </p> </span>}
+               {adminuserlist.loation &&  <span><h6>Address :</h6> <p>{adminuserlist.location}</p> </span>}
+               {adminuserlist.phonenumber &&   <span> <h6> Total Amount Spent : </h6><p>${adminuserlist.amountspent} </p> </span> }
              </div>)} 
 
 
             <div className="tab-pane fade" id="admin-customer-activity" role="tabpanel" aria-labelledby="admin-customer-activity-tab" tabIndex="0">
-                aciivity
+               User Activity
             </div>
+
 
 
         </div>

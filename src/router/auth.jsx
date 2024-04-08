@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes } from 'react-router-dom';
-import { Route } from 'react-router-dom';
-import Auth from '../backend/auth/auth/auth'
+import { Route , Navigate} from 'react-router-dom';
+// import Auth from '../backend/auth/auth//auth'
 import Forgotpassword from '../backend/auth/forgotpassword/forgotpassword'
-import Verify from '../backend/auth/verify/verify'
+// import Verify from '../backend/auth/verify/verify'
 import Profile from '../backend/profile/profile';
 
 
@@ -25,6 +25,7 @@ const Auth = () => {
 
             <Route exact path="/user/Profile" element={<Profile/>} />
 
+            <Route path="*" element={<Navigate to="/auth/login" />} />
 
             </Routes>
 

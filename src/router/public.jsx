@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes } from 'react-router-dom';
+import { Routes, Navigate } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import Navbar from '../frontend/layout/navbar/navbar';
 import Footer from '../frontend/layout/footer/footer';
@@ -11,20 +11,22 @@ import Paintingdetails from '../backend/component/paintingdetails/paintingdetail
 import Gallery from '../frontend/pages/galllery/gallery';
 
 
+
+
 const ProtectedRoute = ({ element, ...props }) => {
-    const { user, loading } = useAuth();
-  
-    if (loading) {
-      return null;
-    }
-  
-    return user ? (
-      element
-    ) : (
-      <Navigate to="/auth/login" replace />
-    );
-  };
-  
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    // Wait until the authentication state is resolved
+    return null;
+  }
+
+  return user ? (
+    element
+  ) : (
+    <Navigate to="/auth/login" replace />
+  );
+};
 
 const Public = () => {
 
@@ -55,6 +57,8 @@ const Public = () => {
             <Route path="/gallery" element={<Gallery/>} />
 
             {/* <Route path="/checkout" element={<Checkout/>} /> */}
+            <Route path="*" element={<Navigate to="/publicpath/home" />} />
+
 
 
             </Routes>

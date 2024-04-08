@@ -1,11 +1,15 @@
-import './App.css';
-import { BrowserRouter,  Route} from 'react-router-dom';
-import Auth from './backend/auth/auth/auth';
-import Dashboard from './router/dashboard';
-import Public from './router/public';
+import './App.css'; 
+import { BrowserRouter,  Navigate,  Route} from 'react-router-dom';
 import { Routes} from 'react-router-dom';
+import Public from './router/public'; 
+import Auth from './router/auth';
+import Dashboard from './router/dashboard';
+// import { useEffect } from 'react';
+// import wow from 'wowjs/dist/wow.js';  
+// import { useSpring, animated } from 'react-spring';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Dashboardauth from './router/dashboardauth';
-
 
  
 function App() { 
@@ -91,7 +95,20 @@ function App() {
 
     
       <div className="contents">
- 
+   
+
+<ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
 
       <Routes>
 
@@ -109,6 +126,8 @@ function App() {
 
       <Route exact path="/adminauth/*" element={<Dashboardauth/>}/>
 
+
+      <Route path="*" element={<Navigate to="/publicpath/home" />} />
 
     </Routes>
 

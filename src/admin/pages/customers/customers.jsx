@@ -1,15 +1,16 @@
 import './customers.css'
-import { Link } from 'react-router-dom';
-import React, { useEffect, useState } from 'react'; 
+import { Link, useNavigate } from 'react-router-dom';
+import  { useEffect, useState } from 'react'; 
 import { db } from '../../../backend/config/fire';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
+
 
 
 
 const Customers = () => {
  
  
- 
+  const navigate = useNavigate();
   const [ admincustomerlist, setAdmincustomerlist ] = useState([]);
   const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
   const months = [
@@ -35,11 +36,10 @@ const Customers = () => {
       const dateObject = timestamp.toDate();
       return dateObject.toLocaleDateString(); // Adjust format as needed
     }
-    
   
       useEffect(() => {
           const fetchadmincustomerlist = async () => {
-            const admincustomerlistCollection = collection(db, 'admincustomerlist');
+            const admincustomerlistCollection = collection(db, 'customers');
             const snapshot = await getDocs(admincustomerlistCollection);
             const admincustomerlistData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setAdmincustomerlist(admincustomerlistData);
@@ -52,14 +52,14 @@ const Customers = () => {
   
 
       //   for displaying timestamp 
-  function formatFirebaseTimestamp(timestamp) {
-      const dateObject = timestamp.toDate();
-      return dateObject.toLocaleDateString(); // Adjust format as needed
-  }
+  // function formatFirebaseTimestamp(timestamp) {
+  //     const dateObject = timestamp.toDate();
+  //     return dateObject.toLocaleDateString(); // Adjust format as needed
+  // }
       
   const updateOrderStatus = async (orderId, newStatus) => {
       try {
-        const orderRef = doc(db, 'admincustomerlist', orderId);
+        const orderRef = doc(db, 'customers', orderId);
         await updateDoc(orderRef, {
           status: newStatus,
         });
@@ -94,7 +94,7 @@ useEffect(() => {
      ( customerlist.email && customerlist.email.toLowerCase().includes(lowerCaseTerm)) ||
      ( customerlist.location && customerlist.location.toLowerCase().includes(lowerCaseTerm)) || 
      ( customerlist.amountspent && customerlist.amountspent.toLowerCase().includes(lowerCaseTerm)) || 
-     ( customerlist.phonenumber && customerlist.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+     ( customerlist.phonenumber && customerlist.phonenumber.toString.toLowerCase().includes(lowerCaseTerm)) || 
      ( customerlist.date && customerlist.date.toString().toLowerCase().includes(lowerCaseTerm)) 
 
       // Add more checks as needed
@@ -116,7 +116,7 @@ const filtered = admincustomerlist.filter(customerlist => {
    ( customerlist.email && customerlist.email.toLowerCase().includes(lowerCaseTerm)) ||
    ( customerlist.location && customerlist.location.toLowerCase().includes(lowerCaseTerm)) || 
    ( customerlist.amountspent && customerlist.amountspent.toLowerCase().includes(lowerCaseTerm)) || 
-   ( customerlist.phonenumber && customerlist.phonenumber.toLowerCase().includes(lowerCaseTerm)) || 
+   ( customerlist.phonenumber && customerlist.phonenumber.toString.toLowerCase().includes(lowerCaseTerm)) || 
    ( customerlist.date && customerlist.date.toString().toLowerCase().includes(lowerCaseTerm)) 
   );
 });
@@ -201,11 +201,32 @@ useEffect(() => {
 
  
 
+ 
+    const gotodetails = (customerlistId) => {
+      navigate(`/admin/customers/${customerlistId}`);
+    }
+    
 
-    // end of table sorting config 
 
+    const [totalCustomers, setTotalCustomers] = useState(0);
 
-
+    useEffect(() => {
+      const fetchTotalCustomers = async () => {
+        const customersCollectionRef = collection(db, 'customers');
+        
+        try {
+          const customersSnapshot = await getDocs(customersCollectionRef);
+          const totalCustomersCount = customersSnapshot.size;
+          setTotalCustomers(totalCustomersCount);
+        } catch (error) {
+          console.error('Error fetching total customers:', error.message);
+        }
+      };
+  
+      fetchTotalCustomers();
+    }, []);
+  
+ 
  
  
  
@@ -345,7 +366,7 @@ useEffect(() => {
               <td> {customerlist.location}</td>
               <td> {formatFirebaseTimestamp(customerlist.date)} </td>
               <td> {customerlist.amountspent}</td>
-              <td><Link to={`/admin/admincustomerdetails/${customerlist.id}`}>  View Profile</Link> </td>
+              <td><Link to={`/admin/customer/${customerlist.id}`}>  View Profile</Link> </td>
             </tr>))} </tbody>
 
              </table>
